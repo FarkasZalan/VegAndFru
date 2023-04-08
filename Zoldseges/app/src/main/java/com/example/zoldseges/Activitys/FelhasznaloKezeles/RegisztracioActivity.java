@@ -186,9 +186,11 @@ public class RegisztracioActivity extends AppCompatActivity {
                                 felhasznalok = felhasznalo1.ujFelhasznalo(felhasznalo1);
                                 DocumentReference reference = firestore.collection("felhasznalok").document(id);
                                 reference.set(felhasznalok).addOnSuccessListener(adatbMent -> {
-                                    megjelenit();
-                                    Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
-                                    vissza();
+                                    if (imageUrl == null) {
+                                        megjelenit();
+                                        Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
+                                        vissza();
+                                    }
                                 }).addOnFailureListener(e -> megjelenit());
                             }
                         });
@@ -254,8 +256,8 @@ public class RegisztracioActivity extends AppCompatActivity {
 
     public void vissza() {
         super.onBackPressed();
-        super.onBackPressed();
-        startActivity(new Intent(this, FiokActicity.class));
+        FirebaseAuth.getInstance().signOut();
+        auth.signOut();
         finish();
     }
 
@@ -289,7 +291,11 @@ public class RegisztracioActivity extends AppCompatActivity {
                     lakcim.getText().toString(), cegNev.getText().toString(), adoszam.getText().toString(), szekhely.getText().toString(), felhasznaloTipus, boltKep);
             ujFelhasznalo = kepes.ujFelhasznalo(kepes);
             //ha tölt fel képet akkor frissűlnek az adatai az adatb-ben
-            firestore.collection("felhasznalok").document(id).set(ujFelhasznalo).addOnSuccessListener(unused -> finish());
+            firestore.collection("felhasznalok").document(id).set(ujFelhasznalo).addOnSuccessListener(unused -> {
+                megjelenit();
+                Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
+                vissza();
+            });
             megjelenit();
         })).addOnProgressListener(snapshot -> {
             eltuntet();
