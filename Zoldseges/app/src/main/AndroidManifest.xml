@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Zoldseges"
+        tools:targetApi="31" >
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.Elado.TermekSzerkeszteseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.Elado.UjTermekActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.Elado.BoltKezelesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.Elado.EladasaimActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.RendeleseimActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.AdataimActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.UgyfelszolgalatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.AszfActicity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FizetesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.BejelentkezesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.RegisztracioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FelhasznaloKezeles.FiokActicity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.KosarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.FooldalActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#B4E4EBF4"
+    android:fillViewport="true"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".Activitys.FelhasznaloKezeles.Elado.BoltKezelesActivity"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:padding="16dp"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="43sp"
+        android:text="@string/aruhaz_kezelese"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="@string/termekek"
+        android:layout_marginTop="50dp"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:padding="16dp"
+        android:layout_margin="30dp"
+        >
+    <ImageView
+        android:id="@+id/elsoTermekKep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/add"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:onClick="onUjTermek"
+        android:textSize="20sp"
+        app:cornerRadius="10dp"
+        android:contentDescription="@string/todo" />
+
+        <TextView
+            android:id="@+id/elsoTermekCim"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textAlignment="center"
+            android:onClick="onUjTermek"
+            android:textSize="20sp"
+            android:text="@string/add_hozza_az_else_termeked"
+
+            />
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        >
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:textSize="20sp"
+        app:cornerRadius="10dp"
+        android:text="@string/vissza"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:onClick="onVissza"
+        />
+    </RelativeLayout>
+
+</LinearLayout>
+</ScrollView>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "462240212992",
+    "project_id": "vegandfru-bedd0",
+    "storage_bucket": "vegandfru-bedd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:462240212992:android:ae6923f93c6fc82f66d0e5",
+        "android_client_info": {
+          "package_name": "com.example.zoldseges"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "462240212992-041jl83vet2p1jqjjcbh346k81h1vuiv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zoldseges",
+            "certificate_hash": "78f2ab6602e03b24cfb7a846d3a244063ff16f2d"
+          }
+        },
+        {
+          "client_id": "462240212992-q7hm4vds0m8fjvpv8u4fj0ros61i6h3i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3JZpCOSrBBYoQLk6GdesOQe8Zgsa1qIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "462240212992-q7hm4vds0m8fjvpv8u4fj0ros61i6h3i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

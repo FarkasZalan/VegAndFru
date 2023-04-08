@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <item
+        android:id="@+id/kereso"
+        android:title="@string/kereses"
+        android:icon="@drawable/kereso"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.SearchView"
+        />
+
+    <item
+        android:id="@+id/kosar"
+        android:title="@string/kosar"
+        android:icon="@drawable/kosar"
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/cart_number"
+        />
+
+    <item
+        android:id="@+id/fiok"
+        android:title="@string/fiok"
+        android:icon="@drawable/profil"
+        app:showAsAction="ifRoom"
+        />
+
+
+</menu>

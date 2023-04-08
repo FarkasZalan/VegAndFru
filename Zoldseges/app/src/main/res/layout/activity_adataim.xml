@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#B4E4EBF4"
+    android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".Activitys.FelhasznaloKezeles.AdataimActivity"
+        >
+
+
+        <TextView
+            android:id="@+id/cim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="43sp"
+            android:layout_marginTop="20dp"
+            android:text="@string/profil_adatai" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:id="@+id/nevLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/nev_modositas"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                />
+        <EditText
+            android:id="@+id/nevAdatSzerkezto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:backgroundTint="@color/purple_500"
+            android:layout_marginStart="10dp"
+            android:hint="@string/teljes_nev"
+            android:inputType="textPersonName"
+            android:autofillHints="name"
+            app:cornerRadius="10dp"/>
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/emailLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email_modoistas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/emailAdatSzerkezto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:backgroundTint="@color/purple_500"
+            android:hint="@string/email_cim"
+            android:inputType="textEmailAddress"
+            android:autofillHints="emailAddress"
+            app:cornerRadius="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/telszamLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/telefonszam_modositas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/telefonszamAdatSzerkezto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:backgroundTint="@color/purple_500"
+            android:hint="@string/telefonszam"
+            android:inputType="phone"
+            android:digits="0123456789+"
+            android:lines="1"
+            android:autofillHints="phone"
+            app:cornerRadius="10dp"/>
+    </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBarModositas"
+            android:layout_marginTop="150dp"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:visibility="gone"
+            />
+        <TextView
+            android:id="@+id/modositasText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/modositas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:visibility="gone"
+            />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/szalitasiCimLabell"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/szallitasi_cim_modositas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/lakcimAdatSzerkezto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:backgroundTint="@color/purple_500"
+            android:hint="@string/szallitasi_cim"
+            android:inputType="textPostalAddress"
+            android:autofillHints="postalAddress"
+            app:cornerRadius="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/paswLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/uj_jelszo"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/jelszoAdatSzerkezto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:backgroundTint="@color/purple_500"
+            android:inputType="textPassword"
+            android:autofillHints="password"
+            app:cornerRadius="10dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/paswRepeatLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/uj_jelszi_ismet"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/jelszoUjraAdatSzerkezto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:backgroundTint="@color/purple_500"
+            android:inputType="textPassword"
+            android:autofillHints="password"
+            app:cornerRadius="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/cegnevLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/ceg_neve_modositas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/cegNevAdatSzerkezto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="@string/ceg_neve"
+            android:backgroundTint="@color/purple_500"
+            app:cornerRadius="10dp"
+            android:inputType="textPersonName"
+            android:visibility="gone"
+            android:autofillHints="name" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/adoszamLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/adoszam_modositas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/adoszamAdatSzerkezto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            app:cornerRadius="10dp"
+            android:hint="@string/adoszam"
+            android:backgroundTint="@color/purple_500"
+            android:inputType="text"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/szekhelyLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/szekhely_modositas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            />
+        <EditText
+            android:id="@+id/szekhelyAdatSzerkezto"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="@string/szekhely"
+            android:backgroundTint="@color/purple_500"
+            app:cornerRadius="10dp"
+            android:inputType="textPostalAddress"
+            android:visibility="gone"
+            android:autofillHints="postalAddress" />
+    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/termekKepBeallitasModosit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:background="@drawable/standard_item_picture"
+            android:contentDescription="@string/todo"
+            android:onClick="onTermekKepFeltoltesModosit"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            app:cornerRadius="10dp" />
+
+        <TextView
+            android:id="@+id/termekKepCimModosit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:onClick="onTermekKepFeltoltesModosit"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:text="@string/aruhaz_kepenek_modositasa"
+            android:textAlignment="center"
+            android:textSize="20sp"
+
+            />
+
+        <Button
+            android:id="@+id/adatokSzerkesztese"
+            android:layout_width="270sp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
+            android:onClick="onAdatSzerkesztes"
+            app:cornerRadius="10dp"
+            android:textSize="17sp"
+            android:text="@string/adatok_szerkesztese" />
+
+        <Button
+            android:id="@+id/vissza"
+            android:layout_width="270sp"
+            android:layout_height="50dp"
+            android:layout_marginTop="40dp"
+            app:cornerRadius="10dp"
+            android:layout_gravity="center"
+            android:onClick="onVissza"
+            android:textSize="17sp"
+            android:text="@string/vissza" />
+    </LinearLayout>
+</ScrollView>
