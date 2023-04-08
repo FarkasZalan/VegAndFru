@@ -119,7 +119,6 @@ public class UjTermekActivity extends AppCompatActivity {
             elsoTermekKep.setImageURI(imageUrl);
         }
     }
-
     public void kepFeltolt(Uri uri) {
         StorageReference kepNeve = storageReference.child("termek_" + Objects.requireNonNull(auth.getCurrentUser()).getUid() + "_" + uri.getLastPathSegment());
         kepNeve.putFile(uri).addOnSuccessListener(taskSnapshot -> kepNeve.getDownloadUrl().addOnSuccessListener(uri1 -> {

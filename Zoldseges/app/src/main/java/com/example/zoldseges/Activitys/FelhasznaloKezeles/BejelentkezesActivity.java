@@ -40,8 +40,6 @@ public class BejelentkezesActivity extends AppCompatActivity {
 
 
         auth = FirebaseAuth.getInstance();
-        FirebaseAuth.getInstance().signOut();
-        auth.signOut();
         FirebaseUser felhasznalo = auth.getCurrentUser();
         if (felhasznalo != null) {
             super.onBackPressed();

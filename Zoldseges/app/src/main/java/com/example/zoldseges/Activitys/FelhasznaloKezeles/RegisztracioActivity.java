@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.zoldseges.DAOS.Felhasznalo;
 import com.example.zoldseges.R;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -33,6 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RegisztracioActivity extends AppCompatActivity {
     private static final int ImageCode = 1;
+    private static String id = "";
     private FirebaseFirestore firestore;
     private FirebaseAuth auth;
     private TextView nev;
@@ -177,11 +179,12 @@ public class RegisztracioActivity extends AppCompatActivity {
                                     boltKep = "@drawable/standard_item_picture";
                                 } else {
                                     auth.signInWithEmailAndPassword(this.email.getText().toString(), this.jelszo.getText().toString());
+                                    id = Objects.requireNonNull(auth.getCurrentUser()).getUid();
                                     kepFeltolt(imageUrl, felhasznaloTipus[0]);
                                 }
                                 this.felhasznalo1 = new Felhasznalo(nev, email, jelszo, telefonszam, lakcim, cegNev, adoszam, szekhely, felhasznaloTipus[0], boltKep);
                                 felhasznalok = felhasznalo1.ujFelhasznalo(felhasznalo1);
-                                DocumentReference reference = firestore.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+                                DocumentReference reference = firestore.collection("felhasznalok").document(id);
                                 reference.set(felhasznalok).addOnSuccessListener(adatbMent -> {
                                     megjelenit();
                                     Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
@@ -251,6 +254,8 @@ public class RegisztracioActivity extends AppCompatActivity {
 
     public void vissza() {
         super.onBackPressed();
+        super.onBackPressed();
+        startActivity(new Intent(this, FiokActicity.class));
         finish();
     }
 
@@ -276,7 +281,7 @@ public class RegisztracioActivity extends AppCompatActivity {
     }
 
     public void kepFeltolt(Uri uri, String felhasznaloTipus) {
-        StorageReference kepNeve = storageReference.child("bolt_" + Objects.requireNonNull(auth.getCurrentUser()).getUid() + "_" + uri.getLastPathSegment());
+        StorageReference kepNeve = storageReference.child("bolt_" + id + "_" + uri.getLastPathSegment());
         kepNeve.putFile(uri).addOnSuccessListener(taskSnapshot -> kepNeve.getDownloadUrl().addOnSuccessListener(uri1 -> {
             this.boltKep = kepNeve.toString();
             Map<String, Object> ujFelhasznalo;
@@ -284,7 +289,7 @@ public class RegisztracioActivity extends AppCompatActivity {
                     lakcim.getText().toString(), cegNev.getText().toString(), adoszam.getText().toString(), szekhely.getText().toString(), felhasznaloTipus, boltKep);
             ujFelhasznalo = kepes.ujFelhasznalo(kepes);
             //ha tölt fel képet akkor frissűlnek az adatai az adatb-ben
-            firestore.collection("felhasznalok").document(auth.getCurrentUser().getUid()).set(ujFelhasznalo);
+            firestore.collection("felhasznalok").document(id).set(ujFelhasznalo).addOnSuccessListener(unused -> finish());
             megjelenit();
         })).addOnProgressListener(snapshot -> {
             eltuntet();
