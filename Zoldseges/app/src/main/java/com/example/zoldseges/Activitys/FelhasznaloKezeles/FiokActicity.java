@@ -81,6 +81,7 @@ public class FiokActicity extends AppCompatActivity {
         psw = findViewById(R.id.pswTetx);
 
         try {
+            RegisztracioActivity activity;
             reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
             eladoE();
         } catch (Exception e) {

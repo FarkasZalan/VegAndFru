@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RegisztracioActivity extends AppCompatActivity {
     private static final int ImageCode = 1;
-    private static String id = "";
+    public static String id = "";
     private FirebaseFirestore firestore;
     private FirebaseAuth auth;
     private TextView nev;
@@ -174,12 +174,12 @@ public class RegisztracioActivity extends AppCompatActivity {
                                 if (!eladoE.isChecked() && !cegE.isChecked()) {
                                     felhasznaloTipus[0] = "magánszemély";
                                 }
-
+                                id = Objects.requireNonNull(auth.getCurrentUser()).getUid();
                                 if (imageUrl == null) {
                                     boltKep = "@drawable/standard_item_picture";
                                 } else {
                                     auth.signInWithEmailAndPassword(this.email.getText().toString(), this.jelszo.getText().toString());
-                                    id = Objects.requireNonNull(auth.getCurrentUser()).getUid();
+
                                     kepFeltolt(imageUrl, felhasznaloTipus[0]);
                                 }
                                 this.felhasznalo1 = new Felhasznalo(nev, email, jelszo, telefonszam, lakcim, cegNev, adoszam, szekhely, felhasznaloTipus[0], boltKep);
