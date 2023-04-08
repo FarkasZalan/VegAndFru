@@ -100,7 +100,17 @@ public class Felhasznalo implements FelhasznaloDao {
 
     private String szekhely;
 
-    public Felhasznalo(String nev, String email, String jelszo, String telefonszam, String lakcim, String cegNev, String adoszam, String szekhely, String felhasznaloTipus) {
+    public String getBoltKepe() {
+        return boltKepe;
+    }
+
+    public void setBoltKepe(String boltKepe) {
+        this.boltKepe = boltKepe;
+    }
+
+    private String boltKepe;
+
+    public Felhasznalo(String nev, String email, String jelszo, String telefonszam, String lakcim, String cegNev, String adoszam, String szekhely, String felhasznaloTipus, String boltKepe) {
         this.nev = nev;
         this.email = email;
         this.jelszo = jelszo;
@@ -110,17 +120,7 @@ public class Felhasznalo implements FelhasznaloDao {
         this.adoszam = adoszam;
         this.szekhely = szekhely;
         this.felhasznaloTipus = felhasznaloTipus;
-    }
-
-    public Felhasznalo(String nev, String email, String jelszo, String telefonszam, String lakcim, String cegNev, String adoszam, String szekhely) {
-        this.nev = nev;
-        this.email = email;
-        this.jelszo = jelszo;
-        this.telefonszam = telefonszam;
-        this.lakcim = lakcim;
-        this.cegNev = cegNev;
-        this.adoszam = adoszam;
-        this.szekhely = szekhely;
+        this.boltKepe = boltKepe;
     }
 
     private Map<String, Object> felhasznalok = new HashMap<>();
@@ -134,17 +134,7 @@ public class Felhasznalo implements FelhasznaloDao {
         felhasznalok.put("adoszam", felhasznalo.getAdoszam());
         felhasznalok.put("szekhely", felhasznalo.getSzekhely());
         felhasznalok.put("felhasznaloTipus", felhasznalo.getFelhasznaloTipus());
-        return felhasznalok;
-    }
-
-    public Map<String, Object> frissitFelhasznalo(Felhasznalo felhasznalo) {
-        felhasznalok.put("nev", felhasznalo.getNev());
-        felhasznalok.put("email", felhasznalo.getEmail());
-        felhasznalok.put("telefonszam", felhasznalo.getTelefonszam());
-        felhasznalok.put("lakcim", felhasznalo.getLakcim());
-        felhasznalok.put("cegNev", felhasznalo.getCegNev());
-        felhasznalok.put("adoszam", felhasznalo.getAdoszam());
-        felhasznalok.put("szekhely", felhasznalo.getSzekhely());
+        felhasznalok.put("boltKepe", felhasznalo.getBoltKepe());
         return felhasznalok;
     }
 

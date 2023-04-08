@@ -85,7 +85,9 @@ public class FiokActicity extends AppCompatActivity {
             eladoE();
         } catch (Exception e) {
             super.onBackPressed();
-            startActivity(new Intent(this, BejelentkezesActivity.class));
+            auth.signOut();
+            FirebaseAuth.getInstance().signOut();
+            finish();
         }
 
 

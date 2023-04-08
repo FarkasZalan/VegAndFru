@@ -50,7 +50,6 @@ public class UjTermekActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private Button mentes;
-    private Button vissza;
 
 
 
@@ -59,7 +58,7 @@ public class UjTermekActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uj_termek);
 
-        storageReference = FirebaseStorage.getInstance().getReference().child("Kepek");
+        storageReference = FirebaseStorage.getInstance().getReference().child("TermekKepek");
         auth = FirebaseAuth.getInstance();
 
         termekNeve = findViewById(R.id.termekNeve);
@@ -68,7 +67,6 @@ public class UjTermekActivity extends AppCompatActivity {
         elsoTermekKep = findViewById(R.id.elsoTermekKep);
         elsoTermekCim = findViewById(R.id.elsoTermekCim);
         mentes = findViewById(R.id.mentes);
-        vissza = findViewById(R.id.visszaTermekHozzaad);
         mentestext = findViewById(R.id.mentestext);
 
         progressBar = findViewById(R.id.progressBar);
@@ -111,7 +109,6 @@ public class UjTermekActivity extends AppCompatActivity {
         Intent gallery = new Intent(Intent.ACTION_GET_CONTENT);
         gallery.setType("image/*");
         startActivityForResult(gallery, ImageCode);
-
     }
 
     @Override

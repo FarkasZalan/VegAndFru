@@ -63,6 +63,7 @@ public class AdataimActivity extends AppCompatActivity {
     private FirebaseUser felhasznalo;
     private FirebaseFirestore db;
 
+    private String boltKepe;
     private Map<String, Object> ujFelhasznalo = new HashMap<>();
 
     @Override
@@ -89,6 +90,7 @@ public class AdataimActivity extends AppCompatActivity {
         cegnevLabel = findViewById(R.id.cegnevLabel);
         adoszamLabel = findViewById(R.id.adoszamLabel);
         szekhelyLabel = findViewById(R.id.szekhelyLabel);
+        boltKepe = "";
 
         nevLabel = findViewById(R.id.nevLabel);
         emailLabel = findViewById(R.id.emailLabel);
@@ -225,7 +227,7 @@ public class AdataimActivity extends AppCompatActivity {
                 this.szekhelyLabel.setVisibility(View.GONE);
                 reference.addSnapshotListener((value, error) -> {
                     assert value != null;
-                    Felhasznalo friss = new Felhasznalo(ujNev, ujEmail, "", ujTelefon, ujSzallitasiCim, ujCegNev, ujAdoszam, ujSzekhely, value.getString("felhasznaloTipus"));
+                    Felhasznalo friss = new Felhasznalo(ujNev, ujEmail, "", ujTelefon, ujSzallitasiCim, ujCegNev, ujAdoszam, ujSzekhely, value.getString("felhasznaloTipus"), boltKepe);
                     ujFelhasznalo = friss.ujFelhasznalo(friss);
                 });
                 String regiEmail = felhasznalo.getEmail();

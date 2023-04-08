@@ -38,11 +38,15 @@ public class BejelentkezesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bejelentkezes);
 
+
         auth = FirebaseAuth.getInstance();
+        FirebaseAuth.getInstance().signOut();
+        auth.signOut();
         FirebaseUser felhasznalo = auth.getCurrentUser();
         if (felhasznalo != null) {
             super.onBackPressed();
             startActivity(new Intent(this, FiokActicity.class));
+            finish();
         }
 
         email = findViewById(R.id.emailLogin);
@@ -55,7 +59,6 @@ public class BejelentkezesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.fooldalra_iranyito, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -119,6 +122,7 @@ public class BejelentkezesActivity extends AppCompatActivity {
     public void onProfil() {
         super.onBackPressed();
         startActivity(new Intent(this, FiokActicity.class));
+        finish();
     }
 
     public void onRegisterOpen(View view) {

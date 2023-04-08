@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="#B4E4EBF4"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".Activitys.FelhasznaloKezeles.Elado.UjTermekActivity"
-        android:padding="16dp"
         android:layout_margin="10dp"
-        >
+        android:padding="16dp"
+        tools:context=".Activitys.FelhasznaloKezeles.Elado.UjTermekActivity">
 
         <TextView
             android:id="@+id/hozzaadasCim"
@@ -46,39 +45,38 @@
             android:id="@+id/termekAra"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:autofillHints=""
+            android:backgroundTint="@color/purple_500"
             android:hint="@string/termek_egysegara_db"
+            android:inputType="numberDecimal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/termekNeve"
-            android:backgroundTint="@color/purple_500"
-            android:inputType="numberDecimal"
-            app:layout_constraintVertical_bias="0.07"
-            android:autofillHints="" />
+            app:layout_constraintVertical_bias="0.07" />
 
         <EditText
             android:id="@+id/termekKeszlet"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:autofillHints=""
+            android:backgroundTint="@color/purple_500"
             android:hint="@string/keszleten_levok_darabszama"
+            android:inputType="number"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/termekAra"
-            android:backgroundTint="@color/purple_500"
-            android:inputType="number"
-            app:layout_constraintVertical_bias="0.07"
-            android:autofillHints="" />
+            app:layout_constraintVertical_bias="0.07" />
 
         <LinearLayout
             android:id="@+id/termekKep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:orientation="vertical"
             android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/termekKeszlet"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/termekKeszlet">
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -86,8 +84,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:visibility="gone"
-                 />
+                android:visibility="gone" />
+
             <TextView
                 android:id="@+id/mentestext"
                 android:layout_width="match_parent"
@@ -96,39 +94,37 @@
                 android:text="@string/termek_mentese"
                 android:textAlignment="center"
                 android:textSize="20sp"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/elsoTermekKep"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal|center_vertical"
-                app:srcCompat="@drawable/standard_item_picture"
                 android:contentDescription="@string/todo"
                 android:onClick="onTermekKepFeltoltes"
                 android:textSize="20sp"
-                 />
+                app:srcCompat="@drawable/standard_item_picture" />
 
             <TextView
                 android:id="@+id/elsoTermekCim"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:onClick="onTermekKepFeltoltes"
                 android:layout_marginTop="20dp"
+                android:onClick="onTermekKepFeltoltes"
                 android:text="@string/termek_kepenek_beallitasa"
                 android:textAlignment="center"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
         </LinearLayout>
+
         <Button
             android:id="@+id/mentes"
             android:layout_width="240dp"
             android:layout_height="50dp"
+            android:onClick="onMentes"
             android:text="@string/mentes"
             android:textSize="20sp"
             app:cornerRadius="10dp"
-            android:onClick="onMentes"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -143,6 +139,7 @@
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
             android:onClick="onVisszaBolthoz"
             android:text="@string/vissza"
             android:textSize="20sp"
@@ -152,10 +149,7 @@
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mentes"
-            android:layout_margin="20dp"
             app:layout_constraintVertical_bias="0.2" />
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
