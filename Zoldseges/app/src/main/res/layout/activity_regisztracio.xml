@@ -194,13 +194,12 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 android:contentDescription="@string/todo"
                 android:onClick="onTermekKepFeltoltesReg"
                 android:textSize="20sp"
                 android:visibility="gone"
-                app:cornerRadius="10dp"
-                app:srcCompat="@drawable/standard_item_picture" />
+                app:srcCompat="@drawable/grocery_store" />
 
             <TextView
                 android:id="@+id/termekKepCim"

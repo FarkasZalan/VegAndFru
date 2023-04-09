@@ -1,5 +1,5 @@
 # VegAndFru
-egyetemi projekt(mobil alkfejl)
+Egyetemi projekt(mobil alkfejl)
 
 ## Specifikációk
 Az alkalmazásban meg van valósítva az autentikált bejelentkezés illetve a regisztráció is.
