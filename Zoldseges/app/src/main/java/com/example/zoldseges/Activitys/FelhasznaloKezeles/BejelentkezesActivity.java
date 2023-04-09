@@ -27,6 +27,7 @@ public class BejelentkezesActivity extends AppCompatActivity {
     private FirebaseAuth auth;
 
     private Button bejelentkezesButton;
+    private Button regisztracio;
     private TextView email;
     private TextView jelszo;
     private TextView bejelentkezesText;
@@ -37,7 +38,6 @@ public class BejelentkezesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bejelentkezes);
-
 
         auth = FirebaseAuth.getInstance();
         FirebaseUser felhasznalo = auth.getCurrentUser();
@@ -52,6 +52,7 @@ public class BejelentkezesActivity extends AppCompatActivity {
         bejelentkezesText = findViewById(R.id.bejelentkezesText);
         progressBarBejelentkezes = findViewById(R.id.progressBarBejelentkezes);
         bejelentkezesButton = findViewById(R.id.bejelentkezesButton);
+        regisztracio = findViewById(R.id.regisztracio);
     }
 
     @Override
@@ -78,9 +79,10 @@ public class BejelentkezesActivity extends AppCompatActivity {
                 email.setVisibility(View.GONE);
                 jelszo.setVisibility(View.GONE);
                 bejelentkezesButton.setVisibility(View.GONE);
+                regisztracio.setVisibility(View.GONE);
+
                 auth.signInWithEmailAndPassword(emailAdress, jelszoTxt).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        megjelenit();
                         Toast.makeText(getApplicationContext(), "Sikeres bejelentkezés!", Toast.LENGTH_LONG).show();
                         onProfil();
                     } else {
@@ -111,6 +113,7 @@ public class BejelentkezesActivity extends AppCompatActivity {
         email.setVisibility(View.VISIBLE);
         jelszo.setVisibility(View.VISIBLE);
         bejelentkezesButton.setVisibility(View.VISIBLE);
+        regisztracio.setVisibility(View.VISIBLE);
     }
 
     boolean isEmailValid(CharSequence email) {
@@ -124,6 +127,7 @@ public class BejelentkezesActivity extends AppCompatActivity {
     }
 
     public void onRegisterOpen(View view) {
+        super.onBackPressed();
         startActivity(new Intent(this, RegisztracioActivity.class));
     }
 }

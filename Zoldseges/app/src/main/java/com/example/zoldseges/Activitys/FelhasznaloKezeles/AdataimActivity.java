@@ -41,7 +41,6 @@ public class AdataimActivity extends AppCompatActivity {
     TextView szekhelyV;
     TextView cegNevV;
     TextView adoszamV;
-
     TextView cegnevLabel;
     TextView adoszamLabel;
     TextView szekhelyLabel;
@@ -53,16 +52,14 @@ public class AdataimActivity extends AppCompatActivity {
     TextView paswRepeatLabel;
     ImageView termekKepBeallitasModosit;
     TextView termekKepCimModosit;
-
     ProgressBar progressBarModositas;
     TextView modositasText;
     Button adatokSzerkesztese;
-
+    Button vissza;
     private DocumentReference reference;
     private FirebaseAuth auth;
     private FirebaseUser felhasznalo;
     private FirebaseFirestore db;
-
     private String boltKepe;
     private Map<String, Object> ujFelhasznalo = new HashMap<>();
 
@@ -74,11 +71,11 @@ public class AdataimActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         felhasznalo = auth.getCurrentUser();
-
         nevV = findViewById(R.id.nevAdatSzerkezto);
         progressBarModositas = findViewById(R.id.progressBarModositas);
         modositasText = findViewById(R.id.modositasText);
         adatokSzerkesztese = findViewById(R.id.adatokSzerkesztese);
+        vissza = findViewById(R.id.vissza);
         emailV = findViewById(R.id.emailAdatSzerkezto);
         telSzamV = findViewById(R.id.telefonszamAdatSzerkezto);
         szallitasiCimV = findViewById(R.id.lakcimAdatSzerkezto);
@@ -91,18 +88,14 @@ public class AdataimActivity extends AppCompatActivity {
         adoszamLabel = findViewById(R.id.adoszamLabel);
         szekhelyLabel = findViewById(R.id.szekhelyLabel);
         boltKepe = "";
-
         nevLabel = findViewById(R.id.nevLabel);
         emailLabel = findViewById(R.id.emailLabel);
         telszamLabel = findViewById(R.id.telszamLabel);
         szalitasiCimLabell = findViewById(R.id.szalitasiCimLabell);
         paswLabel = findViewById(R.id.paswLabel);
         paswRepeatLabel = findViewById(R.id.paswRepeatLabel);
-
         termekKepBeallitasModosit = findViewById(R.id.termekKepBeallitasModosit);
         termekKepCimModosit = findViewById(R.id.termekKepCimModosit);
-
-
         reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
         cegVagyElado();
     }
@@ -123,7 +116,6 @@ public class AdataimActivity extends AppCompatActivity {
                     termekKepBeallitasModosit.setVisibility(View.VISIBLE);
                     termekKepCimModosit.setVisibility(View.VISIBLE);
                 }
-
             } else {
                 szekhelyV.setVisibility(View.GONE);
                 cegNevV.setVisibility(View.GONE);
@@ -147,7 +139,6 @@ public class AdataimActivity extends AppCompatActivity {
     public void megjelenit() {
         this.progressBarModositas.setVisibility(View.GONE);
         this.modositasText.setVisibility(View.GONE);
-
         this.nevV.setVisibility(View.VISIBLE);
         this.emailV.setVisibility(View.VISIBLE);
         this.telSzamV.setVisibility(View.VISIBLE);
@@ -155,14 +146,13 @@ public class AdataimActivity extends AppCompatActivity {
         this.jelszoV.setVisibility(View.VISIBLE);
         this.jelszoUjraV.setVisibility(View.VISIBLE);
         this.adatokSzerkesztese.setVisibility(View.VISIBLE);
-
+        this.vissza.setVisibility(View.VISIBLE);
         this.nevLabel.setVisibility(View.VISIBLE);
         this.emailLabel.setVisibility(View.VISIBLE);
         this.telszamLabel.setVisibility(View.VISIBLE);
         this.szalitasiCimLabell.setVisibility(View.VISIBLE);
         this.paswLabel.setVisibility(View.VISIBLE);
         this.paswRepeatLabel.setVisibility(View.VISIBLE);
-
         cegVagyElado();
     }
 
@@ -210,12 +200,12 @@ public class AdataimActivity extends AppCompatActivity {
                 this.jelszoV.setVisibility(View.GONE);
                 this.jelszoUjraV.setVisibility(View.GONE);
                 this.adatokSzerkesztese.setVisibility(View.GONE);
+                this.vissza.setVisibility(View.GONE);
                 this.szekhelyV.setVisibility(View.GONE);
                 this.cegNevV.setVisibility(View.GONE);
                 this.adoszamV.setVisibility(View.GONE);
                 this.termekKepBeallitasModosit.setVisibility(View.GONE);
                 this.termekKepCimModosit.setVisibility(View.GONE);
-
                 this.cegnevLabel.setVisibility(View.GONE);
                 this.nevLabel.setVisibility(View.GONE);
                 this.emailLabel.setVisibility(View.GONE);
@@ -253,8 +243,6 @@ public class AdataimActivity extends AppCompatActivity {
                                 felhasznalo.updateEmail(regiEmail);
                             }
                         }
-
-
                         if (!voltHiba.get()) {
                             megjelenit();
                             db.collection("felhasznalok").document(felhasznalo.getUid()).set(ujFelhasznalo).addOnCompleteListener(task1 -> Toast.makeText(getApplicationContext(), "Sikeres frissítés!", Toast.LENGTH_LONG).show());
@@ -269,11 +257,9 @@ public class AdataimActivity extends AppCompatActivity {
 
             } else {
                 Toast.makeText(getApplicationContext(), "Érvénytelen email címet adtál meg!", Toast.LENGTH_LONG).show();
-
             }
         } else {
             Toast.makeText(getApplicationContext(), "Amit változtatni szeretnél azt nem hagyhatod üresen!", Toast.LENGTH_LONG).show();
-
         }
     }
 

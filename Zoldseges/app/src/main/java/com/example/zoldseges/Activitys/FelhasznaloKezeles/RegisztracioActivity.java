@@ -1,5 +1,6 @@
 package com.example.zoldseges.Activitys.FelhasznaloKezeles;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -7,6 +8,8 @@ import androidx.appcompat.widget.SwitchCompat;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -50,6 +53,7 @@ public class RegisztracioActivity extends AppCompatActivity {
     private TextView szekhely;
     private CheckBox cegE;
     private Button regisztracioButton;
+    private Button bejelentkezes;
     private SwitchCompat eladoE;
     private LinearLayout regCegesCuccok;
     private Map<String, Object> felhasznalok = new HashMap<>();
@@ -86,8 +90,30 @@ public class RegisztracioActivity extends AppCompatActivity {
         termekKepCim = findViewById(R.id.termekKepCim);
         cegE = findViewById(R.id.cegE);
         eladoE = findViewById(R.id.eladoE);
+        bejelentkezes = findViewById(R.id.bejelentkezes);
         eladotRegisztralE();
         cegetRegisztral();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.fooldalra_iranyito, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.vissza) {
+            super.onBackPressed();
+            startActivity(new Intent(this, BejelentkezesActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, BejelentkezesActivity.class));
     }
 
     public void cegetRegisztral() {
@@ -187,9 +213,9 @@ public class RegisztracioActivity extends AppCompatActivity {
                                 DocumentReference reference = firestore.collection("felhasznalok").document(id);
                                 reference.set(felhasznalok).addOnSuccessListener(adatbMent -> {
                                     if (imageUrl == null) {
-                                        megjelenit();
+                                        super.onBackPressed();
                                         Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
-                                        vissza();
+                                        sikeresRegisztracio();
                                     }
                                 }).addOnFailureListener(e -> megjelenit());
                             }
@@ -229,6 +255,7 @@ public class RegisztracioActivity extends AppCompatActivity {
         this.jelszo.setVisibility(View.VISIBLE);
         this.jelszoUjra.setVisibility(View.VISIBLE);
         this.regisztracioButton.setVisibility(View.VISIBLE);
+        this.bejelentkezes.setVisibility(View.VISIBLE);
         this.regCegesCuccok.setVisibility(View.VISIBLE);
     }
 
@@ -247,6 +274,7 @@ public class RegisztracioActivity extends AppCompatActivity {
         this.jelszo.setVisibility(View.GONE);
         this.jelszoUjra.setVisibility(View.GONE);
         this.regisztracioButton.setVisibility(View.GONE);
+        this.bejelentkezes.setVisibility(View.GONE);
         this.regCegesCuccok.setVisibility(View.INVISIBLE);
     }
 
@@ -254,15 +282,16 @@ public class RegisztracioActivity extends AppCompatActivity {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    public void vissza() {
+    public void sikeresRegisztracio() {
         super.onBackPressed();
-        FirebaseAuth.getInstance().signOut();
-        auth.signOut();
+        super.onBackPressed();
+        startActivity(new Intent(this, FiokActicity.class));
         finish();
     }
 
     public void onLoginOpen(View view) {
         super.onBackPressed();
+        startActivity(new Intent(this, BejelentkezesActivity.class));
     }
 
     //innentől lefele végig a képfeltöltés
@@ -292,11 +321,10 @@ public class RegisztracioActivity extends AppCompatActivity {
             ujFelhasznalo = kepes.ujFelhasznalo(kepes);
             //ha tölt fel képet akkor frissűlnek az adatai az adatb-ben
             firestore.collection("felhasznalok").document(id).set(ujFelhasznalo).addOnSuccessListener(unused -> {
-                megjelenit();
                 Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
-                vissza();
+                super.onBackPressed();
+                sikeresRegisztracio();
             });
-            megjelenit();
         })).addOnProgressListener(snapshot -> {
             eltuntet();
         }).addOnFailureListener(e -> {

@@ -61,7 +61,7 @@ public class FiokActicity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         felhasznalo = auth.getCurrentUser();
-        if(auth.getCurrentUser() == null) {
+        if (auth.getCurrentUser() == null) {
             super.onBackPressed();
             startActivity(new Intent(this, BejelentkezesActivity.class));
         }
@@ -90,7 +90,6 @@ public class FiokActicity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             finish();
         }
-
 
 
     }
@@ -129,7 +128,6 @@ public class FiokActicity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.fooldalra_iranyito, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -187,6 +185,7 @@ public class FiokActicity extends AppCompatActivity {
     public void megjelenit() {
         ellenorzoProgress.setVisibility(View.GONE);
         tovabb.setVisibility(View.VISIBLE);
+        megse.setVisibility(View.VISIBLE);
         psw.setVisibility(View.VISIBLE);
         pswLbL.setVisibility(View.VISIBLE);
     }
@@ -194,9 +193,11 @@ public class FiokActicity extends AppCompatActivity {
     public void elrejt() {
         ellenorzoProgress.setVisibility(View.VISIBLE);
         tovabb.setVisibility(View.GONE);
+        megse.setVisibility(View.GONE);
         psw.setVisibility(View.GONE);
         pswLbL.setVisibility(View.GONE);
     }
+
     public void onTovabb(View view) {
         if (psw.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Előbb meg kell adnod a jelszavad!", Toast.LENGTH_LONG).show();
@@ -215,16 +216,14 @@ public class FiokActicity extends AppCompatActivity {
     }
 
     public void megnyito() {
+
         if (adatokhozAkarMenni && !rendelesVagyBolt) {
-            megjelenit();
             startActivity(new Intent(this, AdataimActivity.class));
         } else {
             if (rendelesVagyBolt && !eladeE) {
-                megjelenit();
                 startActivity(new Intent(this, RendeleseimActivity.class));
             }
             if (rendelesVagyBolt && eladeE) {
-                megjelenit();
                 startActivity(new Intent(this, BoltKezelesActivity.class));
             }
 

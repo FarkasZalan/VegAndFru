@@ -13,8 +13,7 @@
         android:orientation="vertical"
         android:padding="16dp"
         tools:context=".Activitys.FelhasznaloKezeles.AdataimActivity">
-
-
+        
         <TextView
             android:id="@+id/cim"
             android:layout_width="match_parent"
@@ -307,9 +306,7 @@
             android:text="@string/aruhaz_kepenek_modositasa"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:visibility="gone"
-
-            />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/adatokSzerkesztese"
