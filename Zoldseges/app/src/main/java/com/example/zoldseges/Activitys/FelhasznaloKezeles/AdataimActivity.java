@@ -79,6 +79,8 @@ public class AdataimActivity extends AppCompatActivity {
     private Uri imageUrl;
     private Uri regiUri;
 
+    final String[] felhasznaloTipus = {""};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,11 +124,19 @@ public class AdataimActivity extends AppCompatActivity {
     public void kepMegjelenitese() {
         reference.addSnapshotListener((value, error) -> {
             assert value != null;
+            felhasznaloTipus[0] = value.getString("felhasznaloTipus");
             if (Objects.requireNonNull(value.getString("boltKepe")).isEmpty()) {
                 regiUri = null;
             } else {
                 regiUri = Uri.parse(value.getString("boltKepe"));
             }
+            nevV.setText(value.getString("nev"));
+            emailV.setText(value.getString("email"));
+            telSzamV.setText(value.getString("telefonszam"));
+            szallitasiCimV.setText(value.getString("lakcim"));
+            szekhelyV.setText(value.getString("szekhely"));
+            cegNevV.setText(value.getString("cegNev"));
+            adoszamV.setText(value.getString("adoszam"));
             if (Objects.equals(value.getString("felhasznaloTipus"), "Eladó cég/vállalat")) {
 
                 modositasText.setText("Betöltés...");
@@ -176,39 +186,31 @@ public class AdataimActivity extends AppCompatActivity {
     }
 
     public void cegVagyElado() {
-        reference.addSnapshotListener(this, (value, error) -> {
-            assert value != null;
-            if (Objects.equals(value.getString("felhasznaloTipus"), "Eladó cég/vállalat") || Objects.equals(value.getString("felhasznaloTipus"), "Cég/Vállalat")) {
-                szekhelyV.setVisibility(View.VISIBLE);
-                cegNevV.setVisibility(View.VISIBLE);
-                adoszamV.setVisibility(View.VISIBLE);
-                cegnevLabel.setVisibility(View.VISIBLE);
-                adoszamLabel.setVisibility(View.VISIBLE);
-                szekhelyLabel.setVisibility(View.VISIBLE);
-                termekKepBeallitasModosit.setVisibility(View.GONE);
-                termekKepCimModosit.setVisibility(View.GONE);
-                if (Objects.equals(value.getString("felhasznaloTipus"), "Eladó cég/vállalat")) {
-                    termekKepBeallitasModosit.setVisibility(View.VISIBLE);
-                    termekKepCimModosit.setVisibility(View.VISIBLE);
-                }
-            } else {
-                szekhelyV.setVisibility(View.GONE);
-                cegNevV.setVisibility(View.GONE);
-                adoszamV.setVisibility(View.GONE);
-                cegnevLabel.setVisibility(View.GONE);
-                adoszamLabel.setVisibility(View.GONE);
-                szekhelyLabel.setVisibility(View.GONE);
-                termekKepBeallitasModosit.setVisibility(View.GONE);
-                termekKepCimModosit.setVisibility(View.GONE);
+
+        if (felhasznaloTipus[0].equals("Eladó cég/vállalat") || (felhasznaloTipus[0].equals("Cég/Vállalat"))) {
+            szekhelyV.setVisibility(View.VISIBLE);
+            cegNevV.setVisibility(View.VISIBLE);
+            adoszamV.setVisibility(View.VISIBLE);
+            cegnevLabel.setVisibility(View.VISIBLE);
+            adoszamLabel.setVisibility(View.VISIBLE);
+            szekhelyLabel.setVisibility(View.VISIBLE);
+            termekKepBeallitasModosit.setVisibility(View.GONE);
+            termekKepCimModosit.setVisibility(View.GONE);
+            if (felhasznaloTipus[0].equals("Eladó cég/vállalat")) {
+                termekKepBeallitasModosit.setVisibility(View.VISIBLE);
+                termekKepCimModosit.setVisibility(View.VISIBLE);
             }
-            nevV.setText(value.getString("nev"));
-            emailV.setText(value.getString("email"));
-            telSzamV.setText(value.getString("telefonszam"));
-            szallitasiCimV.setText(value.getString("lakcim"));
-            szekhelyV.setText(value.getString("szekhely"));
-            cegNevV.setText(value.getString("cegNev"));
-            adoszamV.setText(value.getString("adoszam"));
-        });
+        } else {
+            szekhelyV.setVisibility(View.GONE);
+            cegNevV.setVisibility(View.GONE);
+            adoszamV.setVisibility(View.GONE);
+            cegnevLabel.setVisibility(View.GONE);
+            adoszamLabel.setVisibility(View.GONE);
+            szekhelyLabel.setVisibility(View.GONE);
+            termekKepBeallitasModosit.setVisibility(View.GONE);
+            termekKepCimModosit.setVisibility(View.GONE);
+        }
+
     }
 
     public void eltuntet() {
@@ -270,7 +272,6 @@ public class AdataimActivity extends AppCompatActivity {
         String ujSzekhely = szekhelyV.getText().toString();
         String ujAdoszam = adoszamV.getText().toString();
         AtomicBoolean voltHiba = new AtomicBoolean(false);
-        final String[] felhasznaloTipus = {""};
 
 
         if (((!ujEmail.isEmpty() && !ujNev.isEmpty() && !ujTelefon.isEmpty() && !ujSzallitasiCim.isEmpty() && !ujCegNev.isEmpty() && !ujSzekhely.isEmpty() && !ujAdoszam.isEmpty()) && cegNevV.getVisibility() == View.VISIBLE) || ((!ujEmail.isEmpty() && !ujNev.isEmpty() && !ujTelefon.isEmpty() && !ujSzallitasiCim.isEmpty()) && cegNevV.getVisibility() == View.GONE)) {
