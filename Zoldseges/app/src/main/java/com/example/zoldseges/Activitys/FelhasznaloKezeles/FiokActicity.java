@@ -81,7 +81,6 @@ public class FiokActicity extends AppCompatActivity {
         psw = findViewById(R.id.pswTetx);
 
         try {
-            RegisztracioActivity activity;
             reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
             eladoE();
         } catch (Exception e) {
@@ -116,7 +115,7 @@ public class FiokActicity extends AppCompatActivity {
         pswLbL.setVisibility(View.GONE);
         tovabb.setVisibility(View.GONE);
         megse.setVisibility(View.GONE);
-        cimProfil.setText("Profilom");
+        cimProfil.setText(R.string.profilom);
 
         adataim.setVisibility(View.VISIBLE);
         eladoE();
@@ -147,7 +146,7 @@ public class FiokActicity extends AppCompatActivity {
     }
 
     public void vedelemBe() {
-        cimProfil.setText("Ellenőrzés");
+        cimProfil.setText(R.string.profilom);
         psw.setVisibility(View.VISIBLE);
         psw.setText("");
         pswLbL.setVisibility(View.VISIBLE);
@@ -173,7 +172,7 @@ public class FiokActicity extends AppCompatActivity {
         tovabb.setVisibility(View.GONE);
         megse.setVisibility(View.GONE);
         adatokhozAkarMenni = false;
-        cimProfil.setText("Profilom");
+        cimProfil.setText(R.string.profilom);
         rendelesVagyBolt = false;
         adataim.setVisibility(View.VISIBLE);
         eladoE();

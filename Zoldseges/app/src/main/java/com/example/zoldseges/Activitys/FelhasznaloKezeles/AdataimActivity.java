@@ -66,7 +66,6 @@ public class AdataimActivity extends AppCompatActivity {
     Button adatokSzerkesztese;
     Button vissza;
     String boltKep;
-    private Felhasznalo felhasznalo1;
     private DocumentReference reference;
     private FirebaseAuth auth;
     private FirebaseUser felhasznalo;
@@ -115,7 +114,7 @@ public class AdataimActivity extends AppCompatActivity {
         termekKepBeallitasModosit = findViewById(R.id.termekKepBeallitasModosit);
         termekKepCimModosit = findViewById(R.id.termekKepCimModosit);
         reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
-        storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReference().child("BoltKepek");
         eltuntet();
         kepMegjelenitese();
 
@@ -139,7 +138,7 @@ public class AdataimActivity extends AppCompatActivity {
             adoszamV.setText(value.getString("adoszam"));
             if (Objects.equals(value.getString("felhasznaloTipus"), "Eladó cég/vállalat")) {
 
-                modositasText.setText("Betöltés...");
+                modositasText.setText(R.string.betoltes);
                 try {
                     if (!this.isFinishing()) {
                         Glide.with(AdataimActivity.this).load(regiUri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
@@ -216,7 +215,7 @@ public class AdataimActivity extends AppCompatActivity {
     public void eltuntet() {
         this.progressBarModositas.setVisibility(View.VISIBLE);
         this.modositasText.setVisibility(View.VISIBLE);
-        modositasText.setText("Módosítás...");
+        modositasText.setText(R.string.modositas);
         this.nevV.setVisibility(View.GONE);
         this.emailV.setVisibility(View.GONE);
         this.telSzamV.setVisibility(View.GONE);
@@ -309,6 +308,15 @@ public class AdataimActivity extends AppCompatActivity {
                         }
                         if (!voltHiba.get()) {
                             if (imageUrl == null) {
+                                if (felhasznaloTipus[0].equals("Eladó cég/vállalat")) {
+                                    DocumentReference uzletek = db.collection("uzletek").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+                                    Map<String, String> uzletParameterek = new HashMap<>();
+                                    uzletParameterek.put("cegNev", cegNevV.getText().toString());
+                                    uzletParameterek.put("adoszam", adoszamV.getText().toString());
+                                    uzletParameterek.put("Szekhely", szekhelyV.getText().toString());
+                                    uzletParameterek.put("BoltKepe", boltKep);
+                                    uzletek.set(uzletParameterek);
+                                }
                                 db.collection("felhasznalok").document(felhasznalo.getUid()).set(ujFelhasznalo).addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
                                         Toast.makeText(getApplicationContext(), "Sikeres frissítés!", Toast.LENGTH_LONG).show();
@@ -358,6 +366,7 @@ public class AdataimActivity extends AppCompatActivity {
         String id = Objects.requireNonNull(auth.getCurrentUser()).getUid();
         StorageReference kepNeve;
         if (regiUri != null) {
+            storageReference = FirebaseStorage.getInstance().getReference();
             kepNeve = storageReference.child(regiUri.getLastPathSegment());
         } else {
             kepNeve = storageReference.child("bolt_" + id + "_" + uri.getLastPathSegment());
@@ -389,6 +398,15 @@ public class AdataimActivity extends AppCompatActivity {
                                     return false;
                                 }
                             }).into(termekKepBeallitasModosit);
+                            if (felhasznaloTipus.equals("Eladó cég/vállalat")) {
+                                DocumentReference uzletek = db.collection("uzletek").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+                                Map<String, String> uzletParameterek = new HashMap<>();
+                                uzletParameterek.put("cegNev", cegNevV.getText().toString());
+                                uzletParameterek.put("adoszam", adoszamV.getText().toString());
+                                uzletParameterek.put("Szekhely", szekhelyV.getText().toString());
+                                uzletParameterek.put("BoltKepe", boltKep);
+                                uzletek.set(uzletParameterek);
+                            }
                             Toast.makeText(getApplicationContext(), "Sikeres frissítés!", Toast.LENGTH_LONG).show();
                         });
                     }

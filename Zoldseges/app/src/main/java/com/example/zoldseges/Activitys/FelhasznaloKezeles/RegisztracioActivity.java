@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -23,22 +22,20 @@ import android.widget.Toast;
 import com.example.zoldseges.DAOS.Felhasznalo;
 import com.example.zoldseges.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RegisztracioActivity extends AppCompatActivity {
     private static final int ImageCode = 1;
@@ -68,6 +65,8 @@ public class RegisztracioActivity extends AppCompatActivity {
     private Uri imageUrl;
     String boltKep;
     private Felhasznalo felhasznalo1;
+
+    private String felhasznaloTipus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +176,7 @@ public class RegisztracioActivity extends AppCompatActivity {
         String cegNev = this.cegNev.getText().toString();
         String adoszam = this.adoszam.getText().toString();
         String szekhely = this.szekhely.getText().toString();
-        final String[] felhasznaloTipus = {""};
+
 
         //auth és adatb hibakezelésekkel
         if (!nev.isEmpty() && !email.isEmpty() && !telefonszam.isEmpty() && !lakcim.isEmpty() && !jelszo.isEmpty()) {
@@ -197,24 +196,35 @@ public class RegisztracioActivity extends AppCompatActivity {
                                 }
                             } else {
                                 if (cegE.isChecked()) {
-                                    felhasznaloTipus[0] = "Cég/Vállalat";
+                                    felhasznaloTipus = "Cég/Vállalat";
                                 }
                                 if (eladoE.isChecked()) {
-                                    felhasznaloTipus[0] = "Eladó cég/vállalat";
+                                    felhasznaloTipus = "Eladó cég/vállalat";
                                 }
                                 if (!eladoE.isChecked() && !cegE.isChecked()) {
-                                    felhasznaloTipus[0] = "magánszemély";
+                                    felhasznaloTipus = "magánszemély";
                                 }
                                 id = Objects.requireNonNull(auth.getCurrentUser()).getUid();
                                 if (imageUrl == null) {
                                     boltKep = "";
                                 } else {
                                     auth.signInWithEmailAndPassword(this.email.getText().toString(), this.jelszo.getText().toString());
-                                    kepFeltolt(imageUrl, felhasznaloTipus[0]);
+                                    kepFeltolt(imageUrl, felhasznaloTipus);
                                 }
-                                this.felhasznalo1 = new Felhasznalo(nev, email, jelszo, telefonszam, lakcim, cegNev, adoszam, szekhely, felhasznaloTipus[0], boltKep);
+                                this.felhasznalo1 = new Felhasznalo(nev, email, jelszo, telefonszam, lakcim, cegNev, adoszam, szekhely, felhasznaloTipus, boltKep);
                                 felhasznalok = felhasznalo1.ujFelhasznalo(felhasznalo1);
                                 DocumentReference reference = firestore.collection("felhasznalok").document(id);
+
+
+                                if (felhasznaloTipus.equals("Eladó cég/vállalat")) {
+                                    DocumentReference uzletek = firestore.collection("uzletek").document(id);
+                                    Map<String, String> uzletParameterek = new HashMap<>();
+                                    uzletParameterek.put("cegNev", cegNev);
+                                    uzletParameterek.put("adoszam", adoszam);
+                                    uzletParameterek.put("Szekhely", szekhely);
+                                    uzletParameterek.put("BoltKepe", boltKep);
+                                    uzletek.set(uzletParameterek);
+                                }
                                 reference.set(felhasznalok).addOnSuccessListener(adatbMent -> {
                                     if (imageUrl == null) {
                                         super.onBackPressed();
@@ -329,6 +339,15 @@ public class RegisztracioActivity extends AppCompatActivity {
                                 lakcim.getText().toString(), cegNev.getText().toString(), adoszam.getText().toString(), szekhely.getText().toString(), felhasznaloTipus, boltKep);
                         ujFelhasznalo = kepes.ujFelhasznalo(kepes);
                         //ha tölt fel képet akkor frissűlnek az adatai az adatb-ben
+                        if (felhasznaloTipus.equals("Eladó cég/vállalat")) {
+                            DocumentReference uzletek = firestore.collection("uzletek").document(id);
+                            Map<String, String> uzletParameterek = new HashMap<>();
+                            uzletParameterek.put("cegNev", cegNev.getText().toString());
+                            uzletParameterek.put("adoszam", adoszam.getText().toString());
+                            uzletParameterek.put("Szekhely", szekhely.getText().toString());
+                            uzletParameterek.put("BoltKepe", boltKep);
+                            uzletek.set(uzletParameterek);
+                        }
                         firestore.collection("felhasznalok").document(id).set(ujFelhasznalo).addOnSuccessListener(unused -> {
                             Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
                             RegisztracioActivity.super.onBackPressed();

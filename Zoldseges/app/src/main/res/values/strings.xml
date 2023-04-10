@@ -65,6 +65,7 @@
     <string name="bejelentkezesProgress">Bejelentkezés...</string>
     <string name="regisztraciProgress">Regisztráció...</string>
     <string name="modositas">Módosítás...</string>
+    <string name="betoltes">Betöltés...</string>
     <string name="uj_jelszi_ismet">Új jelszó ismét:</string>
     <string name="uj_jelszo">Új jelszó:</string>
     <string name="ellenorzes">Ellenőrzés...</string>
