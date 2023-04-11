@@ -13,7 +13,7 @@
         android:orientation="vertical"
         android:padding="16dp"
         tools:context=".Activitys.FelhasznaloKezeles.AdataimActivity">
-        
+
         <TextView
             android:id="@+id/cim"
             android:layout_width="match_parent"
@@ -125,6 +125,7 @@
             android:visibility="gone" />
 
         <LinearLayout
+            android:id="@+id/szallitasiCimLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

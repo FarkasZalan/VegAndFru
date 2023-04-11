@@ -110,10 +110,9 @@ public class Felhasznalo implements FelhasznaloDao {
 
     private String boltKepe;
 
-    public Felhasznalo(String nev, String email, String jelszo, String telefonszam, String lakcim, String cegNev, String adoszam, String szekhely, String felhasznaloTipus, String boltKepe) {
+    public Felhasznalo(String nev, String email, String telefonszam, String lakcim, String cegNev, String adoszam, String szekhely, String felhasznaloTipus, String boltKepe) {
         this.nev = nev;
         this.email = email;
-        this.jelszo = jelszo;
         this.telefonszam = telefonszam;
         this.lakcim = lakcim;
         this.cegNev = cegNev;
@@ -124,6 +123,7 @@ public class Felhasznalo implements FelhasznaloDao {
     }
 
     private Map<String, Object> felhasznalok = new HashMap<>();
+
     @Override
     public Map<String, Object> ujFelhasznalo(Felhasznalo felhasznalo) {
         felhasznalok.put("nev", felhasznalo.getNev());
@@ -134,7 +134,7 @@ public class Felhasznalo implements FelhasznaloDao {
         felhasznalok.put("adoszam", felhasznalo.getAdoszam());
         felhasznalok.put("szekhely", felhasznalo.getSzekhely());
         felhasznalok.put("felhasznaloTipus", felhasznalo.getFelhasznaloTipus());
-        felhasznalok.put("boltKepe", felhasznalo.getBoltKepe());
+        felhasznalok.put("uzletId", felhasznalo.getBoltKepe());
         return felhasznalok;
     }
 

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -70,15 +74,19 @@ public class AdataimActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private FirebaseUser felhasznalo;
     private FirebaseFirestore db;
-    private String boltKepe;
     private Map<String, Object> ujFelhasznalo = new HashMap<>();
 
     private StorageReference storageReference;
 
     private Uri imageUrl;
     private Uri regiUri;
+    private DocumentReference uzletReference;
 
     final String[] felhasznaloTipus = {""};
+
+    private String uzletId;
+
+    private LinearLayout szallitasiCimLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +112,7 @@ public class AdataimActivity extends AppCompatActivity {
         cegnevLabel = findViewById(R.id.cegnevLabel);
         adoszamLabel = findViewById(R.id.adoszamLabel);
         szekhelyLabel = findViewById(R.id.szekhelyLabel);
-        boltKepe = "";
+        boltKep = "";
         nevLabel = findViewById(R.id.nevLabel);
         emailLabel = findViewById(R.id.emailLabel);
         telszamLabel = findViewById(R.id.telszamLabel);
@@ -113,6 +121,7 @@ public class AdataimActivity extends AppCompatActivity {
         paswRepeatLabel = findViewById(R.id.paswRepeatLabel);
         termekKepBeallitasModosit = findViewById(R.id.termekKepBeallitasModosit);
         termekKepCimModosit = findViewById(R.id.termekKepCimModosit);
+        szallitasiCimLayout = findViewById(R.id.szallitasiCimLayout);
         reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
         storageReference = FirebaseStorage.getInstance().getReference().child("BoltKepek");
         eltuntet();
@@ -124,11 +133,7 @@ public class AdataimActivity extends AppCompatActivity {
         reference.addSnapshotListener((value, error) -> {
             assert value != null;
             felhasznaloTipus[0] = value.getString("felhasznaloTipus");
-            if (Objects.requireNonNull(value.getString("boltKepe")).isEmpty()) {
-                regiUri = null;
-            } else {
-                regiUri = Uri.parse(value.getString("boltKepe"));
-            }
+
             nevV.setText(value.getString("nev"));
             emailV.setText(value.getString("email"));
             telSzamV.setText(value.getString("telefonszam"));
@@ -137,27 +142,36 @@ public class AdataimActivity extends AppCompatActivity {
             cegNevV.setText(value.getString("cegNev"));
             adoszamV.setText(value.getString("adoszam"));
             if (Objects.equals(value.getString("felhasznaloTipus"), "Eladó cég/vállalat")) {
-
-                modositasText.setText(R.string.betoltes);
-                try {
-                    if (!this.isFinishing()) {
-                        Glide.with(AdataimActivity.this).load(regiUri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                megjelenit();
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                megjelenit();
-                                return false;
-                            }
-                        }).into(termekKepBeallitasModosit);
+                uzletId = value.getString("uzletId");
+                uzletReference = db.collection("uzletek").document(Objects.requireNonNull(uzletId));
+                uzletReference.addSnapshotListener((uzlet, error1) -> {
+                    assert uzlet != null;
+                    if (Objects.requireNonNull(uzlet.getString("boltKepe")).isEmpty() || Objects.equals(uzlet.getString("boltKepe"), "null") || uzlet.getString("boltKepe") == null) {
+                        regiUri = null;
+                    } else {
+                        regiUri = Uri.parse(uzlet.getString("boltKepe"));
                     }
-                } catch (Exception e) {
-                    Glide.with(AdataimActivity.this).load(R.drawable.grocery_store).into(termekKepBeallitasModosit);
-                }
+                    modositasText.setText(R.string.betoltes);
+                    try {
+                        if (!this.isFinishing()) {
+                            Glide.with(AdataimActivity.this).load(regiUri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    megjelenit();
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    megjelenit();
+                                    return false;
+                                }
+                            }).into(termekKepBeallitasModosit);
+                        }
+                    } catch (Exception e) {
+                        Glide.with(AdataimActivity.this).load(R.drawable.grocery_store).into(termekKepBeallitasModosit);
+                    }
+                });
             } else {
                 megjelenit();
             }
@@ -170,7 +184,6 @@ public class AdataimActivity extends AppCompatActivity {
         this.nevV.setVisibility(View.VISIBLE);
         this.emailV.setVisibility(View.VISIBLE);
         this.telSzamV.setVisibility(View.VISIBLE);
-        this.szallitasiCimV.setVisibility(View.VISIBLE);
         this.jelszoV.setVisibility(View.VISIBLE);
         this.jelszoUjraV.setVisibility(View.VISIBLE);
         this.adatokSzerkesztese.setVisibility(View.VISIBLE);
@@ -178,7 +191,7 @@ public class AdataimActivity extends AppCompatActivity {
         this.nevLabel.setVisibility(View.VISIBLE);
         this.emailLabel.setVisibility(View.VISIBLE);
         this.telszamLabel.setVisibility(View.VISIBLE);
-        this.szalitasiCimLabell.setVisibility(View.VISIBLE);
+        this.szallitasiCimLayout.setVisibility(View.VISIBLE);
         this.paswLabel.setVisibility(View.VISIBLE);
         this.paswRepeatLabel.setVisibility(View.VISIBLE);
         cegVagyElado();
@@ -193,11 +206,14 @@ public class AdataimActivity extends AppCompatActivity {
             cegnevLabel.setVisibility(View.VISIBLE);
             adoszamLabel.setVisibility(View.VISIBLE);
             szekhelyLabel.setVisibility(View.VISIBLE);
+            szallitasiCimLayout.setVisibility(View.VISIBLE);
             termekKepBeallitasModosit.setVisibility(View.GONE);
             termekKepCimModosit.setVisibility(View.GONE);
             if (felhasznaloTipus[0].equals("Eladó cég/vállalat")) {
                 termekKepBeallitasModosit.setVisibility(View.VISIBLE);
                 termekKepCimModosit.setVisibility(View.VISIBLE);
+                szallitasiCimV.setText("");
+                szallitasiCimLayout.setVisibility(View.GONE);
             }
         } else {
             szekhelyV.setVisibility(View.GONE);
@@ -215,11 +231,11 @@ public class AdataimActivity extends AppCompatActivity {
     public void eltuntet() {
         this.progressBarModositas.setVisibility(View.VISIBLE);
         this.modositasText.setVisibility(View.VISIBLE);
-        modositasText.setText(R.string.modositas);
+        this.modositasText.setText(R.string.modositas);
         this.nevV.setVisibility(View.GONE);
         this.emailV.setVisibility(View.GONE);
         this.telSzamV.setVisibility(View.GONE);
-        this.szallitasiCimV.setVisibility(View.GONE);
+        this.szallitasiCimLayout.setVisibility(View.GONE);
         this.jelszoV.setVisibility(View.GONE);
         this.jelszoUjraV.setVisibility(View.GONE);
         this.adatokSzerkesztese.setVisibility(View.GONE);
@@ -233,7 +249,7 @@ public class AdataimActivity extends AppCompatActivity {
         this.nevLabel.setVisibility(View.GONE);
         this.emailLabel.setVisibility(View.GONE);
         this.telszamLabel.setVisibility(View.GONE);
-        this.szalitasiCimLabell.setVisibility(View.GONE);
+
         this.paswLabel.setVisibility(View.GONE);
         this.paswRepeatLabel.setVisibility(View.GONE);
         this.adoszamLabel.setVisibility(View.GONE);
@@ -273,14 +289,15 @@ public class AdataimActivity extends AppCompatActivity {
         AtomicBoolean voltHiba = new AtomicBoolean(false);
 
 
-        if (((!ujEmail.isEmpty() && !ujNev.isEmpty() && !ujTelefon.isEmpty() && !ujSzallitasiCim.isEmpty() && !ujCegNev.isEmpty() && !ujSzekhely.isEmpty() && !ujAdoszam.isEmpty()) && cegNevV.getVisibility() == View.VISIBLE) || ((!ujEmail.isEmpty() && !ujNev.isEmpty() && !ujTelefon.isEmpty() && !ujSzallitasiCim.isEmpty()) && cegNevV.getVisibility() == View.GONE)) {
+        if (((!ujEmail.isEmpty() && !ujNev.isEmpty() && !ujTelefon.isEmpty() && !ujSzallitasiCim.isEmpty() && !ujCegNev.isEmpty() && !ujSzekhely.isEmpty() && !ujAdoszam.isEmpty()) && cegNevV.getVisibility() == View.VISIBLE)
+                || ((!ujEmail.isEmpty() && !ujNev.isEmpty() && !ujTelefon.isEmpty() && !ujSzallitasiCim.isEmpty()) && cegNevV.getVisibility() == View.GONE)
+                || felhasznaloTipus[0].equals("Eladó cég/vállalat") && !ujEmail.isEmpty() && !ujNev.isEmpty() && !ujTelefon.isEmpty() && !ujCegNev.isEmpty() && !ujSzekhely.isEmpty() && !ujAdoszam.isEmpty()) {
             if (isEmailValid(ujEmail)) {
                 eltuntet();
                 reference.addSnapshotListener((value, error) -> {
                     assert value != null;
-                    felhasznaloTipus[0] = (value.getString("felhasznaloTipus"));
-                    this.boltKepe = String.valueOf(regiUri);
-                    Felhasznalo friss = new Felhasznalo(ujNev, ujEmail, "", ujTelefon, ujSzallitasiCim, ujCegNev, ujAdoszam, ujSzekhely, felhasznaloTipus[0], boltKepe);
+                    this.boltKep = String.valueOf(regiUri);
+                    Felhasznalo friss = new Felhasznalo(ujNev, ujEmail, ujTelefon, ujSzallitasiCim, ujCegNev, ujAdoszam, ujSzekhely, felhasznaloTipus[0], uzletId);
                     ujFelhasznalo = friss.ujFelhasznalo(friss);
                 });
                 String regiEmail = felhasznalo.getEmail();
@@ -307,24 +324,30 @@ public class AdataimActivity extends AppCompatActivity {
                             }
                         }
                         if (!voltHiba.get()) {
-                            if (imageUrl == null) {
-                                if (felhasznaloTipus[0].equals("Eladó cég/vállalat")) {
-                                    DocumentReference uzletek = db.collection("uzletek").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+                            if (felhasznaloTipus[0].equals("Eladó cég/vállalat")) {
+                                if (imageUrl == null) {
                                     Map<String, String> uzletParameterek = new HashMap<>();
                                     uzletParameterek.put("cegNev", cegNevV.getText().toString());
-                                    uzletParameterek.put("adoszam", adoszamV.getText().toString());
-                                    uzletParameterek.put("Szekhely", szekhelyV.getText().toString());
-                                    uzletParameterek.put("BoltKepe", boltKep);
-                                    uzletek.set(uzletParameterek);
+                                    uzletParameterek.put("szekhely", szekhelyV.getText().toString());
+                                    uzletParameterek.put("boltKepe", boltKep);
+                                    uzletParameterek.put("tulajId", Objects.requireNonNull(felhasznalo.getUid()));
+                                    uzletReference.set(uzletParameterek);
+                                    db.collection("felhasznalok").document(felhasznalo.getUid()).set(ujFelhasznalo).addOnCompleteListener(task1 -> {
+                                        if (task1.isSuccessful()) {
+                                            Toast.makeText(getApplicationContext(), "Sikeres frissítés!", Toast.LENGTH_LONG).show();
+                                            megjelenit();
+                                        }
+                                    });
+                                } else {
+                                    kepFeltolt(imageUrl, felhasznaloTipus[0]);
                                 }
+                            } else {
                                 db.collection("felhasznalok").document(felhasznalo.getUid()).set(ujFelhasznalo).addOnCompleteListener(task1 -> {
                                     if (task1.isSuccessful()) {
                                         Toast.makeText(getApplicationContext(), "Sikeres frissítés!", Toast.LENGTH_LONG).show();
-                                        kepMegjelenitese();
+                                        megjelenit();
                                     }
                                 });
-                            } else {
-                                kepFeltolt(imageUrl, felhasznaloTipus[0]);
                             }
                         }
                     } else {
@@ -377,14 +400,15 @@ public class AdataimActivity extends AppCompatActivity {
                 kepNeve.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
-
+                        db.collection("felhasznalok").document(felhasznalo.getUid()).set(ujFelhasznalo);
                         boltKep = String.valueOf(task.getResult());
-                        Map<String, Object> ujFelhasznalo;
-                        Felhasznalo kepes = new Felhasznalo(nevV.getText().toString(), emailV.getText().toString(), jelszoV.getText().toString(), telSzamV.getText().toString(),
-                                szallitasiCimV.getText().toString(), cegNevV.getText().toString(), adoszamV.getText().toString(), szekhelyV.getText().toString(), felhasznaloTipus, boltKep);
-                        ujFelhasznalo = kepes.ujFelhasznalo(kepes);
                         //ha tölt fel képet akkor frissűlnek az adatai az adatb-ben
-                        db.collection("felhasznalok").document(id).set(ujFelhasznalo).addOnSuccessListener(unused -> {
+                        Map<String, String> uzletParameterek = new HashMap<>();
+                        uzletParameterek.put("cegNev", cegNevV.getText().toString());
+                        uzletParameterek.put("szekhely", szekhelyV.getText().toString());
+                        uzletParameterek.put("boltKepe", boltKep);
+                        uzletParameterek.put("tulajId", Objects.requireNonNull(felhasznalo.getUid()));
+                        uzletReference.set(uzletParameterek).addOnSuccessListener(uzletetFrissit -> {
                             Glide.with(AdataimActivity.this).load(regiUri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
                                 @Override
                                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -398,17 +422,8 @@ public class AdataimActivity extends AppCompatActivity {
                                     return false;
                                 }
                             }).into(termekKepBeallitasModosit);
-                            if (felhasznaloTipus.equals("Eladó cég/vállalat")) {
-                                DocumentReference uzletek = db.collection("uzletek").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
-                                Map<String, String> uzletParameterek = new HashMap<>();
-                                uzletParameterek.put("cegNev", cegNevV.getText().toString());
-                                uzletParameterek.put("adoszam", adoszamV.getText().toString());
-                                uzletParameterek.put("Szekhely", szekhelyV.getText().toString());
-                                uzletParameterek.put("BoltKepe", boltKep);
-                                uzletek.set(uzletParameterek);
-                            }
-                            Toast.makeText(getApplicationContext(), "Sikeres frissítés!", Toast.LENGTH_LONG).show();
                         });
+                        Toast.makeText(getApplicationContext(), "Sikeres frissítés!", Toast.LENGTH_LONG).show();
                     }
                 });
             }
