@@ -55,6 +55,7 @@
     <string name="termek_hozzaadasa">Termék hozzáadása</string>
     <string name="termek_neve">Termék neve*</string>
     <string name="termek_egysegara_db">Termék egységára (Ft/db)*</string>
+    <string name="termek_egysegara_kg">Termék egységára (Ft/kg)*</string>
     <string name="keszleten_levok_darabszama">Készleten lévők darabszáma*</string>
     <string name="mentes">Mentés</string>
     <string name="termek_kepenek_beallitasa">Termék képének beállítása</string>
@@ -69,4 +70,6 @@
     <string name="uj_jelszi_ismet">Új jelszó ismét:</string>
     <string name="uj_jelszo">Új jelszó:</string>
     <string name="ellenorzes">Ellenőrzés...</string>
+    <string name="sulyban_arazando_termek">Súlyban árazandó termék </string>
+    <string name="termek_sulya_kg">Termék súlya (kg)*</string>
 </resources>

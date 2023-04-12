@@ -1,57 +1,61 @@
 package com.example.zoldseges.DAOS;
 
-public class Termek {
+import java.util.HashMap;
+import java.util.Map;
+
+public class Termek implements TermekDao {
+
     public String getNev() {
         return nev;
     }
 
-    public void setNev(String nev) {
-        this.nev = nev;
-    }
-
-    public int getAr() {
+    public double getAr() {
         return ar;
-    }
-
-    public void setAr(int ar) {
-        this.ar = ar;
-    }
-
-    public String getAllergenek() {
-        return allergenek;
-    }
-
-    public void setAllergenek(String allergenek) {
-        this.allergenek = allergenek;
-    }
-
-    public boolean isRaktaron() {
-        return raktaron;
-    }
-
-    public void setRaktaron(boolean raktaron) {
-        this.raktaron = raktaron;
     }
 
     public int getRaktaronLevoMennyiseg() {
         return raktaronLevoMennyiseg;
     }
 
-    public void setRaktaronLevoMennyiseg(int raktaronLevoMennyiseg) {
-        this.raktaronLevoMennyiseg = raktaronLevoMennyiseg;
+    public String getUzletId() {
+        return uzletId;
     }
 
-    private String nev;
-    private int ar;
-    private String allergenek;
-    private boolean raktaron;
-    private int raktaronLevoMennyiseg;
+    public String getTermekKepe() {
+        return termekKepe;
+    }
 
-    public Termek(String nev, int ar, String allergenek, boolean raktaron, int raktaronLevoMennyiseg) {
+    private final String nev;
+    private final double ar;
+    private final int raktaronLevoMennyiseg;
+    private final String uzletId;
+
+    public double getTermekSulya() {
+        return termekSulya;
+    }
+
+    private final double termekSulya;
+    private final String termekKepe;
+
+    public Termek(String nev, double ar, int raktaronLevoMennyiseg, double termekSulya, String termekKepe, String uzletId) {
         this.nev = nev;
         this.ar = ar;
-        this.allergenek = allergenek;
-        this.raktaron = raktaron;
         this.raktaronLevoMennyiseg = raktaronLevoMennyiseg;
+        this.termekSulya = termekSulya;
+        this.termekKepe = termekKepe;
+        this.uzletId = uzletId;
+    }
+
+    private final Map<String, Object> termekMap = new HashMap<>();
+
+    @Override
+    public Map<String, Object> ujTermek(Termek termek) {
+        termekMap.put("termekNeve", termek.getNev());
+        termekMap.put("termekAra", termek.getAr());
+        termekMap.put("raktaronLevoMennyiseg", termek.getRaktaronLevoMennyiseg());
+        termekMap.put("termekSulya", termek.getTermekSulya());
+        termekMap.put("termekKepe", termek.getTermekKepe());
+        termekMap.put("uzletId", termek.getUzletId());
+        return termekMap;
     }
 }

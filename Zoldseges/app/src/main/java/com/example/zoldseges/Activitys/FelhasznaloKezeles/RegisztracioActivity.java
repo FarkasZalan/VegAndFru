@@ -41,7 +41,7 @@ import java.util.Objects;
 public class RegisztracioActivity extends AppCompatActivity {
     private static final int ImageCode = 1;
     public static String id = "";
-    private FirebaseFirestore firestore;
+    private FirebaseFirestore db;
     private FirebaseAuth auth;
     private TextView nev;
     private TextView email;
@@ -76,7 +76,7 @@ public class RegisztracioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regisztracio);
 
-        firestore = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference().child("BoltKepek");
 
@@ -213,12 +213,12 @@ public class RegisztracioActivity extends AppCompatActivity {
                                 }
                                 id = Objects.requireNonNull(auth.getCurrentUser()).getUid();
                                 if (felhasznaloTipus.equals("Eladó cég/vállalat")) {
-                                    uzletek = firestore.collection("uzletek").document();
+                                    uzletek = db.collection("uzletek").document();
                                     uzletId = uzletek.getId();
                                     this.felhasznalo1 = new Felhasznalo(nev, email, telefonszam, "", cegNev, adoszam, szekhely, felhasznaloTipus, uzletId);
                                     if (imageUrl != null) {
                                         auth.signInWithEmailAndPassword(this.email.getText().toString(), this.jelszo.getText().toString());
-                                        kepFeltolt(imageUrl, felhasznaloTipus);
+                                        kepFeltolt(imageUrl);
                                     } else {
                                         Map<String, String> uzletParameterek = new HashMap<>();
                                         uzletParameterek.put("cegNev", cegNev);
@@ -230,7 +230,7 @@ public class RegisztracioActivity extends AppCompatActivity {
                                 }
                                 this.felhasznalo1 = new Felhasznalo(nev, email, telefonszam, lakcim, cegNev, adoszam, szekhely, felhasznaloTipus, uzletId);
                                 felhasznalok = felhasznalo1.ujFelhasznalo(felhasznalo1);
-                                DocumentReference reference = firestore.collection("felhasznalok").document(id);
+                                DocumentReference reference = db.collection("felhasznalok").document(id);
                                 reference.set(felhasznalok).addOnSuccessListener(adatbMent -> {
                                     if (imageUrl == null) {
                                         super.onBackPressed();
@@ -331,28 +331,29 @@ public class RegisztracioActivity extends AppCompatActivity {
         }
     }
 
-    public void kepFeltolt(Uri uri, String felhasznaloTipus) {
+    public void kepFeltolt(Uri uri) {
         StorageReference kepNeve = storageReference.child("bolt_" + id + "_" + uri.getLastPathSegment());
         kepNeve.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 kepNeve.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        boltKep = String.valueOf(task.getResult());
-                        Map<String, Object> ujFelhasznalo;
-                        //ha tölt fel képet akkor frissűlnek az adatai az adatb-ben
-                        Map<String, String> uzletParameterek = new HashMap<>();
-                        uzletParameterek.put("cegNev", cegNev.getText().toString());
-                        uzletParameterek.put("Szekhely", szekhely.getText().toString());
-                        uzletParameterek.put("boltKepe", boltKep);
-                        uzletParameterek.put("tulajId", id);
-                        uzletek = firestore.collection("uzletek").document(uzletId);
-                        uzletek.set(uzletParameterek).addOnSuccessListener(uzletbeTolt -> {
-                            Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
-                            RegisztracioActivity.super.onBackPressed();
-                            sikeresRegisztracio();
-                        });
+                    public void onComplete(@NonNull Task<Uri> feltoltes) {
+                        if (feltoltes.isSuccessful()) {
+                            boltKep = String.valueOf(feltoltes.getResult());
+                            //ha tölt fel képet akkor frissűlnek az adatai az adatb-ben
+                            Map<String, String> uzletParameterek = new HashMap<>();
+                            uzletParameterek.put("cegNev", cegNev.getText().toString());
+                            uzletParameterek.put("Szekhely", szekhely.getText().toString());
+                            uzletParameterek.put("boltKepe", boltKep);
+                            uzletParameterek.put("tulajId", id);
+                            uzletek = db.collection("uzletek").document(uzletId);
+                            uzletek.set(uzletParameterek).addOnSuccessListener(uzletbeTolt -> {
+                                Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
+                                RegisztracioActivity.super.onBackPressed();
+                                sikeresRegisztracio();
+                            });
+                        }
                     }
                 });
             }

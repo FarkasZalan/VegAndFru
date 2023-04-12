@@ -1,16 +1,5 @@
 package com.example.zoldseges.DAOS;
 
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.internal.RecaptchaActivity;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,73 +8,38 @@ public class Felhasznalo implements FelhasznaloDao {
         return nev;
     }
 
-    public void setNev(String nev) {
-        this.nev = nev;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getJelszo() {
-        return jelszo;
-    }
-
-    public void setJelszo(String jelszo) {
-        this.jelszo = jelszo;
     }
 
     public String getTelefonszam() {
         return telefonszam;
     }
 
-    public void setTelefonszam(String telefonszam) {
-        this.telefonszam = telefonszam;
-    }
-
     public String getLakcim() {
         return lakcim;
-    }
-
-    public void setLakcim(String lakcim) {
-        this.lakcim = lakcim;
     }
 
     public String getCegNev() {
         return cegNev;
     }
 
-    public void setCegNev(String cegNev) {
-        this.cegNev = cegNev;
-    }
 
     public String getAdoszam() {
         return adoszam;
     }
 
-    public void setAdoszam(String adoszam) {
-        this.adoszam = adoszam;
-    }
 
-    private String nev;
-    private String email;
-    private String jelszo;
-    private String telefonszam;
-    private String lakcim;
+    private final String nev;
+    private final String email;
+    private final String telefonszam;
+    private final String lakcim;
 
-    private String cegNev;
-    private String adoszam;
+    private final String cegNev;
+    private final String adoszam;
 
     public String getFelhasznaloTipus() {
         return felhasznaloTipus;
-    }
-
-    public void setFelhasznaloTipus(String felhasznaloTipus) {
-        this.felhasznaloTipus = felhasznaloTipus;
     }
 
     public String felhasznaloTipus;
@@ -94,21 +48,14 @@ public class Felhasznalo implements FelhasznaloDao {
         return szekhely;
     }
 
-    public void setSzekhely(String szekhely) {
-        this.szekhely = szekhely;
-    }
 
-    private String szekhely;
+    private final String szekhely;
 
     public String getBoltKepe() {
         return boltKepe;
     }
 
-    public void setBoltKepe(String boltKepe) {
-        this.boltKepe = boltKepe;
-    }
-
-    private String boltKepe;
+    private final String boltKepe;
 
     public Felhasznalo(String nev, String email, String telefonszam, String lakcim, String cegNev, String adoszam, String szekhely, String felhasznaloTipus, String boltKepe) {
         this.nev = nev;
@@ -122,20 +69,20 @@ public class Felhasznalo implements FelhasznaloDao {
         this.boltKepe = boltKepe;
     }
 
-    private Map<String, Object> felhasznalok = new HashMap<>();
+    private final Map<String, Object> felhasznaloMAp = new HashMap<>();
 
     @Override
     public Map<String, Object> ujFelhasznalo(Felhasznalo felhasznalo) {
-        felhasznalok.put("nev", felhasznalo.getNev());
-        felhasznalok.put("email", felhasznalo.getEmail());
-        felhasznalok.put("telefonszam", felhasznalo.getTelefonszam());
-        felhasznalok.put("lakcim", felhasznalo.getLakcim());
-        felhasznalok.put("cegNev", felhasznalo.getCegNev());
-        felhasznalok.put("adoszam", felhasznalo.getAdoszam());
-        felhasznalok.put("szekhely", felhasznalo.getSzekhely());
-        felhasznalok.put("felhasznaloTipus", felhasznalo.getFelhasznaloTipus());
-        felhasznalok.put("uzletId", felhasznalo.getBoltKepe());
-        return felhasznalok;
+        felhasznaloMAp.put("nev", felhasznalo.getNev());
+        felhasznaloMAp.put("email", felhasznalo.getEmail());
+        felhasznaloMAp.put("telefonszam", felhasznalo.getTelefonszam());
+        felhasznaloMAp.put("lakcim", felhasznalo.getLakcim());
+        felhasznaloMAp.put("cegNev", felhasznalo.getCegNev());
+        felhasznaloMAp.put("adoszam", felhasznalo.getAdoszam());
+        felhasznaloMAp.put("szekhely", felhasznalo.getSzekhely());
+        felhasznaloMAp.put("felhasznaloTipus", felhasznalo.getFelhasznaloTipus());
+        felhasznaloMAp.put("uzletId", felhasznalo.getBoltKepe());
+        return felhasznaloMAp;
     }
 
 }
