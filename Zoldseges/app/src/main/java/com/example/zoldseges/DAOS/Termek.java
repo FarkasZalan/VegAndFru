@@ -25,17 +25,44 @@ public class Termek implements TermekDao {
         return termekKepe;
     }
 
-    private final String nev;
-    private final double ar;
-    private final int raktaronLevoMennyiseg;
-    private final String uzletId;
+    private  String nev;
+    private  double ar;
+    private  int raktaronLevoMennyiseg;
+    private  String uzletId;
 
     public double getTermekSulya() {
         return termekSulya;
     }
 
-    private final double termekSulya;
-    private final String termekKepe;
+    private  double termekSulya;
+
+    public void setNev(String nev) {
+        this.nev = nev;
+    }
+
+    public void setAr(double ar) {
+        this.ar = ar;
+    }
+
+    public void setRaktaronLevoMennyiseg(int raktaronLevoMennyiseg) {
+        this.raktaronLevoMennyiseg = raktaronLevoMennyiseg;
+    }
+
+    public void setUzletId(String uzletId) {
+        this.uzletId = uzletId;
+    }
+
+    public void setTermekSulya(double termekSulya) {
+        this.termekSulya = termekSulya;
+    }
+
+    public void setTermekKepe(String termekKepe) {
+        this.termekKepe = termekKepe;
+    }
+
+    private  String termekKepe;
+
+    public Termek() {}
 
     public Termek(String nev, double ar, int raktaronLevoMennyiseg, double termekSulya, String termekKepe, String uzletId) {
         this.nev = nev;
