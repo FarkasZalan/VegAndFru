@@ -133,7 +133,7 @@ public class UjTermekActivity extends AppCompatActivity {
                 || (sulybanKellMerni && !termekNeve.getText().toString().isEmpty() && !termekAra.getText().toString().isEmpty() && !termekKeszlet.getText().toString().isEmpty() && !termekSulyaAtlagosan.getText().toString().isEmpty())) {
             eltuntet();
             String nev = termekNeve.getText().toString();
-            int raktaranLevoDbSsam = Integer.parseInt(termekKeszlet.getText().toString());
+            double raktaranLevoDbSsam = Double.parseDouble(termekKeszlet.getText().toString());
             double ar = Double.parseDouble(termekAra.getText().toString());
             double sulya;
             if (!sulybanKellMerni) {

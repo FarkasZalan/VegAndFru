@@ -15,6 +15,12 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_termek_szerkesztese);
+        String termekNeve = getIntent().getStringExtra("termekNeve");
+        double termekSulya = getIntent().getDoubleExtra("termekSulya", 0);
+        double termekegysegara = getIntent().getDoubleExtra("termekegysegara", 0);
+        double termekDbSZama = getIntent().getDoubleExtra("termekDbSZama", 0);
+        String termekKepe = getIntent().getStringExtra("termekKepe");
+        String uzletId = getIntent().getStringExtra("uzletId");
     }
 
     @Override

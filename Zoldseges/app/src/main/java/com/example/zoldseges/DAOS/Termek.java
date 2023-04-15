@@ -13,7 +13,7 @@ public class Termek implements TermekDao {
         return ar;
     }
 
-    public int getRaktaronLevoMennyiseg() {
+    public double getRaktaronLevoMennyiseg() {
         return raktaronLevoMennyiseg;
     }
 
@@ -25,16 +25,16 @@ public class Termek implements TermekDao {
         return termekKepe;
     }
 
-    private  String nev;
-    private  double ar;
-    private  int raktaronLevoMennyiseg;
-    private  String uzletId;
+    private String nev;
+    private double ar;
+    private double raktaronLevoMennyiseg;
+    private String uzletId;
 
     public double getTermekSulya() {
         return termekSulya;
     }
 
-    private  double termekSulya;
+    private double termekSulya;
 
     public void setNev(String nev) {
         this.nev = nev;
@@ -44,7 +44,7 @@ public class Termek implements TermekDao {
         this.ar = ar;
     }
 
-    public void setRaktaronLevoMennyiseg(int raktaronLevoMennyiseg) {
+    public void setRaktaronLevoMennyiseg(double raktaronLevoMennyiseg) {
         this.raktaronLevoMennyiseg = raktaronLevoMennyiseg;
     }
 
@@ -60,11 +60,12 @@ public class Termek implements TermekDao {
         this.termekKepe = termekKepe;
     }
 
-    private  String termekKepe;
+    private String termekKepe;
 
-    public Termek() {}
+    public Termek() {
+    }
 
-    public Termek(String nev, double ar, int raktaronLevoMennyiseg, double termekSulya, String termekKepe, String uzletId) {
+    public Termek(String nev, double ar, double raktaronLevoMennyiseg, double termekSulya, String termekKepe, String uzletId) {
         this.nev = nev;
         this.ar = ar;
         this.raktaronLevoMennyiseg = raktaronLevoMennyiseg;

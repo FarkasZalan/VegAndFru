@@ -146,7 +146,16 @@ public class FiokActicity extends AppCompatActivity {
     }
 
     public void vedelemBe() {
-        cimProfil.setText(R.string.profilom);
+        if (adatokhozAkarMenni && !rendelesVagyBolt) {
+            cimProfil.setText(R.string.profilom);
+        }
+        if (rendelesVagyBolt && !eladeE) {
+            cimProfil.setText(R.string.rendeleseim);
+        }
+
+        if (rendelesVagyBolt && eladeE) {
+            cimProfil.setText(R.string.bolt_kezelese);
+        }
         psw.setVisibility(View.VISIBLE);
         psw.setText("");
         pswLbL.setVisibility(View.VISIBLE);

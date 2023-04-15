@@ -72,4 +72,9 @@
     <string name="ellenorzes">Ellenőrzés...</string>
     <string name="sulyban_arazando_termek">Súlyban árazandó termék </string>
     <string name="termek_sulya_kg">Termék súlya (kg)*</string>
+    <string name="termek_kepe">Termék képe</string>
+    <string name="termek_neve_card_view">Termék neve</string>
+    <string name="modositas_card_view">Módosítás</string>
+    <string name="torles_card_view">Törlés</string>
+    <string name="bolt_kepe">Bolt Képe</string>
 </resources>

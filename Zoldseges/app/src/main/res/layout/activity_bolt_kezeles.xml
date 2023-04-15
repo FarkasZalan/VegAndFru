@@ -1,96 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#B4E4EBF4"
-    android:fillViewport="true"
-    >
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".Activitys.FelhasznaloKezeles.Elado.BoltKezelesActivity"
-    android:orientation="vertical"
-    android:layout_gravity="center"
-    android:padding="16dp"
-    >
+    android:layout_height="match_parent">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/termekekRecyclerview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="43sp"
-        android:text="@string/aruhaz_kezelese"
+        android:layout_height="match_parent"
         android:layout_marginTop="20dp"
-        />
+        android:padding="10dp"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="@+id/plus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="0.201" />
 
-    <TextView
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="@string/termekek"
-        android:layout_marginTop="50dp"
-        />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/termekekRecyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="0dp"
-            android:padding="0dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:padding="16dp"
-        android:layout_margin="20dp"
-        >
-    <ImageView
-        android:id="@+id/elsoTermekKep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/add"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:onClick="onUjTermek"
-        android:textSize="20sp"
-        app:cornerRadius="10dp"
-        android:contentDescription="@string/todo" />
+        android:orientation="vertical"
+        tools:context=".Activitys.FelhasznaloKezeles.Elado.BoltKezelesActivity">
+
+        <ProgressBar
+            android:id="@+id/progressBarBoltKezeles"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:animateLayoutChanges="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.257" />
 
         <TextView
-            android:id="@+id/elsoTermekCim"
+            android:id="@+id/betoltesTextBoltKezeles"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:animateLayoutChanges="true"
+            android:text="@string/betoltes"
             android:textAlignment="center"
-            android:onClick="onUjTermek"
             android:textSize="20sp"
-            android:text="@string/add_hozza_az_else_termeked"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBarBoltKezeles"
+            app:layout_constraintVertical_bias="0.037" />
 
-            />
-    </LinearLayout>
-    <RelativeLayout
+        <RelativeLayout
+            android:id="@+id/plus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.842"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="50dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/rounded_image"
+                    android:onClick="onUjTermek"
+
+                    android:padding="10dp"
+                    android:src="@drawable/add" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="50dp"
-        >
-    <Button
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:textSize="20sp"
-        app:cornerRadius="10dp"
-        android:text="@string/vissza"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:onClick="onVissza"
-        />
-    </RelativeLayout>
+        android:layout_height="wrap_content">
 
-</LinearLayout>
-</ScrollView>
+        <ImageView
+            android:id="@+id/kep1"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:foregroundTint="#000000"
+            android:adjustViewBounds="true"
+            android:animateLayoutChanges="true"
+            android:contentDescription="@string/bolt_kepe"
+            android:foreground="#A3000000"
+            android:scaleType="centerCrop"
+            android:src="@drawable/grocery_store"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
