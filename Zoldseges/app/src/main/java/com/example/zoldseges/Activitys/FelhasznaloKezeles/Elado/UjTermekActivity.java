@@ -36,6 +36,7 @@ public class UjTermekActivity extends AppCompatActivity {
 
     private static final int ImageCode = 1;
     private TextView termekNeve;
+    private TextView hozzaadasCim;
     private TextView termekAra;
     private TextView termekSulyaAtlagosan;
     private TextView termekKeszlet;
@@ -50,6 +51,7 @@ public class UjTermekActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private Button mentes;
+    private Button visszaTermekHozzaad;
     private String termekKepe = "";
     private String uzletId;
     private Termek ujTermek;
@@ -73,6 +75,7 @@ public class UjTermekActivity extends AppCompatActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         termekNeve = findViewById(R.id.termekNeve);
+        hozzaadasCim = findViewById(R.id.hozzaadasCim);
         termekAra = findViewById(R.id.termekAra);
         mertekegysegValasztoLayout = findViewById(R.id.mertekegysegValasztoLayout);
         termekSulyaAtlagosan = findViewById(R.id.termekSulyaAtlagosan);
@@ -81,6 +84,7 @@ public class UjTermekActivity extends AppCompatActivity {
         elsoTermekKep = findViewById(R.id.elsoTermekKep);
         elsoTermekCim = findViewById(R.id.elsoTermekCim);
         mentes = findViewById(R.id.mentes);
+        visszaTermekHozzaad = findViewById(R.id.visszaTermekHozzaad);
         mentestext = findViewById(R.id.mentestext);
 
         sulybanKellMerni = sulybanMerendoE();
@@ -191,8 +195,11 @@ public class UjTermekActivity extends AppCompatActivity {
         this.termekKeszlet.setVisibility(View.VISIBLE);
         this.elsoTermekCim.setVisibility(View.VISIBLE);
         this.mertekegysegValasztoLayout.setVisibility(View.VISIBLE);
+
         sulybanMerendoE();
         mentes.setVisibility(View.VISIBLE);
+        visszaTermekHozzaad.setVisibility(View.VISIBLE);
+        hozzaadasCim.setVisibility(View.VISIBLE);
     }
 
     public void eltuntet() {
@@ -205,6 +212,8 @@ public class UjTermekActivity extends AppCompatActivity {
         this.termekKeszlet.setVisibility(View.GONE);
         this.elsoTermekCim.setVisibility(View.GONE);
         mentes.setVisibility(View.GONE);
+        visszaTermekHozzaad.setVisibility(View.GONE);
+        hozzaadasCim.setVisibility(View.GONE);
     }
 
     public void kepFeltolt(Uri uri, double suly) {

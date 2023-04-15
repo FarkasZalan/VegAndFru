@@ -1,8 +1,11 @@
 package com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +32,7 @@ import com.example.zoldseges.DAOS.TermekValaszto;
 import com.example.zoldseges.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -61,6 +65,8 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
     private ProgressBar progressBarBoltKezeles;
     private int listaSzam;
 
+    private AppBarLayout appBarLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +77,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         recyclerView = findViewById(R.id.termekekRecyclerview);
         kep = findViewById(R.id.kep1);
         plus = findViewById(R.id.plus);
+        appBarLayout = findViewById(R.id.appBarLayout);
         betoltesTextBoltKezeles = findViewById(R.id.betoltesTextBoltKezeles);
         progressBarBoltKezeles = findViewById(R.id.progressBarBoltKezeles);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
@@ -79,8 +86,8 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         auth = FirebaseAuth.getInstance();
 
         termekLista = new ArrayList<>();
-        clearAll();
         eltuntet();
+        clearAll();
         getDataFromFirebase();
     }
 
@@ -129,6 +136,8 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
                 Uri uri;
                 if (Objects.requireNonNull(uzlet.getString("boltKepe")).isEmpty() || Objects.equals(uzlet.getString("boltKepe"), "null") || uzlet.getString("boltKepe") == null) {
                     uri = null;
+                    int color = getResources().getColor(R.color.white, getTheme());
+                    appBarLayout.setBackgroundColor(color);
                     kep.setScaleType(ImageView.ScaleType.CENTER);
                 } else {
                     uri = Uri.parse(uzlet.getString("boltKepe"));
@@ -146,7 +155,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
 
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-
+                                megjelenit();
                                 return false;
                             }
                         }).into(kep);

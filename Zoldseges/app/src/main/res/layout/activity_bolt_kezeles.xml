@@ -91,6 +91,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -98,7 +99,6 @@
             android:id="@+id/kep1"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:foregroundTint="#000000"
             android:adjustViewBounds="true"
             android:animateLayoutChanges="true"
             android:contentDescription="@string/bolt_kepe"
