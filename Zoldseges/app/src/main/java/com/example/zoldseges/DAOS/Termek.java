@@ -30,6 +30,16 @@ public class Termek implements TermekDao {
     private double raktaronLevoMennyiseg;
     private String uzletId;
 
+    public String getSajatId() {
+        return sajatId;
+    }
+
+    public void setSajatId(String sajatId) {
+        this.sajatId = sajatId;
+    }
+
+    private String sajatId;
+
     public double getTermekSulya() {
         return termekSulya;
     }

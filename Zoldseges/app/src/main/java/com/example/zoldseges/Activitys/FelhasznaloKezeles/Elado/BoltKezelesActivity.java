@@ -4,11 +4,13 @@ import static java.security.AccessController.getContext;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -41,6 +44,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -63,7 +68,6 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
     private RelativeLayout plus;
     private TextView betoltesTextBoltKezeles;
     private ProgressBar progressBarBoltKezeles;
-    private int listaSzam;
 
     private AppBarLayout appBarLayout;
 
@@ -86,6 +90,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         auth = FirebaseAuth.getInstance();
 
         termekLista = new ArrayList<>();
+        this.betoltesTextBoltKezeles.setText(R.string.betoltes);
         eltuntet();
         clearAll();
         getDataFromFirebase();
@@ -100,8 +105,8 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         recyclerView.setHasFixedSize(true);
         auth = FirebaseAuth.getInstance();
 
-
         termekLista = new ArrayList<>();
+        this.betoltesTextBoltKezeles.setText(R.string.betoltes);
         clearAll();
         eltuntet();
         getDataFromFirebase();
@@ -179,13 +184,13 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
                             termek.setTermekSulya(Objects.requireNonNull(adat.getDouble("termekSulya")));
                             termek.setAr(Objects.requireNonNull(adat.getDouble("termekAra")));
                             termek.setRaktaronLevoMennyiseg(Objects.requireNonNull(adat.getDouble("raktaronLevoMennyiseg")));
+                            termek.setSajatId(adat.getId());
                             termekLista.add(termek);
+
                         }
                         termekLista.sort(Comparator.comparing(Termek::getNev));
                         termekAdapter = new TermekAdapter(getApplicationContext(), termekLista, BoltKezelesActivity.this);
                         recyclerView.setAdapter(termekAdapter);
-                        termekAdapter.notifyDataSetChanged();
-                        listaSzam = termekLista.size();
                         megjelenit();
                     }
                 }
@@ -225,7 +230,13 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
     }
 
     @Override
-    public void onItemClicked(int position) {
+    public void onItemMegtekint(int position) {
+        //termek oldala
+        Toast.makeText(getApplicationContext(), "Megtekintes", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onItemModosit(int position) {
         Intent intent = new Intent(BoltKezelesActivity.this, TermekSzerkeszteseActivity.class);
         intent.putExtra("termekNeve", termekLista.get(position).getNev());
         intent.putExtra("termekSulya", termekLista.get(position).getTermekSulya());
@@ -235,5 +246,45 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         intent.putExtra("uzletId", termekLista.get(position).getUzletId());
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemTorles(int position) {
+        AlertDialog.Builder torlesLaertBuilder = new AlertDialog.Builder(this);
+        torlesLaertBuilder.setTitle("Törlés");
+        torlesLaertBuilder.setIcon(R.mipmap.ic_launcher);
+        torlesLaertBuilder.setMessage("Biztosan törölni szeretnéd a(z) " + termekLista.get(position).getNev() + " termékedet?");
+        torlesLaertBuilder.setCancelable(true);
+
+        AlertDialog torlesAlert = torlesLaertBuilder.create();
+        torlesAlert.setButton(DialogInterface.BUTTON_POSITIVE, "Törlés", (dialog, which) -> {
+            eltuntet();
+            String id = termekLista.get(position).getSajatId();
+            DocumentReference torloRef = db.collection("uzletek").document(uzletId).collection("termekek").document(id);
+            torloRef.delete().addOnCompleteListener(torles -> {
+                if (!torles.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Váratlan hiba történt!", Toast.LENGTH_LONG).show();
+                }
+            });
+            if (!termekLista.get(position).getTermekKepe().isEmpty() || termekLista.get(position).getTermekKepe() != null) {
+                StorageReference kepTorlese = FirebaseStorage.getInstance().getReferenceFromUrl(termekLista.get(position).getTermekKepe());
+                kepTorlese.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> kepTorles) {
+                        if (kepTorles.isSuccessful()) {
+                            betoltesTextBoltKezeles.setText(R.string.torles);
+
+                            clearAll();
+                            getDataFromFirebase();
+                            torlesAlert.dismiss();
+                        }
+                    }
+                });
+            }
+        });
+
+        torlesAlert.setButton(DialogInterface.BUTTON_NEGATIVE, "Mégse", (dialog, which) -> torlesAlert.dismiss());
+        torlesAlert.show();
+
     }
 }

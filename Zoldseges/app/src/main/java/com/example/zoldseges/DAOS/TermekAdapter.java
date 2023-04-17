@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.zoldseges.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -69,6 +70,7 @@ public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekView
             Glide.with(context).load(R.drawable.standard_item_picture).into(holder.termekKepe);
         }
     }
+
     @Override
     public int getItemCount() {
         return termekLista.size();
@@ -79,7 +81,9 @@ public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekView
         ImageView termekKepe;
         TextView termekNeve;
 
-        public CardView termekCard;
+        Button modositButton;
+        Button torlesButton;
+        CardView termekCard;
 
         public TermekViewHolder(@NonNull View itemView, TermekValaszto termekValaszto) {
             super(itemView);
@@ -87,20 +91,40 @@ public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekView
             termekKepe = itemView.findViewById(R.id.termekKepeBoltKezeles);
             termekNeve = itemView.findViewById(R.id.termekNeveBoltKezelese);
 
+            modositButton = itemView.findViewById(R.id.termekModosit);
+            torlesButton = itemView.findViewById(R.id.termekTorles);
             termekCard = itemView.findViewById(R.id.termekCard);
 
-            termekCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (termekValaszto != null) {
-                        int posi = getAdapterPosition();
+            termekCard.setOnClickListener(v -> {
+                if (termekValaszto != null) {
+                    int posi = getAdapterPosition();
 
-                        if (posi != RecyclerView.NO_POSITION) {
-                            termekValaszto.onItemClicked(posi);
-                        }
+                    if (posi != RecyclerView.NO_POSITION) {
+                        termekValaszto.onItemMegtekint(posi);
                     }
                 }
             });
+
+            modositButton.setOnClickListener(v -> {
+                if (termekValaszto != null) {
+                    int posi = getAdapterPosition();
+
+                    if (posi != RecyclerView.NO_POSITION) {
+                        termekValaszto.onItemModosit(posi);
+                    }
+                }
+            });
+
+            torlesButton.setOnClickListener(v -> {
+                if (termekValaszto != null) {
+                    int posi = getAdapterPosition();
+
+                    if (posi != RecyclerView.NO_POSITION) {
+                        termekValaszto.onItemTorles(posi);
+                    }
+                }
+            });
+
         }
     }
 }

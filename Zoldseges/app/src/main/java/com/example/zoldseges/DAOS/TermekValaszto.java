@@ -1,5 +1,9 @@
 package com.example.zoldseges.DAOS;
 
 public interface TermekValaszto {
-    void onItemClicked(int position);
+    void onItemMegtekint(int position);
+    void onItemModosit(int position);
+    void onItemTorles(int position);
+
+
 }
