@@ -78,4 +78,8 @@
     <string name="modositas_card_view">Módosítás</string>
     <string name="torles_card_view">Törlés</string>
     <string name="bolt_kepe">Bolt Képe</string>
+    <string name="termek_szerkesztese">Termék szerkesztése</string>
+    <string name="termek_kepenek_modositasa">Termék képének módosítása</string>
+    <string name="modositas_termek_modosit">Módosítás</string>
+    <string name="termek_modositasa_progress">Termék módosítása...</string>
 </resources>

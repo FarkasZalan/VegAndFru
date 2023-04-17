@@ -133,6 +133,11 @@ public class UjTermekActivity extends AppCompatActivity {
     }
 
     public void onMentes(View view) {
+        if (mertekegysegValaszto.isChecked()) {
+            sulybanKellMerni = true;
+        } else {
+            sulybanKellMerni = false;
+        }
         if ((!sulybanKellMerni && !termekNeve.getText().toString().isEmpty() && !termekAra.getText().toString().isEmpty() && !termekKeszlet.getText().toString().isEmpty())
                 || (sulybanKellMerni && !termekNeve.getText().toString().isEmpty() && !termekAra.getText().toString().isEmpty() && !termekKeszlet.getText().toString().isEmpty() && !termekSulyaAtlagosan.getText().toString().isEmpty())) {
             eltuntet();
@@ -146,7 +151,7 @@ public class UjTermekActivity extends AppCompatActivity {
                 sulya = Double.parseDouble(termekSulyaAtlagosan.getText().toString());
             }
             if (raktaranLevoDbSsam <= 0 || ar <= 0 || (sulybanKellMerni && sulya <= 0)) {
-                Toast.makeText(getApplicationContext(), "Nem adhatsz meg semminek sem 0-t!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Nem adhatsz meg semminek sem 0 értéket!", Toast.LENGTH_LONG).show();
                 megjelenit();
             } else {
                 termekek = db.collection("uzletek").document(uzletId).collection("termekek").document();

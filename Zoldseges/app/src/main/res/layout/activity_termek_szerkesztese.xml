@@ -1,9 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activitys.FelhasznaloKezeles.Elado.TermekSzerkeszteseActivity">
+    android:background="#B4E4EBF4"
+    android:fillViewport="true">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="16dp"
+        tools:context=".Activitys.FelhasznaloKezeles.Elado.TermekSzerkeszteseActivity">
+
+        <TextView
+            android:id="@+id/cimTermekModositas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/termek_szerkesztese"
+            android:textAlignment="center"
+            android:textSize="33sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.03" />
+
+        <EditText
+            android:id="@+id/termekNeveTermekModositas"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="4dp"
+            android:autofillHints=""
+            android:backgroundTint="@color/purple_500"
+            android:hint="@string/termek_neve"
+            android:inputType="text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cimTermekModositas"
+            app:layout_constraintVertical_bias="0.07" />
+
+        <LinearLayout
+            android:id="@+id/mertekegysegValasztoTermekModositasLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/termekNeveTermekModositas"
+            app:layout_constraintVertical_bias="0.07">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/mertekegysegValasztoTermekModositas"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:checked="false"
+                android:padding="5dp"
+                android:text="@string/sulyban_arazando_termek"
+                android:textSize="17sp"
+                app:thumbTint="@drawable/switch_thumb"
+                app:trackTint="@drawable/switch_track" />
+
+            <EditText
+                android:id="@+id/termekSulyaAtlagosanTermekModositas"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:autofillHints=""
+                android:backgroundTint="@color/purple_500"
+                android:hint="@string/termek_sulya_kg"
+                android:inputType="numberDecimal"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <EditText
+
+            android:id="@+id/termekAraTermekModositas"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:autofillHints=""
+            android:backgroundTint="@color/purple_500"
+            android:hint="@string/termek_egysegara_db"
+            android:inputType="numberDecimal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mertekegysegValasztoTermekModositasLayout"
+            app:layout_constraintVertical_bias="0.04" />
+
+        <EditText
+            android:id="@+id/termekKeszletTermekModositas"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:autofillHints=""
+            android:backgroundTint="@color/purple_500"
+            android:hint="@string/keszleten_levok_darabszama"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/termekAraTermekModositas"
+            app:layout_constraintVertical_bias="0.07" />
+
+        <LinearLayout
+            android:id="@+id/termekKepTermekModositasLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/termekKeszletTermekModositas">
+
+            <ProgressBar
+                android:id="@+id/progressBarTermekModositas"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/mentestextTermekModositas"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/termek_modositasa_progress"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/termekKepTermekModositas"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:contentDescription="@string/todo"
+                android:onClick="onTermekKepFeltoltesModositas"
+                android:textSize="20sp"
+                app:srcCompat="@drawable/standard_item_picture" />
+
+            <TextView
+                android:id="@+id/termekCimTermekModositas"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:onClick="onTermekKepFeltoltesModositas"
+                android:text="@string/termek_kepenek_modositasa"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/mentesTermekModositas"
+            android:layout_width="240dp"
+            android:layout_height="50dp"
+            android:onClick="onModositas"
+            android:text="@string/modositas_termek_modosit"
+            android:textSize="20sp"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/termekKepTermekModositasLayout"
+            app:layout_constraintVertical_bias="0.1" />
+
+
+        <Button
+            android:id="@+id/visszaTermekModositas"
+            android:layout_width="240dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="20dp"
+            android:onClick="onVisszaTermekekhez"
+            android:text="@string/vissza"
+            android:textSize="20sp"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mentesTermekModositas"
+            app:layout_constraintVertical_bias="0.2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

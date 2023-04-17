@@ -1,8 +1,10 @@
 package com.example.zoldseges.Activitys.FelhasznaloKezeles;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -139,10 +141,29 @@ public class FiokActicity extends AppCompatActivity {
     }
 
     public void onLogOut(View view) {
-        FirebaseAuth.getInstance().signOut();
-        Toast.makeText(getApplicationContext(), "Sikeres kijelentkezés", Toast.LENGTH_LONG).show();
-        super.onBackPressed();
-        finish();
+        AlertDialog.Builder kijelentkezesLaertBuilder = new AlertDialog.Builder(this);
+        kijelentkezesLaertBuilder.setTitle("Kijelentkezés");
+        kijelentkezesLaertBuilder.setIcon(R.mipmap.ic_launcher);
+        kijelentkezesLaertBuilder.setMessage("Bizttosan ki szeretnél jelentkezni?");
+
+        kijelentkezesLaertBuilder.setCancelable(true);
+
+        AlertDialog kijelentkezesAlert = kijelentkezesLaertBuilder.create();
+
+
+        kijelentkezesAlert.setButton(DialogInterface.BUTTON_POSITIVE, "Kijelentkezés", (dialog, which) -> {
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(getApplicationContext(), "Sikeres kijelentkezés", Toast.LENGTH_LONG).show();
+            FiokActicity.super.onBackPressed();
+            finish();
+        });
+
+        kijelentkezesAlert.setButton(DialogInterface.BUTTON_NEGATIVE, "Mégse", (dialog, which) -> kijelentkezesAlert.dismiss());
+        kijelentkezesAlert.show();
+        int color = getResources().getColor(R.color.red, getTheme());
+        int textColor = getResources().getColor(R.color.white, getTheme());
+        kijelentkezesAlert.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(color);
+        kijelentkezesAlert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(textColor);
     }
 
     public void vedelemBe() {

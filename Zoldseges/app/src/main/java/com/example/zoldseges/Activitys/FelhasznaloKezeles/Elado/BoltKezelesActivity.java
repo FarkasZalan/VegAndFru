@@ -244,6 +244,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         intent.putExtra("termekDbSZama", termekLista.get(position).getRaktaronLevoMennyiseg());
         intent.putExtra("termekKepe", termekLista.get(position).getTermekKepe());
         intent.putExtra("uzletId", termekLista.get(position).getUzletId());
+        intent.putExtra("termekId", termekLista.get(position).getSajatId());
 
         startActivity(intent);
     }
@@ -257,6 +258,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         torlesLaertBuilder.setCancelable(true);
 
         AlertDialog torlesAlert = torlesLaertBuilder.create();
+
         torlesAlert.setButton(DialogInterface.BUTTON_POSITIVE, "Törlés", (dialog, which) -> {
             eltuntet();
             String id = termekLista.get(position).getSajatId();
@@ -266,25 +268,31 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
                     Toast.makeText(getApplicationContext(), "Váratlan hiba történt!", Toast.LENGTH_LONG).show();
                 }
             });
-            if (!termekLista.get(position).getTermekKepe().isEmpty() || termekLista.get(position).getTermekKepe() != null) {
+            if (!termekLista.get(position).getTermekKepe().isEmpty()) {
                 StorageReference kepTorlese = FirebaseStorage.getInstance().getReferenceFromUrl(termekLista.get(position).getTermekKepe());
                 kepTorlese.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> kepTorles) {
                         if (kepTorles.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Sikeres eltávolítás!", Toast.LENGTH_LONG).show();
                             betoltesTextBoltKezeles.setText(R.string.torles);
-
                             clearAll();
                             getDataFromFirebase();
                             torlesAlert.dismiss();
                         }
                     }
                 });
+            } else {
+                Toast.makeText(getApplicationContext(), "Sikeres eltávolítás!", Toast.LENGTH_LONG).show();
+                clearAll();
+                getDataFromFirebase();
+                torlesAlert.dismiss();
             }
         });
 
         torlesAlert.setButton(DialogInterface.BUTTON_NEGATIVE, "Mégse", (dialog, which) -> torlesAlert.dismiss());
         torlesAlert.show();
-
+        torlesAlert.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(R.color.red, getTheme()));
+        torlesAlert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.white, getTheme()));
     }
 }
