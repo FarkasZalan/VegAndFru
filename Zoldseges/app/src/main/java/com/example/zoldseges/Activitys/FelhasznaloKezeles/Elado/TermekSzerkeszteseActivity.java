@@ -1,7 +1,5 @@
 package com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado;
 
-import static com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado.UjTermekActivity.kepSzamlalo;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +36,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -278,7 +278,8 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
         if (!termekKepe.isEmpty()) {
             kepNeve = FirebaseStorage.getInstance().getReferenceFromUrl(termekKepe);
         } else {
-            kepNeve = storageReference.child("termek_" + uzletId + "_" + kepSzamlalo++);
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+            kepNeve = storageReference.child("termek_" + uzletId + "_" + timeStamp);
         }
         kepNeve.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override

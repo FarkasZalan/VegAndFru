@@ -28,6 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -64,8 +66,6 @@ public class UjTermekActivity extends AppCompatActivity {
     private Map<String, Object> termekMap = new HashMap<>();
 
     private boolean sulybanKellMerni = false;
-
-    public static int kepSzamlalo = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,7 +224,8 @@ public class UjTermekActivity extends AppCompatActivity {
     }
 
     public void kepFeltolt(Uri uri, double suly) {
-        StorageReference kepNeve = storageReference.child("termek_" + uzletId + "_" + kepSzamlalo++);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+        StorageReference kepNeve = storageReference.child("termek_" + uzletId + "_" + timeStamp);
         kepNeve.putFile(uri).addOnSuccessListener(taskSnapshot -> kepNeve.getDownloadUrl().addOnSuccessListener(uri1 -> {
             kepNeve.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
