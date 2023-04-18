@@ -1,5 +1,7 @@
 package com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado;
 
+import static com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado.UjTermekActivity.kepSzamlalo;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,17 +28,13 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.example.zoldseges.Activitys.FelhasznaloKezeles.AdataimActivity;
 import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.R;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -228,8 +226,8 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
         } else {
             sulybanMerendo = false;
         }
-        if (sulybanMerendo && !termekNeveTermekModositas.getText().toString().isEmpty() && !termekSulyaAtlagosanTermekModositas.getText().toString().isEmpty() && !termekAraTermekModositas.getText().toString().isEmpty() && !termekKeszletTermekModositas.getText().toString().isEmpty() ||
-                !sulybanMerendo && !termekNeveTermekModositas.getText().toString().isEmpty() && !termekAraTermekModositas.getText().toString().isEmpty() && !termekKeszletTermekModositas.getText().toString().isEmpty()) {
+        if (sulybanMerendo && !termekNeveTermekModositas.getText().toString().isEmpty() && !termekNeveTermekModositas.getText().toString().equals(" ") && !termekSulyaAtlagosanTermekModositas.getText().toString().isEmpty() && !termekAraTermekModositas.getText().toString().isEmpty() && !termekKeszletTermekModositas.getText().toString().isEmpty() ||
+                !sulybanMerendo && !termekNeveTermekModositas.getText().toString().isEmpty() && !termekNeveTermekModositas.getText().toString().equals(" ") && !termekAraTermekModositas.getText().toString().isEmpty() && !termekKeszletTermekModositas.getText().toString().isEmpty()) {
             String nev = termekNeveTermekModositas.getText().toString();
             double suly;
             double ar = Double.parseDouble(termekAraTermekModositas.getText().toString());
@@ -280,7 +278,7 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
         if (!termekKepe.isEmpty()) {
             kepNeve = FirebaseStorage.getInstance().getReferenceFromUrl(termekKepe);
         } else {
-            kepNeve = storageReference.child("termek_" + uzletId + "_" + uri.getLastPathSegment());
+            kepNeve = storageReference.child("termek_" + uzletId + "_" + kepSzamlalo++);
         }
         kepNeve.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override

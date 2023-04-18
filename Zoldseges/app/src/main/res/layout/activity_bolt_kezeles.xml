@@ -69,19 +69,56 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <RelativeLayout
+                android:id="@+id/elsoTermekLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+
+                    >
+
+                    <ImageView
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/elso_termek_shape"
+                        android:onClick="onUjTermek"
+                        android:src="@drawable/add" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="20dp"
+                        android:onClick="onUjTermek"
+                        android:text="Add hozzá első terméked a boltodhoz"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+
                 android:layout_marginBottom="50dp">
 
                 <ImageView
+                    android:id="@+id/termekHozzaad"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/rounded_image"
                     android:onClick="onUjTermek"
-
                     android:padding="10dp"
                     android:src="@drawable/add" />
             </RelativeLayout>

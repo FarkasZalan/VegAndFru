@@ -69,6 +69,8 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
     private TextView betoltesTextBoltKezeles;
     private ProgressBar progressBarBoltKezeles;
 
+    private RelativeLayout elsoTermekLayout;
+    private ImageView termekHozzaad;
     private AppBarLayout appBarLayout;
 
     @Override
@@ -76,9 +78,12 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bolt_kezeles);
 
+
         db = FirebaseFirestore.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         recyclerView = findViewById(R.id.termekekRecyclerview);
+        elsoTermekLayout = findViewById(R.id.elsoTermekLayout);
+        termekHozzaad = findViewById(R.id.termekHozzaad);
         kep = findViewById(R.id.kep1);
         plus = findViewById(R.id.plus);
         appBarLayout = findViewById(R.id.appBarLayout);
@@ -87,9 +92,11 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
+
         auth = FirebaseAuth.getInstance();
 
         termekLista = new ArrayList<>();
+
         this.betoltesTextBoltKezeles.setText(R.string.betoltes);
         eltuntet();
         clearAll();
@@ -100,6 +107,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
     @Override
     protected void onResume() {
         super.onResume();
+        eltuntet();
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -108,12 +116,13 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         termekLista = new ArrayList<>();
         this.betoltesTextBoltKezeles.setText(R.string.betoltes);
         clearAll();
-        eltuntet();
         getDataFromFirebase();
 
     }
 
     private void eltuntet() {
+        elsoTermekLayout.setVisibility(View.GONE);
+        termekHozzaad.setVisibility(View.GONE);
         kep.setVisibility(View.INVISIBLE);
         progressBarBoltKezeles.setVisibility(View.VISIBLE);
         betoltesTextBoltKezeles.setVisibility(View.VISIBLE);
@@ -122,11 +131,17 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
     }
 
     private void megjelenit() {
-        kep.setVisibility(View.VISIBLE);
         progressBarBoltKezeles.setVisibility(View.GONE);
         betoltesTextBoltKezeles.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+        kep.setVisibility(View.VISIBLE);
         plus.setVisibility(View.VISIBLE);
+        if (termekLista.size() > 0) {
+            elsoTermekLayout.setVisibility(View.GONE);
+            termekHozzaad.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
+        } else {
+            elsoTermekLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void getDataFromFirebase() {
@@ -160,7 +175,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
 
                             @Override
                             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                megjelenit();
+                                //megjelenit();
                                 return false;
                             }
                         }).into(kep);
@@ -276,6 +291,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
                         if (kepTorles.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Sikeres eltávolítás!", Toast.LENGTH_LONG).show();
                             betoltesTextBoltKezeles.setText(R.string.torles);
+                            eltuntet();
                             clearAll();
                             getDataFromFirebase();
                             torlesAlert.dismiss();
@@ -284,6 +300,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
                 });
             } else {
                 Toast.makeText(getApplicationContext(), "Sikeres eltávolítás!", Toast.LENGTH_LONG).show();
+                eltuntet();
                 clearAll();
                 getDataFromFirebase();
                 torlesAlert.dismiss();

@@ -65,6 +65,8 @@ public class UjTermekActivity extends AppCompatActivity {
 
     private boolean sulybanKellMerni = false;
 
+    public static int kepSzamlalo = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -222,7 +224,7 @@ public class UjTermekActivity extends AppCompatActivity {
     }
 
     public void kepFeltolt(Uri uri, double suly) {
-        StorageReference kepNeve = storageReference.child("termek_" + uzletId + "_" + uri.getLastPathSegment());
+        StorageReference kepNeve = storageReference.child("termek_" + uzletId + "_" + kepSzamlalo++);
         kepNeve.putFile(uri).addOnSuccessListener(taskSnapshot -> kepNeve.getDownloadUrl().addOnSuccessListener(uri1 -> {
             kepNeve.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                 @Override
