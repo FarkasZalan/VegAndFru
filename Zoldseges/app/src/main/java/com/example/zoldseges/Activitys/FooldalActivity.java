@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.BejelentkezesActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado.BoltKezelesActivity;
+import com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado.TermekSzerkeszteseActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
 import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.DAOS.TermekAdapter;
@@ -111,6 +112,7 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
                         bolt.setBoltKepe(adat.getString("boltKepe"));
                         bolt.setSzekhely(adat.getString("szekhely"));
                         bolt.setTulajId(adat.getString("tulajId"));
+                        bolt.setUzletId(adat.getId());
                         bolt.setSzallitasiDij(bolt.getSzallitasiDij());
                         bolt.setSzallitasIdotartama(bolt.getSzallitasIdotartama());
                         uzletekListaja.add(bolt);
@@ -197,20 +199,15 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         return super.onPrepareOptionsMenu(menu);
     }
 
-    public void updateCart() {
-        kosarMennyiseg++;
-        if (kosarMennyiseg > 0) {
-            korText.setText(String.valueOf(kosarMennyiseg));
-        } else {
-            korText.setText("");
-        }
-    }
-
-    public void onKosarMegtekintes(View view) {
-    }
-
     @Override
     public void onUzletValaszt(int position) {
+        Intent intent = new Intent(FooldalActivity.this, BoltOldalaActivity.class);
+        intent.putExtra("uzletNeve", uzletekListaja.get(position).getUzletNeve());
+        intent.putExtra("szekhely", uzletekListaja.get(position).getSzekhely());
+        intent.putExtra("uzletId", uzletekListaja.get(position).getUzletId());
+        intent.putExtra("tulajId", uzletekListaja.get(position).getTulajId());
+        intent.putExtra("boltKepe", uzletekListaja.get(position).getBoltKepe());
 
+        startActivity(intent);
     }
 }

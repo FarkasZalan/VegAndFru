@@ -8,6 +8,16 @@ public class Uzlet {
     private String szekhely;
     private String boltKepe;
 
+    public String getUzletId() {
+        return uzletId;
+    }
+
+    public void setUzletId(String uzletId) {
+        this.uzletId = uzletId;
+    }
+
+    private String uzletId;
+
     private String szallitasiDij;
 
     public String getSzallitasiDij() {
