@@ -24,7 +24,7 @@ import com.example.zoldseges.R;
 import java.util.ArrayList;
 
 public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekViewHolder> {
-    private Context context;
+    private final Context context;
     private ArrayList<Termek> termekLista;
     private TermekValasztoEladoiNezet termekValasztoEladoiNezet;
 
@@ -38,7 +38,7 @@ public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekView
     @NonNull
     @Override
     public TermekAdapter.TermekViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.termek_megjelenites, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.termek_megjelenites_eladonak, parent, false);
         return new TermekViewHolder(view, termekValasztoEladoiNezet);
     }
 

@@ -85,4 +85,5 @@
     <string name="uzlet_neve">Üzlet neve</string>
     <string name="varhato_szallitasi_ido">Várható szállítási idő</string>
     <string name="szallitasi_koltseg">Szállítási költség</string>
+    <string name="kosarba">Kosárba</string>
 </resources>

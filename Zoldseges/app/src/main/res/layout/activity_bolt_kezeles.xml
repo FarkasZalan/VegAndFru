@@ -140,7 +140,7 @@
             android:animateLayoutChanges="true"
             android:contentDescription="@string/bolt_kepe"
             android:foreground="#A3000000"
-            android:scaleType="centerCrop"
+            android:scaleType="center"
             android:src="@drawable/grocery_store"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

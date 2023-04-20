@@ -1,7 +1,6 @@
 package com.example.zoldseges.Activitys;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -14,17 +13,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.BejelentkezesActivity;
-import com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado.BoltKezelesActivity;
-import com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado.TermekSzerkeszteseActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
-import com.example.zoldseges.DAOS.Termek;
-import com.example.zoldseges.DAOS.TermekAdapter;
 import com.example.zoldseges.DAOS.Uzlet;
+
 import com.example.zoldseges.DAOS.UzletAdapter;
 import com.example.zoldseges.DAOS.UzletValaszto;
 import com.example.zoldseges.R;
@@ -34,9 +31,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -61,6 +56,10 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
     private UzletAdapter uzletAdapter;
     FirebaseAuth auth;
 
+    private ProgressBar progressFooldal;
+
+    private TextView betoltesFooldal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +71,8 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         fooldalBoltjai = findViewById(R.id.fooldalBoltjai);
         kepFooldalra = findViewById(R.id.kepFooldalra);
         appBarfooldal = findViewById(R.id.appBarfooldal);
+        progressFooldal = findViewById(R.id.progressFooldal);
+        betoltesFooldal = findViewById(R.id.betoltesFooldal);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         fooldalBoltjai.setLayoutManager(layoutManager);
@@ -79,9 +80,24 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
 
         uzletekListaja = new ArrayList<>();
 
+        eltuntet();
         clearList();
         getDataFromFireBase();
 
+    }
+
+    private void eltuntet() {
+        progressFooldal.setVisibility(View.VISIBLE);
+        betoltesFooldal.setVisibility(View.VISIBLE);
+        appBarfooldal.setVisibility(View.INVISIBLE);
+        fooldalBoltjai.setVisibility(View.GONE);
+    }
+
+    private void megjelenit() {
+        progressFooldal.setVisibility(View.GONE);
+        betoltesFooldal.setVisibility(View.GONE);
+        appBarfooldal.setVisibility(View.VISIBLE);
+        fooldalBoltjai.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -94,6 +110,7 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         auth = FirebaseAuth.getInstance();
 
         uzletekListaja = new ArrayList<>();
+        eltuntet();
         clearList();
         getDataFromFireBase();
 
@@ -120,6 +137,7 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
                     uzletekListaja.sort(Comparator.comparing(Uzlet::getUzletNeve));
                     uzletAdapter = new UzletAdapter(getApplicationContext(), uzletekListaja, FooldalActivity.this);
                     fooldalBoltjai.setAdapter(uzletAdapter);
+                    megjelenit();
                 }
             }
         });

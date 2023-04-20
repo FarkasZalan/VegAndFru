@@ -1,6 +1,6 @@
 package com.example.zoldseges.DAOS;
 
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.zoldseges.DAOS.Felhasznalo;
 
 import java.util.Map;
 

@@ -1,18 +1,41 @@
 package com.example.zoldseges.Activitys;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.example.zoldseges.DAOS.Termek;
+import com.example.zoldseges.DAOS.TermekVasarloknakAdapter;
+import com.example.zoldseges.DAOS.VasarloNezetTermekek;
 import com.example.zoldseges.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class BoltOldalaActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class BoltOldalaActivity extends AppCompatActivity implements VasarloNezetTermekek {
 
     StorageReference storageReference;
     FirebaseFirestore db;
@@ -23,6 +46,15 @@ public class BoltOldalaActivity extends AppCompatActivity {
     String szekhely;
     String uzletNeve;
 
+    private ProgressBar progressBolt;
+    private TextView betoltesBolt;
+    private RecyclerView boltTermekei;
+    private AppBarLayout appBarBolt;
+    private ImageView kepBoltba;
+
+    private ArrayList<Termek> termekekListaja;
+    private TermekVasarloknakAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,12 +63,82 @@ public class BoltOldalaActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference().child("TermekKepek");
         db = FirebaseFirestore.getInstance();
 
+        progressBolt = findViewById(R.id.progressBolt);
+        betoltesBolt = findViewById(R.id.betoltesBolt);
+        boltTermekei = findViewById(R.id.boltTermekei);
+        appBarBolt = findViewById(R.id.appBarBolt);
+        kepBoltba = findViewById(R.id.kepBoltba);
+
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        boltTermekei.setLayoutManager(layoutManager);
+        boltTermekei.setHasFixedSize(true);
+
         boltKepe = getIntent().getStringExtra("boltKepe");
         uzletNeve = getIntent().getStringExtra("uzletNeve");
         tulajId = getIntent().getStringExtra("tulajId");
         uzletId = getIntent().getStringExtra("uzletId");
         szekhely = getIntent().getStringExtra("szekhely");
 
+        termekekListaja = new ArrayList<>();
+
+        eltuntet();
+        clearAll();
+        getDataFromFireBase();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+        boltTermekei.setLayoutManager(layoutManager);
+        boltTermekei.setHasFixedSize(true);
+
+        termekekListaja = new ArrayList<>();
+        eltuntet();
+        clearAll();
+        getDataFromFireBase();
+    }
+
+    private void getDataFromFireBase() {
+        CollectionReference reference = db.collection("uzletek").document(uzletId).collection("termekek");
+        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> termekek) {
+                if (termekek.isSuccessful()) {
+                    clearAll();
+                    for (QueryDocumentSnapshot adat : termekek.getResult()) {
+
+                    }
+                }
+            }
+        });
+    }
+
+    private void clearAll() {
+        if (termekekListaja != null) {
+            termekekListaja.clear();
+
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+        } else {
+            termekekListaja = new ArrayList<>();
+        }
+    }
+
+    private void eltuntet() {
+        progressBolt.setVisibility(View.VISIBLE);
+        betoltesBolt.setVisibility(View.VISIBLE);
+        boltTermekei.setVisibility(View.GONE);
+        appBarBolt.setVisibility(View.INVISIBLE);
+    }
+
+    private void megjelenit() {
+        progressBolt.setVisibility(View.GONE);
+        betoltesBolt.setVisibility(View.GONE);
+        boltTermekei.setVisibility(View.VISIBLE);
+        appBarBolt.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -52,5 +154,15 @@ public class BoltOldalaActivity extends AppCompatActivity {
             super.onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onTermek(int position) {
+
+    }
+
+    @Override
+    public void onKosarba(int position) {
+
     }
 }
