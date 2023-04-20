@@ -17,5 +17,9 @@ Bármilyen adatot módosíthat a felhasználó a profiljában és ha sikeres akk
 Az eladó kezelheti a boltját oly módon, hogy megtekintheti a már hozzáadott termékeit (ha van neki) és újakat adhat hozzá, ahol az eladó megadhatja, hogy a létrehozandó termékét darabszám vagy súly (kg) szerint szeretné beárazni valamint opcionálisan képet is rendelhet termékéhez, és sikeres mentés esetén vissza kerül a termék listához, ahol át tudja tekinteni eddigi termékeit és törölni illetve módosítani is tudja azokat. (CRUD műveletek megvalósítása)
 
 ### Rendelések megtekintése
-A vásárlók megtekinthetik a már korábban leadott rendeléseiket.
+A vásárlók megtekinthetik a már korábban leadott rendeléseiket listaszerűen rendezve.
+
+### A főoldalon lehet keresni, szűrni bizonyos üzletek nevére de akár termékekre is és megjelennek azok a boltok amelyekben kapható a keresendő termék (Lekérdezések megvalósítása)
+
+### A főoldalon az üzletek jelennek meg amiknek az oldal maga generál egyedi szállítási időt illetve kiszállítási díjat (hiszen az oldal cége szállítja ki majd a termékeket)
 

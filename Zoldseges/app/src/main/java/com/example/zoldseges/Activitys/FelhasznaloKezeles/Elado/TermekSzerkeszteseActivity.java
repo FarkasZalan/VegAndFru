@@ -62,11 +62,13 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
     private FirebaseFirestore db;
 
     private boolean sulybanMerendo;
+    private DocumentReference osszestermek;
     private StorageReference storageReference;
     private DocumentReference termekReference;
     private Uri imageUrl;
     private String termekKepe;
     private String regiKep;
+    private String osszTermekColectionId;
     private Map<String, Object> termekMap = new HashMap<>();
 
     @Override
@@ -85,6 +87,7 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
         regiKep = getIntent().getStringExtra("termekKepe");
         uzletId = getIntent().getStringExtra("uzletId");
         termekId = getIntent().getStringExtra("termekId");
+        osszTermekColectionId = getIntent().getStringExtra("osszTermekColectionId");
         termekReference = db.collection("uzletek").document(uzletId).collection("termekek").document(termekId);
 
 
@@ -299,7 +302,12 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
 
     public void adatbazisModosit(String nev, double ar, double dbSzam, double suly, String kep) {
         db.collection("uzletek").document(uzletId).collection("termekek").document(termekId);
-        Termek frissitettTermek = new Termek(nev, ar, dbSzam, suly, kep, uzletId);
+        osszestermek = db.collection("osszesTermek").document(osszTermekColectionId);
+        Map<String, Object> osszTermekBovit = new HashMap<>();
+        osszTermekBovit.put("termekNeve", nev);
+        osszTermekBovit.put("uzletId", uzletId);
+        osszestermek.set(osszTermekBovit);
+        Termek frissitettTermek = new Termek(nev, ar, dbSzam, suly, kep, uzletId, osszTermekColectionId);
         termekMap = frissitettTermek.ujTermek(frissitettTermek);
         termekReference.set(termekMap).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

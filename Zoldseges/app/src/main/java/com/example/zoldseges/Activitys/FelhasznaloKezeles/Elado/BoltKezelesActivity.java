@@ -1,12 +1,9 @@
 package com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado;
 
-import static java.security.AccessController.getContext;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +28,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.DAOS.TermekAdapter;
-import com.example.zoldseges.DAOS.TermekValaszto;
+import com.example.zoldseges.DAOS.TermekValasztoEladoiNezet;
 import com.example.zoldseges.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -51,7 +48,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class BoltKezelesActivity extends AppCompatActivity implements TermekValaszto {
+public class BoltKezelesActivity extends AppCompatActivity implements TermekValasztoEladoiNezet {
 
     RecyclerView recyclerView;
     FirebaseFirestore db;
@@ -200,6 +197,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
                             termek.setAr(Objects.requireNonNull(adat.getDouble("termekAra")));
                             termek.setRaktaronLevoMennyiseg(Objects.requireNonNull(adat.getDouble("raktaronLevoMennyiseg")));
                             termek.setSajatId(adat.getId());
+                            termek.setOsszTermekColectionId(adat.getString("osszTermekCollection"));
                             termekLista.add(termek);
 
                         }
@@ -260,6 +258,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         intent.putExtra("termekKepe", termekLista.get(position).getTermekKepe());
         intent.putExtra("uzletId", termekLista.get(position).getUzletId());
         intent.putExtra("termekId", termekLista.get(position).getSajatId());
+        intent.putExtra("osszTermekColectionId", termekLista.get(position).getOsszTermekColectionId());
 
         startActivity(intent);
     }
@@ -277,6 +276,8 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         torlesAlert.setButton(DialogInterface.BUTTON_POSITIVE, "Törlés", (dialog, which) -> {
             eltuntet();
             String id = termekLista.get(position).getSajatId();
+            DocumentReference osszesTermekCollectionTorlo = db.collection("osszesTermek").document(termekLista.get(position).getOsszTermekColectionId());
+            osszesTermekCollectionTorlo.delete();
             DocumentReference torloRef = db.collection("uzletek").document(uzletId).collection("termekek").document(id);
             torloRef.delete().addOnCompleteListener(torles -> {
                 if (!torles.isSuccessful()) {

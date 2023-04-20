@@ -23,4 +23,9 @@
     <style name="Theme.Zoldseges.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.Zoldseges.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="roundedCornersImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">20dp</item>
+        <item name="cornerSizeBottomRight">20dp</item>
+    </style>
 </resources>

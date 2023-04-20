@@ -120,6 +120,7 @@ public class AdataimActivity extends AppCompatActivity {
         paswLabel = findViewById(R.id.paswLabel);
         paswRepeatLabel = findViewById(R.id.paswRepeatLabel);
         termekKepBeallitasModosit = findViewById(R.id.termekKepBeallitasModosit);
+        termekKepBeallitasModosit.setClipToOutline(true); //kép radius aktiválása
         termekKepCimModosit = findViewById(R.id.termekKepCimModosit);
         szallitasiCimLayout = findViewById(R.id.szallitasiCimLayout);
         reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());

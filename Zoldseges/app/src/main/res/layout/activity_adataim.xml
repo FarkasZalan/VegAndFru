@@ -291,12 +291,12 @@
             android:layout_height="150dp"
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginTop="20dp"
+            android:background="@drawable/uzlet_kepe_megjelenit"
             android:contentDescription="@string/todo"
             android:onClick="onTermekKepFeltoltesModosit"
-            android:textSize="20sp"
+            android:scaleType="centerCrop"
             android:visibility="gone"
-            app:cornerRadius="10dp"
-            app:srcCompat="@drawable/standard_item_picture" />
+            app:srcCompat="@drawable/grocery_store" />
 
         <TextView
             android:id="@+id/termekKepCimModosit"

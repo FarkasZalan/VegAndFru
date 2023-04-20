@@ -197,8 +197,9 @@
                 android:layout_marginTop="30dp"
                 android:contentDescription="@string/todo"
                 android:onClick="onTermekKepFeltoltesReg"
-                android:textSize="20sp"
+                android:background="@drawable/uzlet_kepe_megjelenit"
                 android:visibility="gone"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/grocery_store" />
 
             <TextView

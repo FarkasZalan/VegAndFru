@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activitys.FooldalActivity">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fooldalBoltjai"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarfooldal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/kepFooldalra"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:adjustViewBounds="true"
+            android:animateLayoutChanges="true"
+            android:contentDescription="@string/bolt_kepe"
+            android:foreground="#27000000"
+            android:scaleType="centerCrop"
+            android:src="@drawable/fooldal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+    </com.google.android.material.appbar.AppBarLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

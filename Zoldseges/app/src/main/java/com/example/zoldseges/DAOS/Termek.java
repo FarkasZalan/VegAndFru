@@ -30,6 +30,16 @@ public class Termek implements TermekDao {
     private double raktaronLevoMennyiseg;
     private String uzletId;
 
+    public String getOsszTermekColectionId() {
+        return osszTermekColectionId;
+    }
+
+    public void setOsszTermekColectionId(String osszTermekColectionId) {
+        this.osszTermekColectionId = osszTermekColectionId;
+    }
+
+    private String osszTermekColectionId;
+
     public String getSajatId() {
         return sajatId;
     }
@@ -75,13 +85,14 @@ public class Termek implements TermekDao {
     public Termek() {
     }
 
-    public Termek(String nev, double ar, double raktaronLevoMennyiseg, double termekSulya, String termekKepe, String uzletId) {
+    public Termek(String nev, double ar, double raktaronLevoMennyiseg, double termekSulya, String termekKepe, String uzletId, String osszTermekColectionId) {
         this.nev = nev;
         this.ar = ar;
         this.raktaronLevoMennyiseg = raktaronLevoMennyiseg;
         this.termekSulya = termekSulya;
         this.termekKepe = termekKepe;
         this.uzletId = uzletId;
+        this.osszTermekColectionId = osszTermekColectionId;
     }
 
     private final Map<String, Object> termekMap = new HashMap<>();
@@ -94,6 +105,7 @@ public class Termek implements TermekDao {
         termekMap.put("termekSulya", termek.getTermekSulya());
         termekMap.put("termekKepe", termek.getTermekKepe());
         termekMap.put("uzletId", termek.getUzletId());
+        termekMap.put("osszTermekCollection", termek.getOsszTermekColectionId());
         return termekMap;
     }
 }

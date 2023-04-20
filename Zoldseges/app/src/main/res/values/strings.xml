@@ -82,4 +82,7 @@
     <string name="termek_kepenek_modositasa">Termék képének módosítása</string>
     <string name="modositas_termek_modosit">Módosítás</string>
     <string name="termek_modositasa_progress">Termék módosítása...</string>
+    <string name="uzlet_neve">Üzlet neve</string>
+    <string name="varhato_szallitasi_ido">Várható szállítási idő</string>
+    <string name="szallitasi_koltseg">Szállítási költség</string>
 </resources>

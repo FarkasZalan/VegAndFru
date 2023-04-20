@@ -94,6 +94,7 @@ public class RegisztracioActivity extends AppCompatActivity {
         adoszam = findViewById(R.id.adoszam);
         szekhely = findViewById(R.id.szekhely);
         termekKepBeallitas = findViewById(R.id.termekKepBeallitas);
+        termekKepBeallitas.setClipToOutline(true); //kép radius aktiválása
         termekKepCim = findViewById(R.id.termekKepCim);
         cegE = findViewById(R.id.cegE);
         eladoE = findViewById(R.id.eladoE);

@@ -47,6 +47,7 @@ public class UjTermekActivity extends AppCompatActivity {
     private ImageView elsoTermekKep;
     private TextView elsoTermekCim;
     private DocumentReference termekek;
+    private DocumentReference osszestermek;
     private FirebaseFirestore db;
     private StorageReference storageReference;
     private Uri imageUrl;
@@ -66,6 +67,8 @@ public class UjTermekActivity extends AppCompatActivity {
     private Map<String, Object> termekMap = new HashMap<>();
 
     private boolean sulybanKellMerni = false;
+
+    private String ossTermekColectionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,8 +160,14 @@ public class UjTermekActivity extends AppCompatActivity {
                 megjelenit();
             } else {
                 termekek = db.collection("uzletek").document(uzletId).collection("termekek").document();
+                osszestermek = db.collection("osszesTermek").document();
+                ossTermekColectionId = osszestermek.getId();
+                Map<String, Object> osszTermekBovit = new HashMap<>();
+                osszTermekBovit.put("termekNeve", nev);
+                osszTermekBovit.put("uzletId", uzletId);
+                osszestermek.set(osszTermekBovit);
                 termekId = termekek.getId();
-                ujTermek = new Termek(nev, ar, raktaranLevoDbSsam, sulya, termekKepe, uzletId);
+                ujTermek = new Termek(nev, ar, raktaranLevoDbSsam, sulya, termekKepe, uzletId, ossTermekColectionId);
                 if (imageUrl != null) {
                     kepFeltolt(imageUrl, sulya);
                 } else {
@@ -233,7 +242,7 @@ public class UjTermekActivity extends AppCompatActivity {
                     if (feltoltes.isSuccessful()) {
                         termekKepe = String.valueOf(feltoltes.getResult());
                         termekek = db.collection("uzletek").document(uzletId).collection("termekek").document(termekId);
-                        ujTermek = new Termek(termekNeve.getText().toString(), Double.parseDouble(termekAra.getText().toString()), Integer.parseInt(termekKeszlet.getText().toString()), suly, termekKepe, uzletId);
+                        ujTermek = new Termek(termekNeve.getText().toString(), Double.parseDouble(termekAra.getText().toString()), Integer.parseInt(termekKeszlet.getText().toString()), suly, termekKepe, uzletId, ossTermekColectionId);
                         termekMap = ujTermek.ujTermek(ujTermek);
                         termekek.set(termekMap).addOnCompleteListener(task -> {
                             if (task.isSuccessful()) {

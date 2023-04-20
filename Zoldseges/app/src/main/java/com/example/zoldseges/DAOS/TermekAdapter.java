@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,23 +20,18 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.zoldseges.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekViewHolder> {
-
-    private static final String tag = "RecyclerView";
     private Context context;
     private ArrayList<Termek> termekLista;
-    private TermekValaszto termekValaszto;
+    private TermekValasztoEladoiNezet termekValasztoEladoiNezet;
 
-    public TermekAdapter(Context context, ArrayList<Termek> termekLista, TermekValaszto termekValaszto) {
+    public TermekAdapter(Context context, ArrayList<Termek> termekLista, TermekValasztoEladoiNezet termekValasztoEladoiNezet) {
         this.context = context;
         this.termekLista = termekLista;
-        this.termekValaszto = termekValaszto;
+        this.termekValasztoEladoiNezet = termekValasztoEladoiNezet;
     }
 
 
@@ -46,7 +39,7 @@ public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekView
     @Override
     public TermekAdapter.TermekViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.termek_megjelenites, parent, false);
-        return new TermekViewHolder(view, termekValaszto);
+        return new TermekViewHolder(view, termekValasztoEladoiNezet);
     }
 
     @Override
@@ -85,7 +78,7 @@ public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekView
         Button torlesButton;
         CardView termekCard;
 
-        public TermekViewHolder(@NonNull View itemView, TermekValaszto termekValaszto) {
+        public TermekViewHolder(@NonNull View itemView, TermekValasztoEladoiNezet termekValasztoEladoiNezet) {
             super(itemView);
 
             termekKepe = itemView.findViewById(R.id.termekKepeBoltKezeles);
@@ -96,31 +89,31 @@ public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekView
             termekCard = itemView.findViewById(R.id.termekCard);
 
             termekCard.setOnClickListener(v -> {
-                if (termekValaszto != null) {
+                if (termekValasztoEladoiNezet != null) {
                     int posi = getAdapterPosition();
 
                     if (posi != RecyclerView.NO_POSITION) {
-                        termekValaszto.onItemMegtekint(posi);
+                        termekValasztoEladoiNezet.onItemMegtekint(posi);
                     }
                 }
             });
 
             modositButton.setOnClickListener(v -> {
-                if (termekValaszto != null) {
+                if (termekValasztoEladoiNezet != null) {
                     int posi = getAdapterPosition();
 
                     if (posi != RecyclerView.NO_POSITION) {
-                        termekValaszto.onItemModosit(posi);
+                        termekValasztoEladoiNezet.onItemModosit(posi);
                     }
                 }
             });
 
             torlesButton.setOnClickListener(v -> {
-                if (termekValaszto != null) {
+                if (termekValasztoEladoiNezet != null) {
                     int posi = getAdapterPosition();
 
                     if (posi != RecyclerView.NO_POSITION) {
-                        termekValaszto.onItemTorles(posi);
+                        termekValasztoEladoiNezet.onItemTorles(posi);
                     }
                 }
             });
