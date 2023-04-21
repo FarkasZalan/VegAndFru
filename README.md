@@ -25,5 +25,8 @@ Az oldalon lehetőség van keresni oly módon, hogy a fenti keresőmezőbe beír
  Ha bármelyik boltra rákattint a felhasználó, akkor felhozza a boltban kapható termékek listáját. A termékeket berakhatja a kosárban és a kosár megnyitásával áttekintheti a rendelni kívánt termékek listáját és innen navigálhat el a fizetéshez
 
 ## Egyéb tudnivalók
-Az alkalmazásban meg vannak valósítva a komplex index alapú lekérdezések is (BoltKezeleseActivity.java és BoltOldalActivity.java) ahol előbbinél a jelenleg bejelentkezett felhasználó (eladó) tekintheti meg a termékeit, utóbbinál pedig az adott bolt termékeinek kilistázása és sorrendbe rendezése van megvalósítva
+Az alkalmazásban meg vannak valósítva a komplex index alapú lekérdezések is (BoltKezeleseActivity.java és BoltOldalActivity.java) ahol előbbinél a jelenleg bejelentkezett felhasználó (eladó) tekintheti meg a termékeit, utóbbinál pedig az adott bolt termékeinek kilistázása és sorrendbe rendezése van megvalósítva.
+Activity és DAO adatmodell meg van valósítva.
+ConstraintLayouton kívűl még 3 másik layout meg van valósítva (LinearLayout, RelativeLayout, CoordinatorLayout).
+Az alkalmazásban több helyen is meg van valósítva 1 Lifecycle Hook, mégpedig az onResume(), például a BoltKezeleseActivity.java-ban olyan szerepet tölt be, hogyha létrehoz az eladó egy új terméket vagy módosít egy már meglévőt akkor ha visszanavigál a termékekhez akkor lefrissűl a lista és azt jeleníti meg.
 
