@@ -6,16 +6,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado.BoltKezelesActivity;
 import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.DAOS.TermekVasarloknakAdapter;
+import com.example.zoldseges.DAOS.Uzlet;
+import com.example.zoldseges.DAOS.UzletAdapter;
 import com.example.zoldseges.DAOS.VasarloNezetTermekek;
 import com.example.zoldseges.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +45,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Objects;
 
 public class BoltOldalaActivity extends AppCompatActivity implements VasarloNezetTermekek {
 
@@ -54,6 +67,8 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
 
     private ArrayList<Termek> termekekListaja;
     private TermekVasarloknakAdapter adapter;
+    private boolean ures = false;
+    private RelativeLayout nincsTermekLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +83,7 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
         boltTermekei = findViewById(R.id.boltTermekei);
         appBarBolt = findViewById(R.id.appBarBolt);
         kepBoltba = findViewById(R.id.kepBoltba);
+        nincsTermekLayout = findViewById(R.id.nincsTermekLayout);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         boltTermekei.setLayoutManager(layoutManager);
@@ -90,7 +106,7 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
     @Override
     protected void onResume() {
         super.onResume();
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         boltTermekei.setLayoutManager(layoutManager);
         boltTermekei.setHasFixedSize(true);
 
@@ -101,6 +117,7 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
     }
 
     private void getDataFromFireBase() {
+        kepMegjelenitese();
         CollectionReference reference = db.collection("uzletek").document(uzletId).collection("termekek");
         reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -108,11 +125,59 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
                 if (termekek.isSuccessful()) {
                     clearAll();
                     for (QueryDocumentSnapshot adat : termekek.getResult()) {
-
+                        Termek termek = new Termek();
+                        termek.setTermekKepe(adat.getString("termekKepe"));
+                        termek.setNev(adat.getString("termekNeve"));
+                        termek.setUzletId(adat.getString("uzletId"));
+                        termek.setTermekSulya(Objects.requireNonNull(adat.getDouble("termekSulya")));
+                        termek.setAr(Objects.requireNonNull(adat.getDouble("termekAra")));
+                        termek.setRaktaronLevoMennyiseg(Objects.requireNonNull(adat.getDouble("raktaronLevoMennyiseg")));
+                        termek.setSajatId(adat.getId());
+                        termek.setOsszTermekColectionId(adat.getString("osszTermekCollection"));
+                        termekekListaja.add(termek);
                     }
+                    if (termekekListaja.isEmpty()) {
+                        ures = true;
+                    } else {
+                        ures = false;
+                        termekekListaja.sort(Comparator.comparing(Termek::getNev));
+                        adapter = new TermekVasarloknakAdapter(getApplicationContext(), termekekListaja, BoltOldalaActivity.this);
+                        boltTermekei.setAdapter(adapter);
+                    }
+                    megjelenit();
                 }
             }
         });
+    }
+
+    public void kepMegjelenitese() {
+        kepBoltba.setScaleType(ImageView.ScaleType.CENTER);
+        if (boltKepe != null && !boltKepe.isEmpty()) {
+            Uri uri = Uri.parse(boltKepe);
+            try {
+                if (!this.isFinishing()) {
+                    Glide.with(BoltOldalaActivity.this).load(uri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            megjelenit();
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    }).into(kepBoltba);
+                }
+            } catch (Exception e) {
+                Glide.with(BoltOldalaActivity.this).load(R.drawable.grocery_store).into(kepBoltba);
+            }
+        } else {
+            int color = getResources().getColor(R.color.white, getTheme());
+            appBarBolt.setBackgroundColor(color);
+
+            Glide.with(BoltOldalaActivity.this).load(R.drawable.grocery_store).into(kepBoltba);
+        }
     }
 
     private void clearAll() {
@@ -131,14 +196,21 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
         progressBolt.setVisibility(View.VISIBLE);
         betoltesBolt.setVisibility(View.VISIBLE);
         boltTermekei.setVisibility(View.GONE);
+        nincsTermekLayout.setVisibility(View.GONE);
         appBarBolt.setVisibility(View.INVISIBLE);
     }
 
     private void megjelenit() {
         progressBolt.setVisibility(View.GONE);
         betoltesBolt.setVisibility(View.GONE);
-        boltTermekei.setVisibility(View.VISIBLE);
         appBarBolt.setVisibility(View.VISIBLE);
+        if (!ures) {
+            boltTermekei.setVisibility(View.VISIBLE);
+            nincsTermekLayout.setVisibility(View.GONE);
+        } else {
+            boltTermekei.setVisibility(View.GONE);
+            nincsTermekLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -151,6 +223,7 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.vissza) {
+            finish();
             super.onBackPressed();
         }
         return super.onOptionsItemSelected(item);
@@ -164,5 +237,10 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
     @Override
     public void onKosarba(int position) {
 
+    }
+
+    public void onVissza(View view) {
+        finish();
+        super.onBackPressed();
     }
 }

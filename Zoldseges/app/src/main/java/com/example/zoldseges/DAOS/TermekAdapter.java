@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -47,19 +48,23 @@ public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekView
         holder.termekNeve.setText(termekLista.get(position).getNev());
 
         if (!termekLista.get(position).getTermekKepe().isEmpty()) {
+            holder.progressTermekKepEladoLayout.setVisibility(View.VISIBLE);
 
             Glide.with(context).load(termekLista.get(position).getTermekKepe()).addListener(new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    holder.progressTermekKepEladoLayout.setVisibility(View.GONE);
                     return false;
                 }
 
                 @Override
                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    holder.progressTermekKepEladoLayout.setVisibility(View.GONE);
                     return false;
                 }
             }).into(holder.termekKepe);
         } else {
+            holder.progressTermekKepEladoLayout.setVisibility(View.GONE);
             Glide.with(context).load(R.drawable.standard_item_picture).into(holder.termekKepe);
         }
     }
@@ -77,6 +82,7 @@ public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekView
         Button modositButton;
         Button torlesButton;
         CardView termekCard;
+        RelativeLayout progressTermekKepEladoLayout;
 
         public TermekViewHolder(@NonNull View itemView, TermekValasztoEladoiNezet termekValasztoEladoiNezet) {
             super(itemView);
@@ -87,6 +93,7 @@ public class TermekAdapter extends RecyclerView.Adapter<TermekAdapter.TermekView
             modositButton = itemView.findViewById(R.id.termekModosit);
             torlesButton = itemView.findViewById(R.id.termekTorles);
             termekCard = itemView.findViewById(R.id.termekCard);
+            progressTermekKepEladoLayout = itemView.findViewById(R.id.progressTermekKepEladoLayout);
 
             termekCard.setOnClickListener(v -> {
                 if (termekValasztoEladoiNezet != null) {

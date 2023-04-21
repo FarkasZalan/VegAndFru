@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.zoldseges.R;
 
@@ -46,20 +49,25 @@ public class TermekVasarloknakAdapter extends RecyclerView.Adapter<TermekVasarlo
     public void onBindViewHolder(@NonNull VasarloknakViewHolder holder, int position) {
         holder.termekNeveVasarloknak.setText(termekekLista.get(position).getNev());
 
-        if (!termekekLista.get(position).getTermekKepe().isEmpty()) {
+        if (termekekLista.get(position).getTermekKepe() != null && !termekekLista.get(position).getTermekKepe().isEmpty()) {
+            holder.progressTermekKepLayout.setVisibility(View.VISIBLE);
 
             Glide.with(context).load(termekekLista.get(position).getTermekKepe()).addListener(new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    holder.progressTermekKepLayout.setVisibility(View.GONE);
+                    Glide.with(context).load(R.drawable.standard_item_picture).into(holder.termekKepeVasarloknak);
                     return false;
                 }
 
                 @Override
                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    holder.progressTermekKepLayout.setVisibility(View.GONE);
                     return false;
                 }
             }).into(holder.termekKepeVasarloknak);
         } else {
+            holder.progressTermekKepLayout.setVisibility(View.GONE);
             Glide.with(context).load(R.drawable.standard_item_picture).into(holder.termekKepeVasarloknak);
         }
     }
@@ -76,6 +84,7 @@ public class TermekVasarloknakAdapter extends RecyclerView.Adapter<TermekVasarlo
         private TextView termekNeveVasarloknak;
 
         private Button termekKosarba;
+        private RelativeLayout progressTermekKepLayout;
 
         public VasarloknakViewHolder(@NonNull View itemView, VasarloNezetTermekek vasarloNezetTermekek) {
             super(itemView);
@@ -84,6 +93,7 @@ public class TermekVasarloknakAdapter extends RecyclerView.Adapter<TermekVasarlo
             termekKepeVasarloknak = itemView.findViewById(R.id.termekKepeVasarloknak);
             termekNeveVasarloknak = itemView.findViewById(R.id.termekNeveVasarloknak);
             termekKosarba = itemView.findViewById(R.id.termekKosarba);
+            progressTermekKepLayout = itemView.findViewById(R.id.progressTermekKepLayout);
 
             termekCardVasarloknak.setOnClickListener(v -> {
                 if (vasarloNezetTermekek != null) {

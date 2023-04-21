@@ -86,4 +86,7 @@
     <string name="varhato_szallitasi_ido">Várható szállítási idő</string>
     <string name="szallitasi_koltseg">Szállítási költség</string>
     <string name="kosarba">Kosárba</string>
+    <string name="elso_termek_letrehozasa">Add hozzá első termékedet a boltodhoz</string>
+    <string name="nincs_termek">Jelenleg egyetlen termék sem elérhető</string>
+    <string name="nincs_keresesi_eredmeny">Nincs a keresésnek megfelelő elem!</string>
 </resources>

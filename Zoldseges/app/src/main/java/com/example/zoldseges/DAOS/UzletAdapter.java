@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,10 @@ public class UzletAdapter extends RecyclerView.Adapter<UzletAdapter.UzletViewHol
         this.uzletValaszto = uzletValaszto;
     }
 
+    public void keresesSzurese(ArrayList<Uzlet> szurtLista) {
+        this.uzletekListaja = szurtLista;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
@@ -50,19 +56,24 @@ public class UzletAdapter extends RecyclerView.Adapter<UzletAdapter.UzletViewHol
         holder.uzletSzallitasiKoltsege.setText(uzletekListaja.get(position).getSzallitasiDij());
 
         if (uzletekListaja.get(position).getBoltKepe() != null && !uzletekListaja.get(position).getBoltKepe().isEmpty()) {
+            holder.progressBoltKepLayout.setVisibility(View.VISIBLE);
 
             Glide.with(context).load(uzletekListaja.get(position).getBoltKepe()).addListener(new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    holder.progressBoltKepLayout.setVisibility(View.GONE);
+                    Glide.with(context).load(R.drawable.grocery_store).into(holder.uzletKepe);
                     return false;
                 }
 
                 @Override
                 public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    holder.progressBoltKepLayout.setVisibility(View.GONE);
                     return false;
                 }
             }).into(holder.uzletKepe);
         } else {
+            holder.progressBoltKepLayout.setVisibility(View.GONE);
             Glide.with(context).load(R.drawable.grocery_store).into(holder.uzletKepe);
         }
     }
@@ -79,6 +90,7 @@ public class UzletAdapter extends RecyclerView.Adapter<UzletAdapter.UzletViewHol
         private TextView uzletNeve;
         private TextView uzletVarhatoSzallitasiIdeje;
         private TextView uzletSzallitasiKoltsege;
+        private RelativeLayout progressBoltKepLayout;
 
         public UzletViewHolder(@NonNull View itemView, UzletValaszto uzletValaszto) {
             super(itemView);
@@ -88,12 +100,13 @@ public class UzletAdapter extends RecyclerView.Adapter<UzletAdapter.UzletViewHol
             uzletNeve = itemView.findViewById(R.id.uzletNeve);
             uzletVarhatoSzallitasiIdeje = itemView.findViewById(R.id.uzletVarhatoSzallitasiIdeje);
             uzletSzallitasiKoltsege = itemView.findViewById(R.id.uzletSzallitasiKoltsege);
+            progressBoltKepLayout = itemView.findViewById(R.id.progressBoltKepLayout);
 
             uzletCard.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (uzletValaszto != null) {
-                        int position = getAdapterPosition();
+                        int position = getBindingAdapterPosition();
 
                         if (position != RecyclerView.NO_POSITION) {
                             uzletValaszto.onUzletValaszt(position);
