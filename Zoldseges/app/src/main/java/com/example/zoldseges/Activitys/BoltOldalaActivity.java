@@ -39,6 +39,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -118,34 +119,30 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
 
     private void getDataFromFireBase() {
         kepMegjelenitese();
-        CollectionReference reference = db.collection("uzletek").document(uzletId).collection("termekek");
-        reference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> termekek) {
-                if (termekek.isSuccessful()) {
-                    clearAll();
-                    for (QueryDocumentSnapshot adat : termekek.getResult()) {
-                        Termek termek = new Termek();
-                        termek.setTermekKepe(adat.getString("termekKepe"));
-                        termek.setNev(adat.getString("termekNeve"));
-                        termek.setUzletId(adat.getString("uzletId"));
-                        termek.setTermekSulya(Objects.requireNonNull(adat.getDouble("termekSulya")));
-                        termek.setAr(Objects.requireNonNull(adat.getDouble("termekAra")));
-                        termek.setRaktaronLevoMennyiseg(Objects.requireNonNull(adat.getDouble("raktaronLevoMennyiseg")));
-                        termek.setSajatId(adat.getId());
-                        termek.setOsszTermekColectionId(adat.getString("osszTermekCollection"));
-                        termekekListaja.add(termek);
-                    }
-                    if (termekekListaja.isEmpty()) {
-                        ures = true;
-                    } else {
-                        ures = false;
-                        termekekListaja.sort(Comparator.comparing(Termek::getNev));
-                        adapter = new TermekVasarloknakAdapter(getApplicationContext(), termekekListaja, BoltOldalaActivity.this);
-                        boltTermekei.setAdapter(adapter);
-                    }
-                    megjelenit();
+        Query query = FirebaseFirestore.getInstance().collection("uzletek").document(uzletId).collection("termekek");
+        query.whereEqualTo("uzletId", uzletId).orderBy("termekNeve", Query.Direction.ASCENDING).get().addOnCompleteListener(termekek -> {
+            if (termekek.isSuccessful()) {
+                clearAll();
+                for (QueryDocumentSnapshot adat : termekek.getResult()) {
+                    Termek termek = new Termek();
+                    termek.setTermekKepe(adat.getString("termekKepe"));
+                    termek.setNev(adat.getString("termekNeve"));
+                    termek.setUzletId(adat.getString("uzletId"));
+                    termek.setTermekSulya(Objects.requireNonNull(adat.getDouble("termekSulya")));
+                    termek.setAr(Objects.requireNonNull(adat.getDouble("termekAra")));
+                    termek.setRaktaronLevoMennyiseg(Objects.requireNonNull(adat.getDouble("raktaronLevoMennyiseg")));
+                    termek.setSajatId(adat.getId());
+                    termek.setOsszTermekColectionId(adat.getString("osszTermekCollection"));
+                    termekekListaja.add(termek);
                 }
+                if (termekekListaja.isEmpty()) {
+                    ures = true;
+                } else {
+                    ures = false;
+                    adapter = new TermekVasarloknakAdapter(getApplicationContext(), termekekListaja, BoltOldalaActivity.this);
+                    boltTermekei.setAdapter(adapter);
+                }
+                megjelenit();
             }
         });
     }

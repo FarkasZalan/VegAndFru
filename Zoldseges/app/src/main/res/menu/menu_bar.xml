@@ -3,24 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/kereso"
-        android:title="@string/kereses"
         android:icon="@drawable/kereso"
-        app:showAsAction="ifRoom"
+        android:title="@string/kereses"
         app:actionViewClass="android.widget.SearchView"
-        />
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/kosar"
-        android:title="@string/kosar"
         android:icon="@drawable/kosar"
-        app:showAsAction="ifRoom"
+        android:orderInCategory="3"
+        android:title="@string/kosar"
         app:actionLayout="@layout/cart_number"
-        />
+        app:showAsAction="ifRoom|collapseActionView" />
 
     <item
         android:id="@+id/fiok"
-        android:title="@string/fiok"
         android:icon="@drawable/profil"
-        app:showAsAction="ifRoom"
-        />
+        android:orderInCategory="1"
+        android:title="@string/fiok"
+        app:showAsAction="ifRoom|collapseActionView" />
 </menu>

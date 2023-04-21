@@ -38,7 +38,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -142,73 +145,57 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
     }
 
     private void getDataFromFirebase() {
-        DocumentReference felhasznaloReference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
-        felhasznaloReference.addSnapshotListener((value, error) -> {
-            assert value != null;
-            uzletId = value.getString("uzletId");
-            DocumentReference uzletReferenceKephez;
-            uzletReferenceKephez = db.collection("uzletek").document(uzletId);
-            uzletReferenceKephez.addSnapshotListener((uzlet, error1) -> {
-                assert uzlet != null;
-                Uri uri;
-                if (Objects.requireNonNull(uzlet.getString("boltKepe")).isEmpty() || Objects.equals(uzlet.getString("boltKepe"), "null") || uzlet.getString("boltKepe") == null) {
-                    uri = null;
-                    int color = getResources().getColor(R.color.white, getTheme());
-                    appBarLayout.setBackgroundColor(color);
-                    kep.setScaleType(ImageView.ScaleType.CENTER);
-                } else {
-                    uri = Uri.parse(uzlet.getString("boltKepe"));
-                    kep.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                }
+        Query query = FirebaseFirestore.getInstance().collection("uzletek");
+        query.whereEqualTo("tulajId", Objects.requireNonNull(auth.getCurrentUser()).getUid())
+                .orderBy("cegNev", Query.Direction.ASCENDING).get().addOnCompleteListener(task -> {
+                    for (QueryDocumentSnapshot adat : task.getResult()) {
+                        uzletId = adat.getId();
+                        Uri uri = Uri.parse(adat.getString("boltKepe"));
+                        try {
+                            if (!BoltKezelesActivity.this.isFinishing()) {
+                                Glide.with(BoltKezelesActivity.this).load(uri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
+                                    @Override
+                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                        megjelenit();
+                                        return false;
+                                    }
 
-                try {
-                    if (!this.isFinishing()) {
-                        Glide.with(BoltKezelesActivity.this).load(uri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
-                            @Override
-                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                megjelenit();
-                                return false;
+                                    @Override
+                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                        //megjelenit();
+                                        return false;
+                                    }
+                                }).into(kep);
                             }
-
-                            @Override
-                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                //megjelenit();
-                                return false;
-                            }
-                        }).into(kep);
-                    }
-                } catch (Exception e) {
-                    Glide.with(BoltKezelesActivity.this).load(R.drawable.grocery_store).into(kep);
-                }
-            });
-            uzletReference = db.collection("uzletek").document(uzletId).collection("termekek");
-            uzletReference.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        clearAll();
-                        for (QueryDocumentSnapshot adat : task.getResult()) {
-                            Termek termek = new Termek();
-
-                            termek.setTermekKepe(adat.getString("termekKepe"));
-                            termek.setNev(adat.getString("termekNeve"));
-                            termek.setUzletId(adat.getString("uzletId"));
-                            termek.setTermekSulya(Objects.requireNonNull(adat.getDouble("termekSulya")));
-                            termek.setAr(Objects.requireNonNull(adat.getDouble("termekAra")));
-                            termek.setRaktaronLevoMennyiseg(Objects.requireNonNull(adat.getDouble("raktaronLevoMennyiseg")));
-                            termek.setSajatId(adat.getId());
-                            termek.setOsszTermekColectionId(adat.getString("osszTermekCollection"));
-                            termekLista.add(termek);
-
+                        } catch (Exception e) {
+                            Glide.with(BoltKezelesActivity.this).load(R.drawable.grocery_store).into(kep);
                         }
-                        termekLista.sort(Comparator.comparing(Termek::getNev));
-                        termekAdapter = new TermekAdapter(getApplicationContext(), termekLista, BoltKezelesActivity.this);
-                        recyclerView.setAdapter(termekAdapter);
-                        megjelenit();
+                        uzletReference = db.collection("uzletek").document(uzletId).collection("termekek");
+                        uzletReference.get().addOnCompleteListener(termekekLetoltese -> {
+                            if (termekekLetoltese.isSuccessful()) {
+                                clearAll();
+                                for (QueryDocumentSnapshot adat1 : termekekLetoltese.getResult()) {
+                                    Termek termek = new Termek();
+
+                                    termek.setTermekKepe(adat1.getString("termekKepe"));
+                                    termek.setNev(adat1.getString("termekNeve"));
+                                    termek.setUzletId(adat1.getString("uzletId"));
+                                    termek.setTermekSulya(Objects.requireNonNull(adat1.getDouble("termekSulya")));
+                                    termek.setAr(Objects.requireNonNull(adat1.getDouble("termekAra")));
+                                    termek.setRaktaronLevoMennyiseg(Objects.requireNonNull(adat1.getDouble("raktaronLevoMennyiseg")));
+                                    termek.setSajatId(adat1.getId());
+                                    termek.setOsszTermekColectionId(adat1.getString("osszTermekCollection"));
+                                    termekLista.add(termek);
+
+                                }
+                                termekLista.sort(Comparator.comparing(Termek::getNev));
+                                termekAdapter = new TermekAdapter(getApplicationContext(), termekLista, BoltKezelesActivity.this);
+                                recyclerView.setAdapter(termekAdapter);
+                                megjelenit();
+                            }
+                        });
                     }
-                }
-            });
-        });
+                });
     }
 
     private void clearAll() {

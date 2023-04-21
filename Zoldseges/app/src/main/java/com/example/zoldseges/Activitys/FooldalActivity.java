@@ -38,6 +38,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
@@ -120,6 +121,7 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         fooldalBoltjai.setHasFixedSize(true);
         auth = FirebaseAuth.getInstance();
 
+
         uzletekListaja = new ArrayList<>();
         eltuntet();
         clearList();
@@ -167,7 +169,9 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         getMenuInflater().inflate(R.menu.menu_bar, menu);
         MenuItem menuItem = menu.findItem(R.id.kereso);
         searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchView.setQuery("", false);
         searchView.setQueryHint("Keresés...");
+        searchView.setMaxWidth(Integer.MAX_VALUE);
 
         searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -218,13 +222,15 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
                             fooldalBoltjai.setVisibility(View.GONE);
                         } else {
                             szurtLista.sort(Comparator.comparing(Uzlet::getUzletNeve));
-                            uzletAdapter = new UzletAdapter(getApplicationContext(), szurtLista, FooldalActivity.this);
+                            uzletekListaja = szurtLista;
+                            uzletAdapter = new UzletAdapter(getApplicationContext(), uzletekListaja, FooldalActivity.this);
                             fooldalBoltjai.setAdapter(uzletAdapter);
                             nincsKeresesiEredmenyLayout.setVisibility(View.GONE);
                             fooldalBoltjai.setVisibility(View.VISIBLE);
                         }
                     } else {
                         nincsKeresesiEredmenyLayout.setVisibility(View.GONE);
+                        getDataFromFireBase();
                         Toast.makeText(getApplicationContext(), "Váratlan hiba történt!", Toast.LENGTH_LONG).show();
                     }
                 }

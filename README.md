@@ -23,3 +23,9 @@ A vásárlók megtekinthetik a már korábban leadott rendeléseiket listaszerű
 
 ### A főoldalon az üzletek jelennek meg amiknek az oldal maga generál egyedi szállítási időt illetve kiszállítási díjat (hiszen az oldal cége szállítja ki majd a termékeket)
 
+### A főoldalon lehetőség van keresni oly módon, hogy a fenti keresőmezőbe beírhatja a keresendő kifejezést, amire megjelennek azon üzletek listája ahol egyezés van a bolt neve vagy pedig a boltban kapható termékek megnevezésével.
+
+### Ha a főoldalról bármelyik boltra rákattint a felhasználó, akkor felhozza a boltban kapható termékek listáját. A termékeket berakhatja a kosárban és a kosár megnyitásával áttekintheti a rendelni kívánt termékek listáját és innen navigálhat el a fizetéshez
+
+## Az alkalmazásban meg vannak valósítva a komplex index alapú lekérdezések is (BoltKezeleseActivity.java és BoltOldalActivity.java) ahol előbbinél a jelenleg bejelentkezett felhasználó (eladó) tekintheti meg a termékeit, utóbbinál pedig az adott bolt termékeinek kilistázása és sorrendbe rendezése van megvalósítva
+
