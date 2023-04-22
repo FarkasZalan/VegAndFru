@@ -26,6 +26,8 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
+import com.example.zoldseges.Activitys.KosarActivity;
 import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,6 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class TermekSzerkeszteseActivity extends AppCompatActivity {
 
@@ -75,6 +78,9 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_termek_szerkesztese);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Termék módosítása");
 
         storageReference = FirebaseStorage.getInstance().getReference().child("TermekKepek");
         db = FirebaseFirestore.getInstance();
@@ -202,18 +208,19 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
         termekKeszletTermekModositas.setVisibility(View.VISIBLE);
     }
 
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.fooldalra_iranyito, menu);
-
+        getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
+        View view = menu.findItem(R.id.kosarfiok).getActionView();
+        view.setOnClickListener(v -> startActivity(new Intent(TermekSzerkeszteseActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.vissza) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
             super.onBackPressed();
-            super.onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

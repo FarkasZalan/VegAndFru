@@ -23,6 +23,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.zoldseges.Activitys.KosarActivity;
 import com.example.zoldseges.DAOS.Felhasznalo;
 import com.example.zoldseges.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -89,6 +90,9 @@ public class AdataimActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adataim);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Adatok módosítása");
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -254,17 +258,19 @@ public class AdataimActivity extends AppCompatActivity {
         this.szekhelyLabel.setVisibility(View.GONE);
     }
 
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.fooldalra_iranyito, menu);
-
+        getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
+        View view = menu.findItem(R.id.kosarfiok).getActionView();
+        view.setOnClickListener(v -> startActivity(new Intent(AdataimActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.vissza) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
             super.onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

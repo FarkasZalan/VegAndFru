@@ -7,7 +7,12 @@ import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -92,10 +97,10 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
 
         uzletekListaja = new ArrayList<>();
 
+
         eltuntet();
         clearList();
         getDataFromFireBase();
-
     }
 
     private void eltuntet() {
@@ -115,7 +120,6 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
     @Override
     protected void onResume() {
         super.onResume();
-
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         fooldalBoltjai.setLayoutManager(layoutManager);
         fooldalBoltjai.setHasFixedSize(true);
@@ -126,7 +130,6 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         eltuntet();
         clearList();
         getDataFromFireBase();
-
     }
 
     private void getDataFromFireBase() {
@@ -173,7 +176,7 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         searchView.setQueryHint("Keresés...");
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
-        searchView.clearFocus();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -241,20 +244,18 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.kosar:
+            case R.id.kosarFooldal:
                 startActivity(new Intent(this, KosarActivity.class));
                 return true;
-            case R.id.fiok:
+            case R.id.fiokFooldal:
                 if (felhasznalo != null) {
                     startProfile();
                 } else {
                     startLogin();
                 }
                 return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     public void startProfile() {
@@ -267,7 +268,7 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        final MenuItem menuItem = menu.findItem(R.id.kosar);
+        final MenuItem menuItem = menu.findItem(R.id.kosarFooldal);
         FrameLayout rootVieww = (FrameLayout) menuItem.getActionView();
 
         FrameLayout kor = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo);
@@ -289,6 +290,12 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         intent.putExtra("boltKepe", uzletekListaja.get(position).getBoltKepe());
 
         startActivity(intent);
+
+        searchView.setQuery("", false);
+        searchView.setQueryHint("Keresés...");
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+        }
     }
 
     public void onVissza(View view) {

@@ -3,10 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/vissza"
-        android:title="@string/vissza"
-        app:showAsAction="always"
-        android:icon="@drawable/vissza"
-        />
-
+        android:id="@+id/fiokKosar"
+        android:icon="@drawable/profil"
+        android:title="@string/fiok"
+        app:showAsAction="ifRoom" />
 </menu>

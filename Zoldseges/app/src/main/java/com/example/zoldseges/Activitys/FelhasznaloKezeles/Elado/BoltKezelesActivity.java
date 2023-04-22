@@ -26,6 +26,8 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
+import com.example.zoldseges.Activitys.KosarActivity;
 import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.DAOS.TermekAdapter;
 import com.example.zoldseges.DAOS.TermekValasztoEladoiNezet;
@@ -38,12 +40,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -103,7 +102,6 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         getDataFromFirebase();
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -151,6 +149,8 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
                     for (QueryDocumentSnapshot adat : task.getResult()) {
                         uzletId = adat.getId();
                         Uri uri = Uri.parse(adat.getString("boltKepe"));
+                        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+                        getSupportActionBar().setTitle(adat.getString("cegNev"));
                         try {
                             if (!BoltKezelesActivity.this.isFinishing()) {
                                 Glide.with(BoltKezelesActivity.this).load(uri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
@@ -210,17 +210,19 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         }
     }
 
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.fooldalra_iranyito, menu);
-
+        getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
+        View view = menu.findItem(R.id.kosarfiok).getActionView();
+        view.setOnClickListener(v -> startActivity(new Intent(BoltKezelesActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.vissza) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
             super.onBackPressed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
