@@ -1,5 +1,7 @@
 package com.example.zoldseges.Activitys.FelhasznaloKezeles;
 
+import static com.example.zoldseges.Activitys.TermekOldalActivity.kosarLista;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -109,8 +112,7 @@ public class RegisztracioActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
-        View view = menu.findItem(R.id.kosarfiok).getActionView();
-        view.setOnClickListener(v -> startActivity(new Intent(RegisztracioActivity.this, KosarActivity.class)));
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -120,7 +122,30 @@ public class RegisztracioActivity extends AppCompatActivity {
             finish();
             super.onBackPressed();
         }
+        if (item.getItemId() == R.id.kosarfiok) {
+            startActivity(new Intent(RegisztracioActivity.this, KosarActivity.class));
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final MenuItem menuItem = menu.findItem(R.id.kosarfiok);
+
+        FrameLayout rootVieww = (FrameLayout) menuItem.getActionView();
+        FrameLayout kor = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo);
+        TextView korSzamlalo = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo_text);
+        if (kosarLista != null && kosarLista.size() != 0) {
+            kor.setVisibility(View.VISIBLE);
+            korSzamlalo.setText(String.valueOf(kosarLista.size()));
+        } else {
+            kor.setVisibility(View.GONE);
+        }
+        rootVieww.setOnClickListener(view -> {
+            onOptionsItemSelected(menuItem);
+        });
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -241,6 +266,7 @@ public class RegisztracioActivity extends AppCompatActivity {
                                     if (imageUrl == null) {
                                         super.onBackPressed();
                                         Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
+                                        kosarLista.clear();
                                         sikeresRegisztracio();
                                     }
                                 }).addOnFailureListener(e -> megjelenit());

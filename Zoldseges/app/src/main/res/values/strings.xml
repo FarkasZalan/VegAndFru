@@ -101,4 +101,6 @@
     <string name="termely_suly">Termék súlya:</string>
     <string name="termek_nev">Termék neve</string>
     <string name="kosatba">Kosárba</string>
+    <string name="termek_egysegar">Termék egységár</string>
+    <string name="szerkesztes">Szerkesztés</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.example.zoldseges.Activitys;
 
+import static com.example.zoldseges.Activitys.TermekOldalActivity.kosarLista;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
@@ -11,6 +13,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -114,18 +117,6 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         fooldalBoltjai.setLayoutManager(layoutManager);
         fooldalBoltjai.setHasFixedSize(true);
         auth = FirebaseAuth.getInstance();
-
-        if (auth.getCurrentUser() != null) {
-            DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
-            reference.addSnapshotListener((value, error) -> {
-                assert value != null;
-                String tipus = value.getString("felhasznaloTipus");
-                assert tipus != null;
-                kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
-            });
-        } else {
-            kosar.setVisible(true);
-        }
 
         uzletekListaja = new ArrayList<>();
         eltuntet();
@@ -283,10 +274,16 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         final MenuItem menuItem = menu.findItem(R.id.kosarFooldal);
+
         FrameLayout rootVieww = (FrameLayout) menuItem.getActionView();
-
         FrameLayout kor = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo);
-
+        TextView korSzamlalo = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo_text);
+        if (kosarLista != null && kosarLista.size() != 0) {
+            kor.setVisibility(View.VISIBLE);
+            korSzamlalo.setText(String.valueOf(kosarLista.size()));
+        } else {
+            kor.setVisibility(View.GONE);
+        }
         rootVieww.setOnClickListener(view -> {
             onOptionsItemSelected(menuItem);//tehát meghívja az optionItemSelected függvényt és az fog történni amit oda megadok
         });

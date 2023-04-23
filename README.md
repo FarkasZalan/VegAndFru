@@ -24,6 +24,13 @@ A főoldalon az üzletek jelennek meg amiknek az oldal maga generál egyedi szá
 Az oldalon lehetőség van keresni oly módon, hogy a fenti keresőmezőbe beírhatja a keresendő kifejezést, amire megjelennek azon üzletek listája ahol egyezés van a bolt neve vagy pedig a boltban kapható termékek megnevezésével.
  Ha bármelyik boltra rákattint a felhasználó, akkor felhozza a boltban kapható termékek listáját. A termékeket berakhatja a kosárban és a kosár megnyitásával áttekintheti a rendelni kívánt termékek listáját és innen navigálhat el a fizetéshez
 
+### Bolt
+Minden bolton belül mindenki számára megtekinthetőek az adott üzlet termékei (ha van neki) és az eladót leszámítva mindenki hozzáadhatja a kiválasztott terméket a kosarához, hogyha a készletet nem meghaladó mennyiséget szeretne rendelni. A kosaron belül pedig megjelennek az eddig összeválogatott termékek, ahol megtekinthetőek az adott termékek, módosíthatóak a rendelendő mennyiségek illetve törölni is lehet őket a listából.
+Ha a felhasználó minden kívánt terméket összeválogatott innen mehet tovább a fizetés oldalára.
+
+## Rendelés leadása
+
+
 ## Egyéb tudnivalók
 Az alkalmazásban meg vannak valósítva a komplex index alapú lekérdezések is (BoltKezeleseActivity.java és BoltOldalActivity.java) ahol előbbinél a jelenleg bejelentkezett felhasználó (eladó) tekintheti meg a termékeit, utóbbinál pedig az adott bolt termékeinek kilistázása és sorrendbe rendezése van megvalósítva.
 Activity és DAO adatmodell meg van valósítva.

@@ -189,7 +189,7 @@
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/rendelendo_mennyiseg_kg"
-                android:inputType="textPersonName"
+                android:inputType="numberDecimal"
                 app:cornerRadius="10dp" />
 
         </LinearLayout>

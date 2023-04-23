@@ -1,5 +1,7 @@
 package com.example.zoldseges.Activitys;
 
+import static com.example.zoldseges.Activitys.TermekOldalActivity.kosarLista;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -222,7 +225,6 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_menu, menu);
-        View view = menu.findItem(R.id.kosar).getActionView();
         kosar = menu.findItem(R.id.kosar);
         if (auth.getCurrentUser() != null) {
             DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
@@ -235,7 +237,6 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
         } else {
             kosar.setVisible(true);
         }
-        view.setOnClickListener(v -> startActivity(new Intent(BoltOldalaActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -253,7 +254,30 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
             finish();
             super.onBackPressed();
         }
+        if (item.getItemId() == R.id.kosar) {
+            startActivity(new Intent(BoltOldalaActivity.this, KosarActivity.class));
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final MenuItem menuItem = menu.findItem(R.id.kosar);
+
+        FrameLayout rootVieww = (FrameLayout) menuItem.getActionView();
+        FrameLayout kor = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo);
+        TextView korSzamlalo = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo_text);
+        if (kosarLista != null && kosarLista.size() != 0) {
+            kor.setVisibility(View.VISIBLE);
+            korSzamlalo.setText(String.valueOf(kosarLista.size()));
+        } else {
+            kor.setVisibility(View.GONE);
+        }
+        rootVieww.setOnClickListener(view -> {
+            onOptionsItemSelected(menuItem);
+        });
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -266,6 +290,7 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
         intent.putExtra("termekKeszlet", termekekListaja.get(position).getRaktaronLevoMennyiseg());
         intent.putExtra("termekId", termekekListaja.get(position).getSajatId());
         intent.putExtra("uzletId", termekekListaja.get(position).getUzletId());
+        intent.putExtra("ossztermekCollection", termekekListaja.get(position).getOsszTermekColectionId());
 
         startActivity(intent);
     }

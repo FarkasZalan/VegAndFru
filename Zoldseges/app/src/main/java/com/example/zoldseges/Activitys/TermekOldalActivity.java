@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -27,6 +28,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.BejelentkezesActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
+import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -37,6 +39,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class TermekOldalActivity extends AppCompatActivity {
@@ -67,6 +71,15 @@ public class TermekOldalActivity extends AppCompatActivity {
     FirebaseFirestore db;
 
     private MenuItem kosar;
+    private String termekNeve;
+
+    String ossztermekCollection;
+    String keszlet;
+
+    private FrameLayout kor;
+    private TextView korSzamlalo;
+
+    public static Map<Termek, Double> kosarLista = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +106,7 @@ public class TermekOldalActivity extends AppCompatActivity {
         progressBarTermekBetolt = findViewById(R.id.progressBarTermekBetolt);
         termekBetoltText = findViewById(R.id.termekBetoltText);
 
-        String termekNeve = getIntent().getStringExtra("termekNeve");
+        termekNeve = getIntent().getStringExtra("termekNeve");
         termekSulya = getIntent().getDoubleExtra("termekSulya", 0);
         termekegysegara = getIntent().getDoubleExtra("termekAra", 0);
         if (termekegysegara % 1 == 0) {
@@ -103,6 +116,7 @@ public class TermekOldalActivity extends AppCompatActivity {
         termekKepe = getIntent().getStringExtra("termekKepe");
         uzletId = getIntent().getStringExtra("uzletId");
         termekId = getIntent().getStringExtra("termekId");
+        ossztermekCollection = getIntent().getStringExtra("ossztermekCollection");
 
         getSupportActionBar().setTitle(termekNeve);
 
@@ -110,19 +124,19 @@ public class TermekOldalActivity extends AppCompatActivity {
         kepMegjelenitese(termekKepe);
         termekNeveBolt.setText(termekNeve);
         String ar;
-        String keszlet;
+
         if (termekSulya == -1.0) {
             termekSulyBoltLayout.setVisibility(View.GONE);
-            ar = (int) termekegysegara + " Ft/db";
-            keszlet = termekDbSZama + " db";
+            ar = " " + (int) termekegysegara + " Ft/db";
+            keszlet = " " + termekDbSZama + " db";
             rendelendoMennyiseg.setHint(R.string.rendelendo_mennyiseg_db);
         } else {
-            String suly = termekSulya + " kg";
+            String suly = " " + termekSulya + " kg";
             termekSulyBolt.setText(suly);
             termekSulyBoltLayout.setVisibility(View.VISIBLE);
             rendelendoMennyiseg.setHint(R.string.rendelendo_mennyiseg_kg);
-            ar = (int) termekegysegara + " Ft/kg";
-            keszlet = termekDbSZama + " kg";
+            ar = " " + (int) termekegysegara + " Ft/kg";
+            keszlet = " " + termekDbSZama + " kg";
         }
 
         termekAraBolt.setText(ar);
@@ -223,7 +237,6 @@ public class TermekOldalActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_menu, menu);
-        View view = menu.findItem(R.id.kosar).getActionView();
         kosar = menu.findItem(R.id.kosar);
         if (auth.getCurrentUser() != null) {
             DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
@@ -236,7 +249,6 @@ public class TermekOldalActivity extends AppCompatActivity {
         } else {
             kosar.setVisible(true);
         }
-        view.setOnClickListener(v -> startActivity(new Intent(TermekOldalActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -254,13 +266,68 @@ public class TermekOldalActivity extends AppCompatActivity {
             finish();
             super.onBackPressed();
         }
+        if (item.getItemId() == R.id.kosar) {
+            startActivity(new Intent(TermekOldalActivity.this, KosarActivity.class));
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        final MenuItem menuItem = menu.findItem(R.id.kosar);
+
+        FrameLayout rootVieww = (FrameLayout) menuItem.getActionView();
+        kor = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo);
+        korSzamlalo = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo_text);
+        if (kosarLista != null && kosarLista.size() != 0) {
+            kor.setVisibility(View.VISIBLE);
+            korSzamlalo.setText(String.valueOf(kosarLista.size()));
+        } else {
+            kor.setVisibility(View.GONE);
+        }
+        rootVieww.setOnClickListener(view -> {
+            onOptionsItemSelected(menuItem);
+        });
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     public void onKosarba(View view) {
         if (!rendelendoMennyiseg.getText().toString().isEmpty()) {
-            int rendelendo = Integer.parseInt(rendelendoMennyiseg.getText().toString());
-
+            double rendelendo = Double.parseDouble(rendelendoMennyiseg.getText().toString());
+            if (rendelendo <= termekDbSZama) {
+                if (rendelendo > 0) {
+                    Termek termek = new Termek(termekNeve, termekegysegara, termekDbSZama, termekSulya, termekKepe, uzletId, ossztermekCollection);
+                    termek.setSajatId(termekId);
+                    if (kosarLista.size() == 0) {
+                        kosarLista.put(termek, rendelendo);
+                        Toast.makeText(getApplicationContext(), "Sikeresen hozzáadtad a kosaradhoz!", Toast.LENGTH_LONG).show();
+                        korSzamlalo.setText(String.valueOf(kosarLista.size()));
+                        kor.setVisibility(View.VISIBLE);
+                    } else {
+                        boolean benneVan = false;
+                        for (Map.Entry<Termek, Double> lista : kosarLista.entrySet()) {
+                            if (lista.getKey().getSajatId().equals(this.termekId)) {
+                                lista.setValue(rendelendo);
+                                benneVan = true;
+                                Toast.makeText(getApplicationContext(), "Sikeresen frissítetted a kosaradat!", Toast.LENGTH_LONG).show();
+                                korSzamlalo.setText(String.valueOf(kosarLista.size()));
+                                kor.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        if (!benneVan) {
+                            kosarLista.put(termek, rendelendo);
+                            Toast.makeText(getApplicationContext(), "Sikeresen hozzáadtad a kosaradhoz!", Toast.LENGTH_LONG).show();
+                            korSzamlalo.setText(String.valueOf(kosarLista.size()));
+                            kor.setVisibility(View.VISIBLE);
+                        }
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Semmiből sem rendelhetsz 0-t!", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Maximum csak " + keszlet + "-ot rendelhetsz!", Toast.LENGTH_LONG).show();
+            }
         } else {
             Toast.makeText(getApplicationContext(), "Előbb meg kell adnod, hogy mennyit szeretnél rendelni ebből a termékből!", Toast.LENGTH_LONG).show();
         }
