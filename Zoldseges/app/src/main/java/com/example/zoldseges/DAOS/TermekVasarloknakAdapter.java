@@ -24,6 +24,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.example.zoldseges.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class TermekVasarloknakAdapter extends RecyclerView.Adapter<TermekVasarloknakAdapter.VasarloknakViewHolder> {
@@ -70,6 +72,19 @@ public class TermekVasarloknakAdapter extends RecyclerView.Adapter<TermekVasarlo
             holder.progressTermekKepLayout.setVisibility(View.GONE);
             Glide.with(context).load(R.drawable.standard_item_picture).into(holder.termekKepeVasarloknak);
         }
+        String ar;
+        String keszlet;
+
+        if (termekekLista.get(position).getTermekSulya() == -1) {
+            ar = ((int) termekekLista.get(position).getAr()) + " Ft/db";
+            keszlet = "Még további " + (int) termekekLista.get(position).getRaktaronLevoMennyiseg() + " db";
+        } else {
+            ar = (int) termekekLista.get(position).getAr() + " Ft/kg";
+            keszlet = "Még további " + (int) termekekLista.get(position).getRaktaronLevoMennyiseg() + " kg";
+        }
+        holder.termekAraVasarloknak.setText(ar);
+        holder.termekKeszletVasarloknak.setText(keszlet);
+
     }
 
     @Override
@@ -83,7 +98,8 @@ public class TermekVasarloknakAdapter extends RecyclerView.Adapter<TermekVasarlo
         private ImageView termekKepeVasarloknak;
         private TextView termekNeveVasarloknak;
 
-        private Button termekKosarba;
+        private TextView termekAraVasarloknak;
+        private TextView termekKeszletVasarloknak;
         private RelativeLayout progressTermekKepLayout;
 
         public VasarloknakViewHolder(@NonNull View itemView, VasarloNezetTermekek vasarloNezetTermekek) {
@@ -92,7 +108,9 @@ public class TermekVasarloknakAdapter extends RecyclerView.Adapter<TermekVasarlo
             termekCardVasarloknak = itemView.findViewById(R.id.termekCardVasarloknak);
             termekKepeVasarloknak = itemView.findViewById(R.id.termekKepeVasarloknak);
             termekNeveVasarloknak = itemView.findViewById(R.id.termekNeveVasarloknak);
-            termekKosarba = itemView.findViewById(R.id.termekKosarba);
+            termekAraVasarloknak = itemView.findViewById(R.id.termekAraVasarloknak);
+            termekKeszletVasarloknak = itemView.findViewById(R.id.termekKeszletVasarloknak);
+
             progressTermekKepLayout = itemView.findViewById(R.id.progressTermekKepLayout);
 
             termekCardVasarloknak.setOnClickListener(v -> {
@@ -105,15 +123,6 @@ public class TermekVasarloknakAdapter extends RecyclerView.Adapter<TermekVasarlo
                 }
             });
 
-            termekKosarba.setOnClickListener(v -> {
-                if (vasarloNezetTermekek != null) {
-                    int posi = getAdapterPosition();
-
-                    if (posi != RecyclerView.NO_POSITION) {
-                        vasarloNezetTermekek.onKosarba(posi);
-                    }
-                }
-            });
         }
     }
 }

@@ -17,6 +17,8 @@ import java.util.Objects;
 
 public class EladasaimActivity extends AppCompatActivity {
 
+    private MenuItem kosar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,9 +28,17 @@ public class EladasaimActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Rendelések");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        kosar.setVisible(false);
+    }
+
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
         View view = menu.findItem(R.id.kosarfiok).getActionView();
+        kosar = menu.findItem(R.id.kosarfiok);
+        kosar.setVisible(false);
         view.setOnClickListener(v -> startActivity(new Intent(EladasaimActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }

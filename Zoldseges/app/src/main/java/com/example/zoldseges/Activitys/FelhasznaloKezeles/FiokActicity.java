@@ -54,6 +54,8 @@ public class FiokActicity extends AppCompatActivity {
     private FirebaseUser felhasznalo;
 
     private LinearLayout ellenorzoProgress;
+    private MenuItem kosar;
+    private FirebaseFirestore db;
 
 
     @Override
@@ -64,7 +66,7 @@ public class FiokActicity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Profil");
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         felhasznalo = auth.getCurrentUser();
         if (auth.getCurrentUser() == null) {
@@ -133,6 +135,18 @@ public class FiokActicity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
         View view = menu.findItem(R.id.kosarfiok).getActionView();
+        kosar = menu.findItem(R.id.kosarfiok);
+        if (auth.getCurrentUser() != null) {
+            DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
+            reference.addSnapshotListener((value, error) -> {
+                assert value != null;
+                String tipus = value.getString("felhasznaloTipus");
+                assert tipus != null;
+                kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
+            });
+        } else {
+            kosar.setVisible(true);
+        }
         view.setOnClickListener(v -> startActivity(new Intent(FiokActicity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }

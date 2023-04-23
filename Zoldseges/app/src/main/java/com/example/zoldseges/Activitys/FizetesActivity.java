@@ -13,18 +13,23 @@ import com.example.zoldseges.Activitys.FelhasznaloKezeles.BejelentkezesActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
 import com.example.zoldseges.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
 public class FizetesActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
+    private MenuItem kosar;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fizetes);
 
+        db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -37,6 +42,8 @@ public class FizetesActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_menu, menu);
         View view = menu.findItem(R.id.kosar).getActionView();
+        kosar = menu.findItem(R.id.kosar);
+        kosar.setVisible(false);
         view.setOnClickListener(v -> startActivity(new Intent(FizetesActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }

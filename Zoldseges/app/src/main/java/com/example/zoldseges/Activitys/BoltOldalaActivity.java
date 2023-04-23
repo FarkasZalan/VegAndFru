@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.example.zoldseges.DAOS.VasarloNezetTermekek;
 import com.example.zoldseges.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -62,6 +64,7 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
     private boolean ures = false;
     private RelativeLayout nincsTermekLayout;
     private FirebaseAuth auth;
+    private MenuItem kosar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +116,7 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
         eltuntet();
         clearAll();
         getDataFromFireBase();
+        invalidateOptionsMenu();
     }
 
     private void getDataFromFireBase() {
@@ -165,12 +169,19 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
                     }).into(kepBoltba);
                 }
             } catch (Exception e) {
+                int color = getResources().getColor(R.color.white, getTheme());
+                int forground = getResources().getColor(R.color.ures_kep, getTheme());
+                appBarBolt.setBackgroundColor(color);
+                kepBoltba.setForeground(new ColorDrawable(forground));
+                kepBoltba.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 Glide.with(BoltOldalaActivity.this).load(R.drawable.grocery_store).into(kepBoltba);
             }
         } else {
             int color = getResources().getColor(R.color.white, getTheme());
+            int forground = getResources().getColor(R.color.ures_kep, getTheme());
             appBarBolt.setBackgroundColor(color);
-
+            kepBoltba.setForeground(new ColorDrawable(forground));
+            kepBoltba.setScaleType(ImageView.ScaleType.FIT_CENTER);
             Glide.with(BoltOldalaActivity.this).load(R.drawable.grocery_store).into(kepBoltba);
         }
     }
@@ -212,6 +223,18 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_menu, menu);
         View view = menu.findItem(R.id.kosar).getActionView();
+        kosar = menu.findItem(R.id.kosar);
+        if (auth.getCurrentUser() != null) {
+            DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
+            reference.addSnapshotListener((value, error) -> {
+                assert value != null;
+                String tipus = value.getString("felhasznaloTipus");
+                assert tipus != null;
+                kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
+            });
+        } else {
+            kosar.setVisible(true);
+        }
         view.setOnClickListener(v -> startActivity(new Intent(BoltOldalaActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }
@@ -245,11 +268,6 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
         intent.putExtra("uzletId", termekekListaja.get(position).getUzletId());
 
         startActivity(intent);
-    }
-
-    @Override
-    public void onKosarba(int position) {
-
     }
 
     public void onVissza(View view) {

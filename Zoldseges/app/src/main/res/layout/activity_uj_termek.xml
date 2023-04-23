@@ -85,7 +85,7 @@
             android:autofillHints=""
             android:backgroundTint="@color/purple_500"
             android:hint="@string/termek_egysegara_db"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mertekegysegValasztoLayout"

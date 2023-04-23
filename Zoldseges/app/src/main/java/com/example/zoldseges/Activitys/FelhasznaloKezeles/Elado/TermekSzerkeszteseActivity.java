@@ -72,6 +72,7 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
     private String termekKepe;
     private String regiKep;
     private String osszTermekColectionId;
+    double termekDbSZama;
     private Map<String, Object> termekMap = new HashMap<>();
 
     @Override
@@ -88,7 +89,7 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
         String termekNeve = getIntent().getStringExtra("termekNeve");
         double termekSulya = getIntent().getDoubleExtra("termekSulya", 0);
         double termekegysegara = getIntent().getDoubleExtra("termekegysegara", 0);
-        double termekDbSZama = getIntent().getDoubleExtra("termekDbSZama", 0);
+        termekDbSZama = getIntent().getDoubleExtra("termekDbSZama", 0);
         termekKepe = getIntent().getStringExtra("termekKepe");
         regiKep = getIntent().getStringExtra("termekKepe");
         uzletId = getIntent().getStringExtra("uzletId");
@@ -112,19 +113,33 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
         visszaTermekModositas = findViewById(R.id.visszaTermekModositas);
 
         termekNeveTermekModositas.setText(termekNeve);
+        String keszlet;
+        String ar;
         if (termekSulya == -1) {
             mertekegysegValasztoTermekModositas.setChecked(false);
             termekSulyaAtlagosanTermekModositas.setVisibility(View.GONE);
             termekSulyaAtlagosanTermekModositas.setText("");
+            ar = (int) termekegysegara + " Ft/db";
+            termekAraTermekModositas.setHint(ar);
+            termekAraTermekModositas.setText(String.valueOf((int) termekegysegara));
+            keszlet = (int) termekDbSZama + " db";
+            termekKeszletTermekModositas.setHint(keszlet);
+            termekKeszletTermekModositas.setText(String.valueOf((int) termekDbSZama));
         } else {
             mertekegysegValasztoTermekModositas.setChecked(true);
-            termekSulyaAtlagosanTermekModositas.setText(String.valueOf(termekSulya));
+            String suly = termekSulya + " kg";
+            termekSulyaAtlagosanTermekModositas.setHint(suly);
+            termekSulyaAtlagosanTermekModositas.setText(String.valueOf((int) termekSulya));
+            ar = (int) termekegysegara + " Ft/kg";
+            termekAraTermekModositas.setHint(ar);
+            termekAraTermekModositas.setText(String.valueOf((int) termekegysegara));
             termekSulyaAtlagosanTermekModositas.setVisibility(View.VISIBLE);
+            keszlet = (int) termekDbSZama + " kg";
+            termekKeszletTermekModositas.setHint(keszlet);
+            termekKeszletTermekModositas.setText(String.valueOf((int) termekDbSZama));
         }
 
         sulybanMerendo = sulyabanMerendoE();
-        termekAraTermekModositas.setText(String.valueOf(termekegysegara));
-        termekKeszletTermekModositas.setText(String.valueOf((int) termekDbSZama));
         if (!termekKepe.isEmpty()) {
             eltuntet();
             mentestextTermekModositas.setText(R.string.betoltes);
@@ -143,11 +158,15 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
                     termekSulyaAtlagosanTermekModositas.setVisibility(View.VISIBLE);
                     termekAraTermekModositas.setHint(R.string.termek_egysegara_kg);
                     termekAraTermekModositas.setText("");
+                    termekKeszletTermekModositas.setText("");
+                    termekKeszletTermekModositas.setHint("Készlet (kg)*");
                 } else {
                     sulybanMerendo = false;
                     termekSulyaAtlagosanTermekModositas.setVisibility(View.GONE);
                     termekAraTermekModositas.setText("");
                     termekAraTermekModositas.setHint(R.string.termek_egysegara_db);
+                    termekKeszletTermekModositas.setText("");
+                    termekKeszletTermekModositas.setHint("Készlet (db)*");
                 }
             }
         });
@@ -211,6 +230,8 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
         View view = menu.findItem(R.id.kosarfiok).getActionView();
+        MenuItem kosar = menu.findItem(R.id.kosarfiok);
+        kosar.setVisible(false);
         view.setOnClickListener(v -> startActivity(new Intent(TermekSzerkeszteseActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }

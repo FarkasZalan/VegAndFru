@@ -56,7 +56,8 @@
     <string name="termek_neve">Termék neve*</string>
     <string name="termek_egysegara_db">Termék egységára (Ft/db)*</string>
     <string name="termek_egysegara_kg">Termék egységára (Ft/kg)*</string>
-    <string name="keszleten_levok_darabszama">Készleten lévők darabszáma*</string>
+    <string name="keszleten_levok_darabszama">Készlet (db)*</string>
+    <string name="keszleten_levok_kg">Készlet (kg)*</string>
     <string name="mentes">Mentés</string>
     <string name="termek_kepenek_beallitasa">Termék képének beállítása</string>
     <string name="todo">TODO</string>
@@ -89,4 +90,15 @@
     <string name="elso_termek_letrehozasa">Add hozzá első termékedet a boltodhoz</string>
     <string name="nincs_termek">Jelenleg egyetlen termék sem elérhető</string>
     <string name="nincs_keresesi_eredmeny">Nincs a keresésnek megfelelő elem!</string>
+    <string name="rendelendo_mennyiseg_kg">Rendelenő mennyiség (kg)*</string>
+    <string name="rendelendo_mennyiseg_db">Rendelenő mennyiség (db)*</string>
+    <string name="rendelendo">Rendelenő:</string>
+    <string name="keszlet">Készlet</string>
+    <string name="keszleten">Készleten:</string>
+    <string name="ar">Termék Ára</string>
+    <string name="egysegar">Egységár:</string>
+    <string name="suly">Termék súlya</string>
+    <string name="termely_suly">Termék súlya:</string>
+    <string name="termek_nev">Termék neve</string>
+    <string name="kosatba">Kosárba</string>
 </resources>

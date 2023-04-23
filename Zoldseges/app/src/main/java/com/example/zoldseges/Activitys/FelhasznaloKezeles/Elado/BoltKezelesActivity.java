@@ -26,8 +26,10 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.example.zoldseges.Activitys.BoltOldalaActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
 import com.example.zoldseges.Activitys.KosarActivity;
+import com.example.zoldseges.Activitys.TermekOldalActivity;
 import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.DAOS.TermekAdapter;
 import com.example.zoldseges.DAOS.TermekValasztoEladoiNezet;
@@ -88,6 +90,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         appBarLayout = findViewById(R.id.appBarLayout);
         betoltesTextBoltKezeles = findViewById(R.id.betoltesTextBoltKezeles);
         progressBarBoltKezeles = findViewById(R.id.progressBarBoltKezeles);
+        eltuntet();
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
@@ -97,7 +100,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         termekLista = new ArrayList<>();
 
         this.betoltesTextBoltKezeles.setText(R.string.betoltes);
-        eltuntet();
+
         clearAll();
         getDataFromFirebase();
     }
@@ -110,7 +113,6 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setHasFixedSize(true);
         auth = FirebaseAuth.getInstance();
-
         termekLista = new ArrayList<>();
         this.betoltesTextBoltKezeles.setText(R.string.betoltes);
         clearAll();
@@ -151,23 +153,28 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
                         Uri uri = Uri.parse(adat.getString("boltKepe"));
                         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
                         getSupportActionBar().setTitle(adat.getString("cegNev"));
-                        try {
-                            if (!BoltKezelesActivity.this.isFinishing()) {
-                                Glide.with(BoltKezelesActivity.this).load(uri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
-                                    @Override
-                                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                        megjelenit();
-                                        return false;
-                                    }
+                        if (adat.getString("boltKepe") != null && !adat.getString("boltKepe").isEmpty()) {
+                            try {
+                                if (!BoltKezelesActivity.this.isFinishing()) {
+                                    Glide.with(BoltKezelesActivity.this).load(uri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
+                                        @Override
+                                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                            megjelenit();
+                                            return false;
+                                        }
 
-                                    @Override
-                                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                        //megjelenit();
-                                        return false;
-                                    }
-                                }).into(kep);
+                                        @Override
+                                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                            return false;
+                                        }
+                                    }).into(kep);
+                                }
+                            } catch (Exception e) {
+                                megjelenit();
+                                Glide.with(BoltKezelesActivity.this).load(R.drawable.grocery_store).into(kep);
                             }
-                        } catch (Exception e) {
+                        } else {
+                            megjelenit();
                             Glide.with(BoltKezelesActivity.this).load(R.drawable.grocery_store).into(kep);
                         }
                         uzletReference = db.collection("uzletek").document(uzletId).collection("termekek");
@@ -201,7 +208,6 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
     private void clearAll() {
         if (termekLista != null) {
             termekLista.clear();
-
             if (termekAdapter != null) {
                 termekAdapter.notifyDataSetChanged();
             }
@@ -213,6 +219,8 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
         View view = menu.findItem(R.id.kosarfiok).getActionView();
+        MenuItem kosar = menu.findItem(R.id.kosarfiok);
+        kosar.setVisible(false);
         view.setOnClickListener(v -> startActivity(new Intent(BoltKezelesActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }
@@ -233,8 +241,16 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
 
     @Override
     public void onItemMegtekint(int position) {
-        //termek oldala
-        Toast.makeText(getApplicationContext(), "Megtekintes", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(BoltKezelesActivity.this, TermekOldalActivity.class);
+        intent.putExtra("termekNeve", termekLista.get(position).getNev());
+        intent.putExtra("termekSulya", termekLista.get(position).getTermekSulya());
+        intent.putExtra("termekAra", termekLista.get(position).getAr());
+        intent.putExtra("termekKepe", termekLista.get(position).getTermekKepe());
+        intent.putExtra("termekKeszlet", termekLista.get(position).getRaktaronLevoMennyiseg());
+        intent.putExtra("termekId", termekLista.get(position).getSajatId());
+        intent.putExtra("uzletId", termekLista.get(position).getUzletId());
+
+        startActivity(intent);
     }
 
     @Override

@@ -112,11 +112,13 @@ public class UjTermekActivity extends AppCompatActivity {
                 sulybanKellMerni = true;
                 termekSulyaAtlagosan.setVisibility(View.VISIBLE);
                 termekAra.setHint(R.string.termek_egysegara_kg);
+                termekKeszlet.setHint(R.string.keszleten_levok_kg);
                 termekAra.setText("");
             } else {
                 sulybanKellMerni = false;
                 termekSulyaAtlagosan.setVisibility(View.GONE);
                 termekAra.setText("");
+                termekKeszlet.setHint(R.string.keszleten_levok_darabszama);
                 termekAra.setHint(R.string.termek_egysegara_db);
             }
         });
@@ -126,6 +128,8 @@ public class UjTermekActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
         View view = menu.findItem(R.id.kosarfiok).getActionView();
+        MenuItem kosar = menu.findItem(R.id.kosarfiok);
+        kosar.setVisible(false);
         view.setOnClickListener(v -> startActivity(new Intent(UjTermekActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }

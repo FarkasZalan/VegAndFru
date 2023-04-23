@@ -77,16 +77,29 @@
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/termekKosarba"
+                <TextView
+                    android:id="@+id/termekAraVasarloknak"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="12dp"
+                    android:gravity="center"
+                    android:lines="2"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="@string/kosarba" />
+                    android:text="@string/termek_egysegara_kg"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/termekKeszletVasarloknak"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:lines="2"
+                    android:layout_marginTop="10dp"
+                    android:text="Még további 3 rendelhető"
+                    android:layout_marginBottom="40dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
             </LinearLayout>
         </LinearLayout>
 

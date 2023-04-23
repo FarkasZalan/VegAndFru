@@ -1,18 +1,12 @@
 package com.example.zoldseges.Activitys;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +22,6 @@ import android.widget.Toast;
 
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.BejelentkezesActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
-import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.DAOS.Uzlet;
 
 import com.example.zoldseges.DAOS.UzletAdapter;
@@ -41,19 +34,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FooldalActivity extends AppCompatActivity implements UzletValaszto {
 
@@ -75,6 +63,8 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
     private TextView betoltesFooldal;
     private SearchView searchView;
     private RelativeLayout nincsKeresesiEredmenyLayout;
+
+    private MenuItem kosar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,11 +115,23 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         fooldalBoltjai.setHasFixedSize(true);
         auth = FirebaseAuth.getInstance();
 
+        if (auth.getCurrentUser() != null) {
+            DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
+            reference.addSnapshotListener((value, error) -> {
+                assert value != null;
+                String tipus = value.getString("felhasznaloTipus");
+                assert tipus != null;
+                kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
+            });
+        } else {
+            kosar.setVisible(true);
+        }
 
         uzletekListaja = new ArrayList<>();
         eltuntet();
         clearList();
         getDataFromFireBase();
+        invalidateOptionsMenu();
     }
 
     private void getDataFromFireBase() {
@@ -176,6 +178,18 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         searchView.setQueryHint("Keresés...");
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
+        kosar = menu.findItem(R.id.kosarFooldal);
+        if (auth.getCurrentUser() != null) {
+            DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
+            reference.addSnapshotListener((value, error) -> {
+                assert value != null;
+                String tipus = value.getString("felhasznaloTipus");
+                assert tipus != null;
+                kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
+            });
+        } else {
+            kosar.setVisible(true);
+        }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -243,17 +257,17 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.kosarFooldal:
-                startActivity(new Intent(this, KosarActivity.class));
-                return true;
-            case R.id.fiokFooldal:
-                if (felhasznalo != null) {
-                    startProfile();
-                } else {
-                    startLogin();
-                }
-                return true;
+        if (item.getItemId() == R.id.kosarFooldal) {
+            startActivity(new Intent(this, KosarActivity.class));
+            return true;
+        }
+        if (item.getItemId() == R.id.fiokFooldal) {
+            if (felhasznalo != null) {
+                startProfile();
+            } else {
+                startLogin();
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
