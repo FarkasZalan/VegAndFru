@@ -2,14 +2,13 @@ package com.example.zoldseges.DAOS;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.hardware.input.InputManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.CalendarView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,6 +25,8 @@ import com.bumptech.glide.request.target.Target;
 import com.example.zoldseges.R;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 public class KosarAdapter extends RecyclerView.Adapter<KosarAdapter.KosarViewHolder> {
@@ -33,6 +34,8 @@ public class KosarAdapter extends RecyclerView.Adapter<KosarAdapter.KosarViewHol
     private final Context context;
     ArrayList<KosarElem> kosarElemLista;
     KosarIranyito kosarIranyito;
+
+    private double fizetendoOsszeg = 0;
 
     public KosarAdapter(Context context, ArrayList<KosarElem> kosarElemLista, KosarIranyito kosarIranyito) {
         this.context = context;
@@ -58,6 +61,14 @@ public class KosarAdapter extends RecyclerView.Adapter<KosarAdapter.KosarViewHol
             holder.mennyisegKosar.setText(String.valueOf(kosarElemLista.get(position).getMennyiseg()));
         }
 
+        if (kosarElemLista.get(position).getTermek().getTermekSulya() == -1.0) {
+            holder.sulyVagyDb.setText("db");
+        } else {
+            holder.sulyVagyDb.setText("kg");
+        }
+
+        fizetendoOsszeg += kosarElemLista.get(position).getTermek().getAr() * kosarElemLista.get(position).getMennyiseg();
+
         if (!kosarElemLista.get(position).getTermek().getTermekKepe().isEmpty()) {
             holder.progressKosarLayout.setVisibility(View.VISIBLE);
 
@@ -78,6 +89,18 @@ public class KosarAdapter extends RecyclerView.Adapter<KosarAdapter.KosarViewHol
             holder.progressKosarLayout.setVisibility(View.GONE);
             Glide.with(context).load(R.drawable.standard_item_picture).into(holder.kosartermekKep);
         }
+
+        if (position >= getItemCount() - 1) {
+            holder.rendelesVeglegesitesehez.setVisibility(View.VISIBLE);
+            holder.fizetendoOsszegKosar.setVisibility(View.VISIBLE);
+            int osszeg;
+            if ((int) Math.round(fizetendoOsszeg) <= 0) {
+                osszeg = 1;
+            } else {
+                osszeg = (int) Math.round(fizetendoOsszeg);
+            }
+            holder.fizetendoOsszegKosar.append(" " + osszeg + " Ft");
+        }
     }
 
     @Override
@@ -93,20 +116,27 @@ public class KosarAdapter extends RecyclerView.Adapter<KosarAdapter.KosarViewHol
         TextView szerkesztesKosar;
         TextView torlesKosar;
         TextView megseKosar;
+        TextView sulyVagyDb;
         RelativeLayout progressKosarLayout;
         CardView kosarCard;
+
+        TextView fizetendoOsszegKosar;
+        Button rendelesVeglegesitesehez;
 
         public KosarViewHolder(@NonNull View itemView, KosarIranyito kosarIranyito) {
             super(itemView);
 
             kosartermekKep = itemView.findViewById(R.id.kosartermekKep);
             kosarTermekNeve = itemView.findViewById(R.id.kosarTermekNeve);
+            sulyVagyDb = itemView.findViewById(R.id.sulyVagyDb);
             mennyisegKosar = itemView.findViewById(R.id.mennyisegKosar);
             szerkesztesKosar = itemView.findViewById(R.id.szerkesztesKosar);
             torlesKosar = itemView.findViewById(R.id.torlesKosar);
             megseKosar = itemView.findViewById(R.id.megseKosar);
             progressKosarLayout = itemView.findViewById(R.id.progressKosarLayout);
             kosarCard = itemView.findViewById(R.id.kosarCard);
+            fizetendoOsszegKosar = itemView.findViewById(R.id.fizetendoOsszegKosar);
+            rendelesVeglegesitesehez = itemView.findViewById(R.id.rendelesVeglegesitesehez);
 
             kosarCard.setOnClickListener(v -> {
                 if (kosarIranyito != null) {
@@ -118,6 +148,8 @@ public class KosarAdapter extends RecyclerView.Adapter<KosarAdapter.KosarViewHol
                 }
             });
 
+            AtomicBoolean sikeresSzerkesztes = new AtomicBoolean(false);
+            AtomicReference<Double> regiMennyiseg = new AtomicReference<>((double) 0);
             szerkesztesKosar.setOnClickListener(v -> {
                 if (kosarIranyito != null) {
                     int position = getBindingAdapterPosition();
@@ -127,13 +159,26 @@ public class KosarAdapter extends RecyclerView.Adapter<KosarAdapter.KosarViewHol
                             megseKosar.setVisibility(View.VISIBLE);
                             mennyisegKosar.setEnabled(true);
                             mennyisegKosar.requestFocus();
+                            mennyisegKosar.setSelection(mennyisegKosar.length());
                             szerkesztesKosar.setBackgroundResource(R.drawable.ment);
+                            regiMennyiseg.set(Double.parseDouble(mennyisegKosar.getText().toString()));
                         } else {
                             torlesKosar.setVisibility(View.VISIBLE);
                             szerkesztesKosar.setBackgroundResource(R.drawable.szerkesztes);
                             mennyisegKosar.setEnabled(false);
                             megseKosar.setVisibility(View.GONE);
-                            kosarIranyito.onSzerkesztes(position);
+                            if (mennyisegKosar.getText().toString().isEmpty()) {
+                                sikeresSzerkesztes.set(kosarIranyito.onSzerkesztes(position, 0));
+                            } else {
+                                sikeresSzerkesztes.set(kosarIranyito.onSzerkesztes(position, Double.parseDouble(mennyisegKosar.getText().toString())));
+                            }
+                            if (!sikeresSzerkesztes.get()) {
+                                if (regiMennyiseg.get() % 1 == 0) {
+                                    mennyisegKosar.setText(String.valueOf(regiMennyiseg.get().intValue()));
+                                } else {
+                                    mennyisegKosar.setText(String.valueOf(regiMennyiseg.get()));
+                                }
+                            }
                         }
 
                     }
@@ -145,6 +190,11 @@ public class KosarAdapter extends RecyclerView.Adapter<KosarAdapter.KosarViewHol
                 mennyisegKosar.setEnabled(false);
                 megseKosar.setVisibility(View.GONE);
                 szerkesztesKosar.setBackgroundResource(R.drawable.szerkesztes);
+                if (regiMennyiseg.get() % 1 == 0) {
+                    mennyisegKosar.setText(String.valueOf(regiMennyiseg.get().intValue()));
+                } else {
+                    mennyisegKosar.setText(String.valueOf(regiMennyiseg.get()));
+                }
             });
 
             torlesKosar.setOnClickListener(v -> {
@@ -153,6 +203,16 @@ public class KosarAdapter extends RecyclerView.Adapter<KosarAdapter.KosarViewHol
 
                     if (position != RecyclerView.NO_POSITION) {
                         kosarIranyito.onTorles(position);
+                    }
+                }
+            });
+
+            rendelesVeglegesitesehez.setOnClickListener(v -> {
+                if (kosarIranyito != null) {
+                    int position = getBindingAdapterPosition();
+
+                    if (position != RecyclerView.NO_POSITION) {
+                        kosarIranyito.onFizeteshez();
                     }
                 }
             });

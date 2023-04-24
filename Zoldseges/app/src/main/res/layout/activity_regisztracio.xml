@@ -172,7 +172,7 @@
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/adoszam"
-                android:inputType="text"
+                android:inputType="number"
                 android:visibility="gone"
                 app:cornerRadius="10dp" />
 
@@ -195,11 +195,11 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_marginTop="30dp"
+                android:background="@drawable/uzlet_kepe_megjelenit"
                 android:contentDescription="@string/todo"
                 android:onClick="onTermekKepFeltoltesReg"
-                android:background="@drawable/uzlet_kepe_megjelenit"
-                android:visibility="gone"
                 android:scaleType="centerCrop"
+                android:visibility="gone"
                 app:srcCompat="@drawable/grocery_store" />
 
             <TextView

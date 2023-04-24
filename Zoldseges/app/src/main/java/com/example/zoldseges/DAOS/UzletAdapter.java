@@ -55,14 +55,13 @@ public class UzletAdapter extends RecyclerView.Adapter<UzletAdapter.UzletViewHol
         holder.uzletVarhatoSzallitasiIdeje.setText(uzletekListaja.get(position).getSzallitasIdotartama());
         holder.uzletSzallitasiKoltsege.setText(uzletekListaja.get(position).getSzallitasiDij());
 
-        if (uzletekListaja.get(position).getBoltKepe() != null && !uzletekListaja.get(position).getBoltKepe().isEmpty()) {
+        if (uzletekListaja.get(position).getBoltKepe() != null && !uzletekListaja.get(position).getBoltKepe().isEmpty() && !uzletekListaja.get(position).getBoltKepe().equals("null")) {
             holder.progressBoltKepLayout.setVisibility(View.VISIBLE);
 
             Glide.with(context).load(uzletekListaja.get(position).getBoltKepe()).addListener(new RequestListener<Drawable>() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                     holder.progressBoltKepLayout.setVisibility(View.GONE);
-                    Glide.with(context).load(R.drawable.grocery_store).into(holder.uzletKepe);
                     return false;
                 }
 

@@ -189,7 +189,13 @@ public class FiokActicity extends AppCompatActivity {
         AlertDialog.Builder kijelentkezesLaertBuilder = new AlertDialog.Builder(this);
         kijelentkezesLaertBuilder.setTitle("Kijelentkezés");
         kijelentkezesLaertBuilder.setIcon(R.mipmap.ic_launcher);
-        kijelentkezesLaertBuilder.setMessage("Bizttosan ki szeretnél jelentkezni?");
+        String szoveg;
+        if (kosarLista.size() == 0) {
+            szoveg = "Bizttosan ki szeretnél jelentkezni?";
+        } else {
+            szoveg = "Bizttosan ki szeretnél jelentkezni?\nÍgy a kosarad tartalma is törlődni fog!";
+        }
+        kijelentkezesLaertBuilder.setMessage(szoveg);
 
         kijelentkezesLaertBuilder.setCancelable(true);
 

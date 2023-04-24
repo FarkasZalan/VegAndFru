@@ -252,7 +252,7 @@
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/adoszam"
-                android:inputType="text"
+                android:inputType="number"
                 android:visibility="gone"
                 app:cornerRadius="10dp" />
         </LinearLayout>

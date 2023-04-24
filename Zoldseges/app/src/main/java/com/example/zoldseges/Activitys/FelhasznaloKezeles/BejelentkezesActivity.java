@@ -60,7 +60,6 @@ public class BejelentkezesActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -112,7 +111,6 @@ public class BejelentkezesActivity extends AppCompatActivity {
                 auth.signInWithEmailAndPassword(emailAdress, jelszoTxt).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         Toast.makeText(getApplicationContext(), "Sikeres bejelentkezés!", Toast.LENGTH_LONG).show();
-                        kosarLista.clear();
                         onProfil();
                     } else {
                         if (Objects.equals(Objects.requireNonNull(task.getException()).getMessage(), "There is no user record corresponding to this identifier. The user may have been deleted.")) {
@@ -151,6 +149,7 @@ public class BejelentkezesActivity extends AppCompatActivity {
 
     public void onProfil() {
         super.onBackPressed();
+        kosarLista.clear();
         startActivity(new Intent(this, FiokActicity.class));
         finish();
     }

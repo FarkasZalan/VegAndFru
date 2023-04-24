@@ -90,7 +90,6 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
 
         uzletekListaja = new ArrayList<>();
 
-
         eltuntet();
         clearList();
         getDataFromFireBase();
@@ -117,7 +116,6 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         fooldalBoltjai.setLayoutManager(layoutManager);
         fooldalBoltjai.setHasFixedSize(true);
         auth = FirebaseAuth.getInstance();
-
         uzletekListaja = new ArrayList<>();
         eltuntet();
         clearList();

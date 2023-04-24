@@ -156,41 +156,46 @@ public class UjTermekActivity extends AppCompatActivity {
         }
         if ((!sulybanKellMerni && !termekNeve.getText().toString().isEmpty() && !termekAra.getText().toString().isEmpty() && !termekKeszlet.getText().toString().isEmpty())
                 || (sulybanKellMerni && !termekNeve.getText().toString().isEmpty() && !termekAra.getText().toString().isEmpty() && !termekKeszlet.getText().toString().isEmpty() && !termekSulyaAtlagosan.getText().toString().isEmpty())) {
-            eltuntet();
-            String nev = termekNeve.getText().toString();
-            double raktaranLevoDbSsam = Double.parseDouble(termekKeszlet.getText().toString());
-            double ar = Double.parseDouble(termekAra.getText().toString());
-            double sulya;
-            if (!sulybanKellMerni) {
-                sulya = -1;
-            } else {
-                sulya = Double.parseDouble(termekSulyaAtlagosan.getText().toString());
-            }
-            if (raktaranLevoDbSsam <= 0 || ar <= 0 || (sulybanKellMerni && sulya <= 0)) {
-                Toast.makeText(getApplicationContext(), "Nem adhatsz meg semminek sem 0 értéket!", Toast.LENGTH_LONG).show();
-                megjelenit();
-            } else {
-                termekek = db.collection("uzletek").document(uzletId).collection("termekek").document();
-                osszestermek = db.collection("osszesTermek").document();
-                ossTermekColectionId = osszestermek.getId();
-                Map<String, Object> osszTermekBovit = new HashMap<>();
-                osszTermekBovit.put("termekNeve", nev);
-                osszTermekBovit.put("uzletId", uzletId);
-                osszestermek.set(osszTermekBovit);
-                termekId = termekek.getId();
-                ujTermek = new Termek(nev, ar, raktaranLevoDbSsam, sulya, termekKepe, uzletId, ossTermekColectionId);
-                if (imageUrl != null) {
-                    kepFeltolt(imageUrl, sulya);
+            if ((sulybanKellMerni && Double.parseDouble(termekKeszlet.getText().toString()) <= 2147483647 && Double.parseDouble(termekAra.getText().toString()) <= 2147483647 && Double.parseDouble(termekSulyaAtlagosan.getText().toString()) <= 2147483647) ||
+                    (!sulybanKellMerni && Double.parseDouble(termekKeszlet.getText().toString()) <= 2147483647 && Double.parseDouble(termekAra.getText().toString()) <= 2147483647)) {
+                eltuntet();
+                String nev = termekNeve.getText().toString();
+                double raktaranLevoDbSsam = Double.parseDouble(termekKeszlet.getText().toString());
+                double ar = Double.parseDouble(termekAra.getText().toString());
+                double sulya;
+                if (!sulybanKellMerni) {
+                    sulya = -1;
                 } else {
-                    termekMap = ujTermek.ujTermek(ujTermek);
-                    termekek.set(termekMap).addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Sikeres mentés! ", Toast.LENGTH_LONG).show();
-                            UjTermekActivity.super.onBackPressed();
-                            finish();
-                        }
-                    });
+                    sulya = Double.parseDouble(termekSulyaAtlagosan.getText().toString());
                 }
+                if (raktaranLevoDbSsam <= 0 || ar <= 0 || (sulybanKellMerni && sulya <= 0)) {
+                    Toast.makeText(getApplicationContext(), "Nem adhatsz meg semminek sem 0 értéket!", Toast.LENGTH_LONG).show();
+                    megjelenit();
+                } else {
+                    termekek = db.collection("uzletek").document(uzletId).collection("termekek").document();
+                    osszestermek = db.collection("osszesTermek").document();
+                    ossTermekColectionId = osszestermek.getId();
+                    Map<String, Object> osszTermekBovit = new HashMap<>();
+                    osszTermekBovit.put("termekNeve", nev);
+                    osszTermekBovit.put("uzletId", uzletId);
+                    osszestermek.set(osszTermekBovit);
+                    termekId = termekek.getId();
+                    ujTermek = new Termek(nev, ar, raktaranLevoDbSsam, sulya, termekKepe, uzletId, ossTermekColectionId);
+                    if (imageUrl != null) {
+                        kepFeltolt(imageUrl, sulya);
+                    } else {
+                        termekMap = ujTermek.ujTermek(ujTermek);
+                        termekek.set(termekMap).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Sikeres mentés! ", Toast.LENGTH_LONG).show();
+                                UjTermekActivity.super.onBackPressed();
+                                finish();
+                            }
+                        });
+                    }
+                }
+            } else {
+                Toast.makeText(getApplicationContext(), "Túl nagy értékeket adtál meg!", Toast.LENGTH_LONG).show();
             }
         } else {
             Toast.makeText(getApplicationContext(), "A csillaggal jelölt mezőket kötelező kitölteni!", Toast.LENGTH_LONG).show();

@@ -3,17 +3,21 @@ package com.example.zoldseges.Activitys;
 import static com.example.zoldseges.Activitys.TermekOldalActivity.kosarLista;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,10 +48,12 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
     private TextView betoltesKosar;
     private RecyclerView kosarElemei;
     private AppBarLayout appBarKosar;
-    private ImageView kepKosarba;
 
     private KosarAdapter kosarAdapter;
     private ArrayList<KosarElem> kosarListaja;
+
+    private RelativeLayout nincsTermekKosarbanLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +82,7 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
         betoltesKosar = findViewById(R.id.betoltesKosar);
         kosarElemei = findViewById(R.id.kosarElemei);
         appBarKosar = findViewById(R.id.appBarKosar);
-        kepKosarba = findViewById(R.id.kepKosarba);
+        nincsTermekKosarbanLayout = findViewById(R.id.nincsTermekKosarbanLayout);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         kosarElemei.setLayoutManager(layoutManager);
@@ -89,8 +95,8 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
     }
 
     private void getDataFromFireBase() {
-        for (Map.Entry<Termek, Double> lista : kosarLista.entrySet()) {
-            KosarElem elem = new KosarElem(lista.getKey(), lista.getValue());
+        for (KosarElem kosarElem : kosarLista) {
+            KosarElem elem = new KosarElem(kosarElem.getTermek(), kosarElem.getMennyiseg());
             kosarListaja.add(elem);
         }
         kosarAdapter = new KosarAdapter(getApplicationContext(), kosarListaja, KosarActivity.this);
@@ -115,12 +121,18 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
         betoltesKosar.setVisibility(View.VISIBLE);
         kosarElemei.setVisibility(View.GONE);
         appBarKosar.setVisibility(View.INVISIBLE);
+        nincsTermekKosarbanLayout.setVisibility(View.GONE);
+
     }
 
     public void megjelenit() {
+        if (kosarListaja.size() > 0) {
+            kosarElemei.setVisibility(View.VISIBLE);
+        } else {
+            nincsTermekKosarbanLayout.setVisibility(View.VISIBLE);
+        }
         progressKosar.setVisibility(View.GONE);
         betoltesKosar.setVisibility(View.GONE);
-        kosarElemei.setVisibility(View.VISIBLE);
         appBarKosar.setVisibility(View.VISIBLE);
     }
 
@@ -134,6 +146,9 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
     @Override
     protected void onResume() {
         super.onResume();
+        eltuntet();
+        clearList();
+        getDataFromFireBase();
         if (auth.getCurrentUser() != null) {
             DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
             reference.addSnapshotListener((value, error) -> {
@@ -165,13 +180,57 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
     }
 
     @Override
-    public void onSzerkesztes(int position) {
-
+    public boolean onSzerkesztes(int position, double ujMennyiseg) {
+        boolean sikeresSzerkesztes = false;
+        if (ujMennyiseg > 0) {
+            if (ujMennyiseg <= kosarListaja.get(position).getTermek().getRaktaronLevoMennyiseg()) {
+                for (KosarElem kosar : kosarLista) {
+                    if (kosar.getTermek().getSajatId().equals(kosarListaja.get(position).getTermek().getSajatId())) {
+                        kosar.setMennyiseg(ujMennyiseg);
+                        Toast.makeText(getApplicationContext(), "Sikeresen frissítetted a kosaradat!", Toast.LENGTH_LONG).show();
+                        sikeresSzerkesztes = true;
+                        eltuntet();
+                        clearList();
+                        getDataFromFireBase();
+                    }
+                }
+            } else {
+                String keszlet;
+                if (kosarListaja.get(position).getTermek().getTermekSulya() != -1.0) {
+                    keszlet = kosarListaja.get(position).getTermek().getRaktaronLevoMennyiseg() + " kg";
+                } else {
+                    keszlet = kosarListaja.get(position).getTermek().getRaktaronLevoMennyiseg() + " db";
+                }
+                Toast.makeText(getApplicationContext(), "Maximum csak " + keszlet + "-ot rendelhetsz ebből a termékből!", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            onTorles(position);
+        }
+        return sikeresSzerkesztes;
     }
 
     @Override
     public void onTorles(int position) {
+        AlertDialog.Builder torlesLaertBuilder = new AlertDialog.Builder(this);
+        torlesLaertBuilder.setTitle("Törlés");
+        torlesLaertBuilder.setIcon(R.mipmap.ic_launcher);
+        torlesLaertBuilder.setMessage("Biztosan törölni szeretnéd a(z) " + kosarListaja.get(position).getTermek().getNev() + " termékedet a kosárból?");
+        torlesLaertBuilder.setCancelable(true);
 
+        AlertDialog torlesAlert = torlesLaertBuilder.create();
+
+        torlesAlert.setButton(DialogInterface.BUTTON_POSITIVE, "Törlés", (dialog, which) -> {
+            eltuntet();
+            kosarLista.remove(position);
+            clearList();
+            getDataFromFireBase();
+        });
+
+
+        torlesAlert.setButton(DialogInterface.BUTTON_NEGATIVE, "Mégse", (dialog, which) -> torlesAlert.dismiss());
+        torlesAlert.show();
+        torlesAlert.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(R.color.red, getTheme()));
+        torlesAlert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.white, getTheme()));
     }
 
     @Override
@@ -187,5 +246,16 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
         intent.putExtra("ossztermekCollection", kosarListaja.get(position).getTermek().getOsszTermekColectionId());
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onFizeteshez() {
+        Intent intent = new Intent(KosarActivity.this, FizetesActivity.class);
+        startActivity(intent);
+    }
+
+    public void onVissza(View view) {
+        finish();
+        super.onBackPressed();
     }
 }

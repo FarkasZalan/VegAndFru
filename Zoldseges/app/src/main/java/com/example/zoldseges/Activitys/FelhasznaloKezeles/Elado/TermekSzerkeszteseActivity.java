@@ -260,33 +260,39 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
         if (sulybanMerendo && !termekNeveTermekModositas.getText().toString().isEmpty() && !termekNeveTermekModositas.getText().toString().equals(" ") && !termekSulyaAtlagosanTermekModositas.getText().toString().isEmpty() && !termekAraTermekModositas.getText().toString().isEmpty() && !termekKeszletTermekModositas.getText().toString().isEmpty() ||
                 !sulybanMerendo && !termekNeveTermekModositas.getText().toString().isEmpty() && !termekNeveTermekModositas.getText().toString().equals(" ") && !termekAraTermekModositas.getText().toString().isEmpty() && !termekKeszletTermekModositas.getText().toString().isEmpty()) {
             String nev = termekNeveTermekModositas.getText().toString();
-            double suly;
-            double ar = Double.parseDouble(termekAraTermekModositas.getText().toString());
-            double keszlet = Double.parseDouble(termekKeszletTermekModositas.getText().toString());
-            if (!sulybanMerendo) {
-                suly = -1;
-            } else {
-                suly = Double.parseDouble(termekSulyaAtlagosanTermekModositas.getText().toString());
-            }
-            if ((sulybanMerendo && suly > 0 && ar > 0 && keszlet > 0) || (!sulybanMerendo && ar > 0 && keszlet > 0)) {
-                mentestextTermekModositas.setText(R.string.termek_modositasa_progress);
-                eltuntet();
-                if (imageUrl == null) {
-                    if (regiKep.isEmpty()) {
-                        termekKepe = "";
-                    } else {
-                        termekKepe = regiKep;
-                    }
-                    adatbazisModosit(nev, ar, keszlet, suly, termekKepe);
+            if ((sulybanMerendo && Double.parseDouble(termekAraTermekModositas.getText().toString()) <= 2147483647 && Double.parseDouble(termekKeszletTermekModositas.getText().toString()) <= 2147483647 && Double.parseDouble(termekSulyaAtlagosanTermekModositas.getText().toString()) <= 2147483647) ||
+                    (!sulybanMerendo && Double.parseDouble(termekAraTermekModositas.getText().toString()) <= 2147483647 && Double.parseDouble(termekKeszletTermekModositas.getText().toString()) <= 2147483647)) {
+                double suly;
+                double ar = Double.parseDouble(termekAraTermekModositas.getText().toString());
+                double keszlet = Double.parseDouble(termekKeszletTermekModositas.getText().toString());
+                if (!sulybanMerendo) {
+                    suly = -1;
                 } else {
-                    kepetCserel(imageUrl, nev, ar, keszlet, suly);
+                    suly = Double.parseDouble(termekSulyaAtlagosanTermekModositas.getText().toString());
+                }
+                if ((sulybanMerendo && suly > 0 && ar > 0 && keszlet > 0) || (!sulybanMerendo && ar > 0 && keszlet > 0)) {
+                    mentestextTermekModositas.setText(R.string.termek_modositasa_progress);
+                    eltuntet();
+                    if (imageUrl == null) {
+                        if (regiKep.isEmpty()) {
+                            termekKepe = "";
+                        } else {
+                            termekKepe = regiKep;
+                        }
+                        adatbazisModosit(nev, ar, keszlet, suly, termekKepe);
+                    } else {
+                        kepetCserel(imageUrl, nev, ar, keszlet, suly);
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Nem adhatsz meg semminek sem 0 értéket!", Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(getApplicationContext(), "Nem adhatsz meg semminek sem 0 értéket!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Túl nagy értékeket adtál meg!", Toast.LENGTH_LONG).show();
             }
         } else {
             Toast.makeText(getApplicationContext(), "Minden változtatni kívánt mezőt ki kell tölts!", Toast.LENGTH_LONG).show();
         }
+
     }
 
     public void onTermekKepFeltoltesModositas(View view) {

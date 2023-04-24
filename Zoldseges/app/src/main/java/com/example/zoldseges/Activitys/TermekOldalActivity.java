@@ -2,8 +2,10 @@ package com.example.zoldseges.Activitys;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -28,6 +30,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.BejelentkezesActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
+import com.example.zoldseges.DAOS.KosarElem;
 import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -79,7 +83,7 @@ public class TermekOldalActivity extends AppCompatActivity {
     private FrameLayout kor;
     private TextView korSzamlalo;
 
-    public static Map<Termek, Double> kosarLista = new HashMap<>();
+    public static ArrayList<KosarElem> kosarLista = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,9 +171,11 @@ public class TermekOldalActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        rendelendoMennyiseg.setText("");
         eltuntet();
         kepMegjelenitese(termekKepe);
         invalidateOptionsMenu();
+
     }
 
     public void kepMegjelenitese(String url) {
@@ -299,16 +305,17 @@ public class TermekOldalActivity extends AppCompatActivity {
                 if (rendelendo > 0) {
                     Termek termek = new Termek(termekNeve, termekegysegara, termekDbSZama, termekSulya, termekKepe, uzletId, ossztermekCollection);
                     termek.setSajatId(termekId);
+                    KosarElem ujElem = new KosarElem(termek, rendelendo);
                     if (kosarLista.size() == 0) {
-                        kosarLista.put(termek, rendelendo);
+                        kosarLista.add(ujElem);
                         Toast.makeText(getApplicationContext(), "Sikeresen hozzáadtad a kosaradhoz!", Toast.LENGTH_LONG).show();
                         korSzamlalo.setText(String.valueOf(kosarLista.size()));
                         kor.setVisibility(View.VISIBLE);
                     } else {
                         boolean benneVan = false;
-                        for (Map.Entry<Termek, Double> lista : kosarLista.entrySet()) {
-                            if (lista.getKey().getSajatId().equals(this.termekId)) {
-                                lista.setValue(rendelendo);
+                        for (KosarElem kosar : kosarLista) {
+                            if (kosar.getTermek().getSajatId().equals(this.termekId)) {
+                                kosar.setMennyiseg(rendelendo);
                                 benneVan = true;
                                 Toast.makeText(getApplicationContext(), "Sikeresen frissítetted a kosaradat!", Toast.LENGTH_LONG).show();
                                 korSzamlalo.setText(String.valueOf(kosarLista.size()));
@@ -316,21 +323,56 @@ public class TermekOldalActivity extends AppCompatActivity {
                             }
                         }
                         if (!benneVan) {
-                            kosarLista.put(termek, rendelendo);
-                            Toast.makeText(getApplicationContext(), "Sikeresen hozzáadtad a kosaradhoz!", Toast.LENGTH_LONG).show();
-                            korSzamlalo.setText(String.valueOf(kosarLista.size()));
-                            kor.setVisibility(View.VISIBLE);
+                            boolean masikUzlet = false;
+                            for (KosarElem egyezik : kosarLista) {
+                                if (!ujElem.getTermek().getUzletId().equals(egyezik.getTermek().getUzletId())) {
+                                    masikUzlet = true;
+                                }
+                            }
+                            if (masikUzlet) {
+                                alert(ujElem);
+                            } else {
+                                kosarLista.add(ujElem);
+                                Toast.makeText(getApplicationContext(), "Sikeresen hozzáadtad a kosaradhoz!", Toast.LENGTH_LONG).show();
+                                korSzamlalo.setText(String.valueOf(kosarLista.size()));
+                                kor.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Semmiből sem rendelhetsz 0-t!", Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(getApplicationContext(), "Maximum csak " + keszlet + "-ot rendelhetsz!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Maximum csak " + keszlet + "-ot rendelhetsz ebből a termékből!", Toast.LENGTH_LONG).show();
             }
         } else {
             Toast.makeText(getApplicationContext(), "Előbb meg kell adnod, hogy mennyit szeretnél rendelni ebből a termékből!", Toast.LENGTH_LONG).show();
         }
+    }
 
+    public void alert(KosarElem ujElem) {
+        AlertDialog.Builder torlesLaertBuilder = new AlertDialog.Builder(this);
+        torlesLaertBuilder.setTitle("Eltávolítod a korábbi termékeket?");
+        torlesLaertBuilder.setIcon(R.mipmap.ic_launcher);
+        torlesLaertBuilder.setMessage("Már másik üzlet terméke is a kosaradban van. Ki szeretnéd venni őket?");
+        torlesLaertBuilder.setCancelable(true);
+
+        AlertDialog torlesAlert = torlesLaertBuilder.create();
+
+        torlesAlert.setButton(DialogInterface.BUTTON_POSITIVE, "Kosár ürítése", (dialog, which) -> {
+            kosarLista.clear();
+
+            kosarLista.add(ujElem);
+            Toast.makeText(getApplicationContext(), "Sikeresen hozzáadtad a kosaradhoz!", Toast.LENGTH_LONG).show();
+            korSzamlalo.setText(String.valueOf(kosarLista.size()));
+            kor.setVisibility(View.VISIBLE);
+            invalidateMenu();
+        });
+
+
+        torlesAlert.setButton(DialogInterface.BUTTON_NEGATIVE, "Mégse", (dialog, which) -> torlesAlert.dismiss());
+        torlesAlert.show();
+        torlesAlert.getButton(DialogInterface.BUTTON_POSITIVE).setBackgroundColor(getResources().getColor(R.color.red, getTheme()));
+        torlesAlert.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.white, getTheme()));
     }
 }

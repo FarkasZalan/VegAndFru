@@ -14,7 +14,7 @@
     <string name="telefonszam">Telefonszám*</string>
     <string name="adoszam">Adószám*</string>
     <string name="ceget_regisztralok">Céget regisztrálok</string>
-    <string name="ceg_neve">Cég neve*</string>
+    <string name="ceg_neve">Üzlet neve*</string>
     <string name="jelszo_ujra">Jelszó újra*</string>
     <string name="szallitasi_cim">Szállítási cím*</string>
     <string name="szekhely">Székhely*</string>
@@ -85,7 +85,7 @@
     <string name="termek_modositasa_progress">Termék módosítása...</string>
     <string name="uzlet_neve">Üzlet neve</string>
     <string name="varhato_szallitasi_ido">Várható szállítási idő</string>
-    <string name="szallitasi_koltseg">Szállítási költség</string>
+    <string name="szallitasi_koltseg">Szállítási költség*</string>
     <string name="kosarba">Kosárba</string>
     <string name="elso_termek_letrehozasa">Add hozzá első termékedet a boltodhoz</string>
     <string name="nincs_termek">Jelenleg egyetlen termék sem elérhető</string>
@@ -103,4 +103,17 @@
     <string name="kosatba">Kosárba</string>
     <string name="termek_egysegar">Termék egységár</string>
     <string name="szerkesztes">Szerkesztés</string>
+    <string name="ures_kosar">Üres a kosarad!</string>
+    <string name="rendeles_leadasa">Rendelés leadása</string>
+    <string name="fizetendo_osszeg">Fizetendő összeg :</string>
+    <string name="megrendelo_neve">Megrendelő neve*</string>
+    <string name="megrendelo_email_cime">Megrendelő email címe*</string>
+    <string name="megrendel_telefonszama">Megrendelő telefonszáma*</string>
+    <string name="szallitasi_cim_rende">Szállítási cím*</string>
+    <string name="megrendel_uzlet_neve">Megrendelő üzlet neve*</string>
+    <string name="megrendel_uzlet_adoszam">Megrendelő üzlet adószáma*</string>
+    <string name="szamlazasi_cim">Számlázási cím*</string>
+    <string name="rendeles_lead">Rendelés leadása</string>
+    <string name="feldolgozas_folyamatban">Fizetés folyamatban...</string>
+    <string name="termekek_fizetes">Termékek:</string>
 </resources>

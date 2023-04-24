@@ -28,7 +28,8 @@ Az oldalon lehetőség van keresni oly módon, hogy a fenti keresőmezőbe beír
 Minden bolton belül mindenki számára megtekinthetőek az adott üzlet termékei (ha van neki) és az eladót leszámítva mindenki hozzáadhatja a kiválasztott terméket a kosarához, hogyha a készletet nem meghaladó mennyiséget szeretne rendelni. A kosaron belül pedig megjelennek az eddig összeválogatott termékek, ahol megtekinthetőek az adott termékek, módosíthatóak a rendelendő mennyiségek illetve törölni is lehet őket a listából.
 Ha a felhasználó minden kívánt terméket összeválogatott innen mehet tovább a fizetés oldalára.
 
-## Rendelés leadása
+### Rendelés leadása
+A vásárlók a boltból kerülhetnek a fizetői oldalra. Az, aki nincs bejelentkezve a fizetői oldalon lehetősége nyílik bejelentkezni (ekkor persze a kosara is kiürül), de aki be van jelentkezve ekkor már nem kell megadnia semmilyen adatot, ugyanis a megadott adatai megjelennek tehát nem kell neki semmit egyesével beírnia, és ha szeretné akkor még ott a rendeléshez szerkesztheti is azokat. Sikeres fizetés után megtekintheti a leadott rendelését, de ezt a nyugtatát megtekintheti később mint ahogy az összes többi előzőleg leadott rendelését is a profilján belüli 'rendeléseim' menüpontra kattintva. Természetesen ha sikerült a fizetés, akkor erről az eladó cég is kap értesítést és ő is a profilján belüli 'rendelések' menüpontban tekintehti meg őket.
 
 
 ## Egyéb tudnivalók

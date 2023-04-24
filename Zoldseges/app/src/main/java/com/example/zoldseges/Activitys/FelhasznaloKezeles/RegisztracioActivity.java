@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -182,6 +183,7 @@ public class RegisztracioActivity extends AppCompatActivity {
                 szekhely.setVisibility(View.VISIBLE);
                 termekKepBeallitas.setVisibility(View.VISIBLE);
                 termekKepCim.setVisibility(View.VISIBLE);
+                this.nev.setHint("Tulajdonos teljes neve*");
             } else {
                 imageUrl = null;
                 Glide.with(RegisztracioActivity.this).load(R.drawable.grocery_store).into(termekKepBeallitas);
@@ -192,12 +194,14 @@ public class RegisztracioActivity extends AppCompatActivity {
                 szekhely.setVisibility(View.GONE);
                 termekKepBeallitas.setVisibility(View.GONE);
                 termekKepCim.setVisibility(View.GONE);
+                this.nev.setHint("Teljes név*");
                 if (cegE.isChecked()) {
                     cegNev.setVisibility(View.VISIBLE);
                     adoszam.setVisibility(View.VISIBLE);
                     szekhely.setVisibility(View.VISIBLE);
                     termekKepBeallitas.setVisibility(View.GONE);
                     termekKepCim.setVisibility(View.GONE);
+                    this.nev.setHint("Tulajdonos teljes neve*");
                 }
             }
         });
@@ -266,7 +270,6 @@ public class RegisztracioActivity extends AppCompatActivity {
                                     if (imageUrl == null) {
                                         super.onBackPressed();
                                         Toast.makeText(getApplicationContext(), "Sikeresen regisztráltál, " + felhasznalo1.getNev() + "!", Toast.LENGTH_LONG).show();
-                                        kosarLista.clear();
                                         sikeresRegisztracio();
                                     }
                                 }).addOnFailureListener(e -> megjelenit());
@@ -290,6 +293,7 @@ public class RegisztracioActivity extends AppCompatActivity {
     public void megjelenit() {
         this.progressBarRegisztracio.setVisibility(View.GONE);
         this.regisztracioText.setVisibility(View.GONE);
+        this.nev.setHint("Teljes név*");
         if (cegE.isChecked() || eladoE.isChecked()) {
             this.szekhely.setVisibility(View.VISIBLE);
             this.cegNev.setVisibility(View.VISIBLE);
@@ -298,6 +302,7 @@ public class RegisztracioActivity extends AppCompatActivity {
             if (eladoE.isChecked()) {
                 this.termekKepBeallitas.setVisibility(View.VISIBLE);
                 this.termekKepCim.setVisibility(View.VISIBLE);
+                this.nev.setHint("Tulajdonos teljes neve*");
             }
         }
         this.nev.setVisibility(View.VISIBLE);
@@ -337,6 +342,7 @@ public class RegisztracioActivity extends AppCompatActivity {
     public void sikeresRegisztracio() {
         super.onBackPressed();
         super.onBackPressed();
+        kosarLista.clear();
         startActivity(new Intent(this, FiokActicity.class));
         finish();
     }

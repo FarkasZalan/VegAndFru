@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -216,6 +217,7 @@ public class AdataimActivity extends AppCompatActivity {
             szallitasiCimLayout.setVisibility(View.VISIBLE);
             termekKepBeallitasModosit.setVisibility(View.GONE);
             termekKepCimModosit.setVisibility(View.GONE);
+            this.nevV.setHint("Tulajdonos teljes neve*");
             if (felhasznaloTipus[0].equals("Eladó cég/vállalat")) {
                 termekKepBeallitasModosit.setVisibility(View.VISIBLE);
                 termekKepCimModosit.setVisibility(View.VISIBLE);
@@ -223,6 +225,7 @@ public class AdataimActivity extends AppCompatActivity {
                 szallitasiCimLayout.setVisibility(View.GONE);
             }
         } else {
+            this.nevV.setHint("Teljes név*");
             szekhelyV.setVisibility(View.GONE);
             cegNevV.setVisibility(View.GONE);
             adoszamV.setVisibility(View.GONE);
@@ -372,6 +375,9 @@ public class AdataimActivity extends AppCompatActivity {
                                     Map<String, String> uzletParameterek = new HashMap<>();
                                     uzletParameterek.put("cegNev", cegNevV.getText().toString());
                                     uzletParameterek.put("szekhely", szekhelyV.getText().toString());
+                                    if (boltKep.equals("null") || boltKep.isEmpty()) {
+                                        boltKep = "";
+                                    }
                                     uzletParameterek.put("boltKepe", boltKep);
                                     uzletParameterek.put("tulajId", Objects.requireNonNull(felhasznalo.getUid()));
                                     uzletReference.set(uzletParameterek);
