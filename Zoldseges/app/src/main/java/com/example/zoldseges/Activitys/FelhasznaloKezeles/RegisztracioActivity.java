@@ -113,7 +113,10 @@ public class RegisztracioActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
-
+        MenuItem kosar = menu.findItem(R.id.kosarfiok);
+        if (auth.getCurrentUser() == null) {
+            kosar.setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Zoldseges"
         tools:targetApi="31">
         <activity
-            android:name=".NyugtaActivity"
+            android:name=".Activitys.NyugtaActivity"
             android:exported="false" />
         <activity
             android:name=".Activitys.TermekOldalActivity"

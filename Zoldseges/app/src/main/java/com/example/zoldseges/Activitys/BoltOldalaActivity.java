@@ -235,7 +235,7 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
                 kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
             });
         } else {
-            kosar.setVisible(true);
+            kosar.setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
     }

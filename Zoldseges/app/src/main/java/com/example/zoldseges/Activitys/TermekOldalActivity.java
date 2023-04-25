@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.URLSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,6 +88,7 @@ public class TermekOldalActivity extends AppCompatActivity {
 
     private FrameLayout kor;
     private TextView korSzamlalo;
+    private TextView bejlelentkezKosarhoz;
 
     public static ArrayList<KosarElem> kosarLista = new ArrayList<>();
 
@@ -108,6 +115,7 @@ public class TermekOldalActivity extends AppCompatActivity {
         maxMennyisegBoltLayout = findViewById(R.id.maxMennyisegBoltLayout);
         kosarbaTermekOldal = findViewById(R.id.kosarbaTermekOldal);
         progressBarTermekBetolt = findViewById(R.id.progressBarTermekBetolt);
+        bejlelentkezKosarhoz = findViewById(R.id.bejlelentkezKosarhoz);
         termekBetoltText = findViewById(R.id.termekBetoltText);
 
         termekNeve = getIntent().getStringExtra("termekNeve");
@@ -123,7 +131,6 @@ public class TermekOldalActivity extends AppCompatActivity {
         ossztermekCollection = getIntent().getStringExtra("ossztermekCollection");
 
         getSupportActionBar().setTitle(termekNeve);
-
         eltuntet();
         kepMegjelenitese(termekKepe);
         termekNeveBolt.setText(termekNeve);
@@ -172,10 +179,33 @@ public class TermekOldalActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         rendelendoMennyiseg.setText("");
+        bejelentkezSpan();
         eltuntet();
         kepMegjelenitese(termekKepe);
         invalidateOptionsMenu();
 
+    }
+
+    private void bejelentkezSpan() {
+        if (auth.getCurrentUser() != null) {
+            bejlelentkezKosarhoz.setVisibility(View.GONE);
+        } else {
+            bejlelentkezKosarhoz.setVisibility(View.VISIBLE);
+            SpannableString bejelentkezes = new SpannableString("Már van fiókod? Jelentkezz be!");
+            ClickableSpan clickableSpan = new ClickableSpan() {
+                @Override
+                public void onClick(@NonNull View widget) {
+                    startActivity(new Intent(TermekOldalActivity.this, BejelentkezesActivity.class));
+                }
+            };
+            bejelentkezes.setSpan(clickableSpan, 16, 30, 0);
+            bejelentkezes.setSpan(new URLSpan(""), 16, 30, 0);
+            bejelentkezes.setSpan(new ForegroundColorSpan(ContextCompat.getColor(TermekOldalActivity.this, R.color.purple_500)), 16, 30, 0);
+
+            bejlelentkezKosarhoz.setMovementMethod(LinkMovementMethod.getInstance());
+
+            bejlelentkezKosarhoz.setText(bejelentkezes, TextView.BufferType.SPANNABLE);
+        }
     }
 
     public void kepMegjelenitese(String url) {
@@ -253,7 +283,7 @@ public class TermekOldalActivity extends AppCompatActivity {
                 kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
             });
         } else {
-            kosar.setVisible(true);
+            kosar.setVisible(false);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -299,54 +329,59 @@ public class TermekOldalActivity extends AppCompatActivity {
     }
 
     public void onKosarba(View view) {
-        if (!rendelendoMennyiseg.getText().toString().isEmpty()) {
-            double rendelendo = Double.parseDouble(rendelendoMennyiseg.getText().toString());
-            if (rendelendo <= termekDbSZama) {
-                if (rendelendo > 0) {
-                    Termek termek = new Termek(termekNeve, termekegysegara, termekDbSZama, termekSulya, termekKepe, uzletId, ossztermekCollection);
-                    termek.setSajatId(termekId);
-                    KosarElem ujElem = new KosarElem(termek, rendelendo);
-                    if (kosarLista.size() == 0) {
-                        kosarLista.add(ujElem);
-                        Toast.makeText(getApplicationContext(), "Sikeresen hozzáadtad a kosaradhoz!", Toast.LENGTH_LONG).show();
-                        korSzamlalo.setText(String.valueOf(kosarLista.size()));
-                        kor.setVisibility(View.VISIBLE);
-                    } else {
-                        boolean benneVan = false;
-                        for (KosarElem kosar : kosarLista) {
-                            if (kosar.getTermek().getSajatId().equals(this.termekId)) {
-                                kosar.setMennyiseg(rendelendo);
-                                benneVan = true;
-                                Toast.makeText(getApplicationContext(), "Sikeresen frissítetted a kosaradat!", Toast.LENGTH_LONG).show();
-                                korSzamlalo.setText(String.valueOf(kosarLista.size()));
-                                kor.setVisibility(View.VISIBLE);
-                            }
-                        }
-                        if (!benneVan) {
-                            boolean masikUzlet = false;
-                            for (KosarElem egyezik : kosarLista) {
-                                if (!ujElem.getTermek().getUzletId().equals(egyezik.getTermek().getUzletId())) {
-                                    masikUzlet = true;
+        if (auth.getCurrentUser() != null) {
+            if (!rendelendoMennyiseg.getText().toString().isEmpty()) {
+                double rendelendo = Double.parseDouble(rendelendoMennyiseg.getText().toString());
+                if (rendelendo <= termekDbSZama) {
+                    if (rendelendo > 0) {
+                        Termek termek = new Termek(termekNeve, termekegysegara, termekDbSZama, termekSulya, termekKepe, uzletId, ossztermekCollection);
+                        termek.setSajatId(termekId);
+                        KosarElem ujElem = new KosarElem(termek, rendelendo);
+                        if (kosarLista.size() == 0) {
+                            kosarLista.add(ujElem);
+                            Toast.makeText(getApplicationContext(), "Sikeresen hozzáadtad a kosaradhoz!", Toast.LENGTH_LONG).show();
+                            korSzamlalo.setText(String.valueOf(kosarLista.size()));
+                            kor.setVisibility(View.VISIBLE);
+                        } else {
+                            boolean benneVan = false;
+                            for (KosarElem kosar : kosarLista) {
+                                if (kosar.getTermek().getSajatId().equals(this.termekId)) {
+                                    kosar.setMennyiseg(rendelendo);
+                                    benneVan = true;
+                                    Toast.makeText(getApplicationContext(), "Sikeresen frissítetted a kosaradat!", Toast.LENGTH_LONG).show();
+                                    korSzamlalo.setText(String.valueOf(kosarLista.size()));
+                                    kor.setVisibility(View.VISIBLE);
                                 }
                             }
-                            if (masikUzlet) {
-                                alert(ujElem);
-                            } else {
-                                kosarLista.add(ujElem);
-                                Toast.makeText(getApplicationContext(), "Sikeresen hozzáadtad a kosaradhoz!", Toast.LENGTH_LONG).show();
-                                korSzamlalo.setText(String.valueOf(kosarLista.size()));
-                                kor.setVisibility(View.VISIBLE);
+                            if (!benneVan) {
+                                boolean masikUzlet = false;
+                                for (KosarElem egyezik : kosarLista) {
+                                    if (!ujElem.getTermek().getUzletId().equals(egyezik.getTermek().getUzletId())) {
+                                        masikUzlet = true;
+                                    }
+                                }
+                                if (masikUzlet) {
+                                    alert(ujElem);
+                                } else {
+                                    kosarLista.add(ujElem);
+                                    Toast.makeText(getApplicationContext(), "Sikeresen hozzáadtad a kosaradhoz!", Toast.LENGTH_LONG).show();
+                                    korSzamlalo.setText(String.valueOf(kosarLista.size()));
+                                    kor.setVisibility(View.VISIBLE);
+                                }
                             }
                         }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Semmiből sem rendelhetsz 0-t!", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Semmiből sem rendelhetsz 0-t!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Maximum csak " + keszlet + "-ot rendelhetsz ebből a termékből!", Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(getApplicationContext(), "Maximum csak " + keszlet + "-ot rendelhetsz ebből a termékből!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Előbb meg kell adnod, hogy mennyit szeretnél rendelni ebből a termékből!", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(getApplicationContext(), "Előbb meg kell adnod, hogy mennyit szeretnél rendelni ebből a termékből!", Toast.LENGTH_LONG).show();
+            bejelentkezSpan();
+            Toast.makeText(getApplicationContext(), "Előbb be kell jelentkezned ahhoz, hogy rendelhess valamit!", Toast.LENGTH_LONG).show();
         }
     }
 

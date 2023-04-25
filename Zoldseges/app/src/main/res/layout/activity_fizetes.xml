@@ -64,10 +64,11 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed" />
 
         <TextView
-            android:id="@+id/bejlelentkezFizeteshez"
+            android:id="@+id/adatModosit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:visibility="visible"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -80,14 +81,15 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="16dp"
+            android:enabled="false"
             android:hint="@string/megrendelo_neve"
             android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fizetesKep"
-            app:layout_constraintVertical_bias="0.07" />
+            app:layout_constraintTop_toBottomOf="@+id/adatModosit"
+            app:layout_constraintVertical_bias="0.01" />
 
         <EditText
             android:id="@+id/megrendeloEmailCime"
@@ -95,6 +97,7 @@
             android:layout_height="50dp"
             android:layout_margin="16dp"
             android:hint="@string/megrendelo_email_cime"
+            android:enabled="false"
             android:inputType="textEmailAddress"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -111,6 +114,7 @@
             android:hint="@string/megrendel_telefonszama"
             android:inputType="phone"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -126,6 +130,7 @@
             android:inputType="textPostalAddress"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:enabled="false"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/megrendeloTelefonszama"
@@ -139,6 +144,7 @@
             android:hint="@string/megrendel_uzlet_adoszam"
             android:inputType="number"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:enabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -151,6 +157,7 @@
             android:layout_height="50dp"
             android:layout_margin="16dp"
             android:hint="@string/szamlazasi_cim"
+            android:enabled="false"
             android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -196,7 +203,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp"
             android:text=""
             android:textSize="18sp"
@@ -206,6 +212,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/kosarTartalma"
             app:layout_constraintVertical_bias="0.1" />
+
+        <CheckBox
+            android:id="@+id/aszfElfogad"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:textSize="14sp"
+            android:layout_marginStart="16dp"
+            android:buttonTint="@color/purple_500"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/elfogadom_az_aszf"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vegosszeg"
+            app:layout_constraintVertical_bias="0.1"
+            />
 
         <Button
             android:id="@+id/rendelesLeadasa"
@@ -218,7 +242,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/vegosszeg"
+            app:layout_constraintTop_toBottomOf="@+id/aszfElfogad"
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

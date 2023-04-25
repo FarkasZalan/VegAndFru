@@ -116,4 +116,9 @@
     <string name="rendeles_lead">Rendelés leadása</string>
     <string name="feldolgozas_folyamatban">Fizetés folyamatban...</string>
     <string name="termekek_fizetes">Termékek:</string>
+    <string name="elfogadom_az_aszf">Elfogadom az ÁSZF-t</string>
+    <string name="rendben">Rendben</string>
+    <string name="rendeles_reszletei">Rendelés részletei:</string>
+    <string name="sikeres_rendeles">Sikeres Rendelés</string>
+    <string name="nincs_rendelesed">Még nincs egyetlen rendelésed sem</string>
 </resources>

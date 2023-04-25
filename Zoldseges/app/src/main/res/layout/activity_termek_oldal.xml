@@ -61,6 +61,19 @@
             app:layout_constraintVertical_bias=".037" />
 
         <TextView
+            android:id="@+id/bejlelentkezKosarhoz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/kep2"
+            app:layout_constraintVertical_bias="0.027" />
+
+        <TextView
             android:id="@+id/termekNeveBolt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,8 +84,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/kep2"
-            app:layout_constraintVertical_bias=".037" />
+            app:layout_constraintTop_toBottomOf="@+id/bejlelentkezKosarhoz"
+            app:layout_constraintVertical_bias=".027" />
 
 
         <LinearLayout
@@ -200,8 +213,8 @@
             android:layout_height="60dp"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="40dp"
-            android:text="@string/kosatba"
             android:onClick="onKosarba"
+            android:text="@string/kosatba"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -3,6 +3,7 @@ package com.example.zoldseges.Activitys;
 import static com.example.zoldseges.Activitys.TermekOldalActivity.kosarLista;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
@@ -17,21 +18,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.zoldseges.Activitys.FelhasznaloKezeles.AdataimActivity;
+import com.example.zoldseges.Activitys.FelhasznaloKezeles.AszfActicity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.BejelentkezesActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
 import com.example.zoldseges.DAOS.KosarElem;
 import com.example.zoldseges.DAOS.Nyugta;
-import com.example.zoldseges.NyugtaActivity;
 import com.example.zoldseges.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -58,14 +64,20 @@ public class FizetesActivity extends AppCompatActivity {
     private EditText megrendeloCegSzekhelye;
     private TextView kosarTartalma;
     private TextView vegosszeg;
+    private TextView adatModosit;
     private Button rendelesLeadasa;
     private DocumentReference rendeloRef;
     private double fizetendo = 0;
 
     String kosarEleme;
-    private TextView bejlelentkezFizeteshez;
     private TextView rendelendoTermekText;
     private boolean cegE;
+
+    private CheckBox aszfElfogad;
+
+    private String uzletId;
+    String uzletNeve;
+    String uzletKepe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,43 +105,42 @@ public class FizetesActivity extends AppCompatActivity {
         kosarTartalma = findViewById(R.id.kosarTartalma);
         vegosszeg = findViewById(R.id.vegosszeg);
         rendelesLeadasa = findViewById(R.id.rendelesLeadasa);
-        bejlelentkezFizeteshez = findViewById(R.id.bejlelentkezFizeteshez);
         rendelendoTermekText = findViewById(R.id.rendelendoTermekText);
+        aszfElfogad = findViewById(R.id.aszfElfogad);
+        adatModosit = findViewById(R.id.adatModosit);
         vegosszeg.setText("");
         kosarTartalma.setText("");
-        bejelentkezSpan();
+        eltuntet();
+        adatModosit();
+        aszf();
+        rendeloRef = db.collection("felhasznalok").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getUid()));
+        cegE = adatokFeltolt();
         vasarlasAdatai();
+
 
     }
 
-    private void bejelentkezSpan() {
-        if (auth.getCurrentUser() != null) {
-            bejlelentkezFizeteshez.setVisibility(View.GONE);
-            rendeloRef = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser().getUid()));
-            cegE = adatokFeltolt();
-        } else {
-            bejlelentkezFizeteshez.setVisibility(View.VISIBLE);
-            SpannableString bejelentkezes = new SpannableString("Már van fiókod? Jelentkezz be!");
-            ClickableSpan clickableSpan = new ClickableSpan() {
-                @Override
-                public void onClick(@NonNull View widget) {
-                    startActivity(new Intent(FizetesActivity.this, BejelentkezesActivity.class));
-                }
-            };
-            bejelentkezes.setSpan(clickableSpan, 16, 30, 0);
-            bejelentkezes.setSpan(new URLSpan(""), 16, 30, 0);
-            bejelentkezes.setSpan(new ForegroundColorSpan(ContextCompat.getColor(FizetesActivity.this, R.color.purple_500)), 16, 30, 0);
+    private void adatModosit() {
+        SpannableString bejelentkezes = new SpannableString("Adatok módosítása");
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                startActivity(new Intent(FizetesActivity.this, FiokActicity.class));
+            }
+        };
+        bejelentkezes.setSpan(clickableSpan, 7, 17, 0);
+        bejelentkezes.setSpan(new URLSpan(""), 7, 17, 0);
+        bejelentkezes.setSpan(new ForegroundColorSpan(ContextCompat.getColor(FizetesActivity.this, R.color.purple_500)), 7, 17, 0);
 
-            bejlelentkezFizeteshez.setMovementMethod(LinkMovementMethod.getInstance());
+        adatModosit.setMovementMethod(LinkMovementMethod.getInstance());
 
-            bejlelentkezFizeteshez.setText(bejelentkezes, TextView.BufferType.SPANNABLE);
-        }
+        adatModosit.setText(bejelentkezes, TextView.BufferType.SPANNABLE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        bejelentkezSpan();
+        aszf();
         if (kosarLista.size() == 0) {
             finish();
             super.onBackPressed();
@@ -152,14 +163,31 @@ public class FizetesActivity extends AppCompatActivity {
                 megrendeloCegAdoszama.setVisibility(View.GONE);
                 megrendeloCegSzekhelye.setVisibility(View.GONE);
                 megrendeloNeve.setHint("Megrendelő neve*");
+                megrendeloNeve.setText(felhasznalo.getString("nev"));
                 cegE = false;
             }
-            megrendeloNeve.setText(felhasznalo.getString("nev"));
             megrendeloEmailCime.setText(felhasznalo.getString("email"));
             megrendeloTelefonszama.setText(felhasznalo.getString("telefonszam"));
             megrendeloSzallitasiCime.setText(felhasznalo.getString("lakcim"));
         });
         return cegE;
+    }
+
+    private void aszf() {
+        SpannableString bejelentkezes = new SpannableString("Elfogadom az ÁSZF-t");
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(@NonNull View widget) {
+                startActivity(new Intent(FizetesActivity.this, AszfActicity.class));
+            }
+        };
+        bejelentkezes.setSpan(clickableSpan, 13, 17, 0);
+        bejelentkezes.setSpan(new URLSpan(""), 13, 17, 0);
+        bejelentkezes.setSpan(new ForegroundColorSpan(ContextCompat.getColor(FizetesActivity.this, R.color.purple_500)), 13, 17, 0);
+
+        aszfElfogad.setMovementMethod(LinkMovementMethod.getInstance());
+
+        aszfElfogad.setText(bejelentkezes, TextView.BufferType.SPANNABLE);
     }
 
     private void vasarlasAdatai() {
@@ -187,6 +215,17 @@ public class FizetesActivity extends AppCompatActivity {
         } else {
             vegosszegText = "Végösszeg: " + Math.round(fizetendo) + " Ft\n(+5000 Ft szállítási költség)";
         }
+
+        for (KosarElem elem : kosarLista) {
+            uzletId = elem.getTermek().getUzletId();
+        }
+        DocumentReference uzlez = db.collection("uzletek").document(uzletId);
+        uzlez.addSnapshotListener((value, error) -> {
+            assert value != null;
+            uzletKepe = value.getString("boltKepe");
+            uzletNeve = value.getString("cegNev");
+            megjelenit();
+        });
         vegosszeg.setText(vegosszegText);
     }
 
@@ -204,6 +243,24 @@ public class FizetesActivity extends AppCompatActivity {
         vegosszeg.setVisibility(View.GONE);
         rendelesLeadasa.setVisibility(View.GONE);
         rendelendoTermekText.setVisibility(View.GONE);
+        adatModosit.setVisibility(View.GONE);
+        aszfElfogad.setVisibility(View.GONE);
+    }
+    public void megjelenit() {
+        progressFizetes.setVisibility(View.GONE);
+        betoltesFizetes.setVisibility(View.GONE);
+        fizetesKep.setVisibility(View.VISIBLE);
+        megrendeloNeve.setVisibility(View.VISIBLE);
+        megrendeloEmailCime.setVisibility(View.VISIBLE);
+        megrendeloTelefonszama.setVisibility(View.VISIBLE);
+        megrendeloSzallitasiCime.setVisibility(View.VISIBLE);
+        adatokFeltolt();
+        kosarTartalma.setVisibility(View.VISIBLE);
+        vegosszeg.setVisibility(View.VISIBLE);
+        rendelesLeadasa.setVisibility(View.VISIBLE);
+        rendelendoTermekText.setVisibility(View.VISIBLE);
+        adatModosit.setVisibility(View.VISIBLE);
+        aszfElfogad.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -234,52 +291,41 @@ public class FizetesActivity extends AppCompatActivity {
     }
 
     public void onRendelesLeadasa(View view) {
-        if ((cegE && !megrendeloNeve.getText().toString().isEmpty() && !megrendeloEmailCime.getText().toString().isEmpty() && !megrendeloTelefonszama.getText().toString().isEmpty() && !megrendeloSzallitasiCime.getText().toString().isEmpty() && !megrendeloCegAdoszama.getText().toString().isEmpty() && !megrendeloCegSzekhelye.getText().toString().isEmpty()) ||
-                ((!cegE && !megrendeloNeve.getText().toString().isEmpty() && !megrendeloEmailCime.getText().toString().isEmpty() && !megrendeloTelefonszama.getText().toString().isEmpty() && !megrendeloSzallitasiCime.getText().toString().isEmpty()))) {
-            DocumentReference nyugtak = db.collection("nyugtak").document();
-            Map<String, String> nyugta;
-            String uzletId = "";
-            for (KosarElem elem : kosarLista) {
-                uzletId = elem.getTermek().getUzletId();
+        if (aszfElfogad.isChecked()) {
+            if ((cegE && !megrendeloNeve.getText().toString().isEmpty() && !megrendeloEmailCime.getText().toString().isEmpty() && !megrendeloTelefonszama.getText().toString().isEmpty() && !megrendeloSzallitasiCime.getText().toString().isEmpty() && !megrendeloCegAdoszama.getText().toString().isEmpty() && !megrendeloCegSzekhelye.getText().toString().isEmpty()) ||
+                    ((!cegE && !megrendeloNeve.getText().toString().isEmpty() && !megrendeloEmailCime.getText().toString().isEmpty() && !megrendeloTelefonszama.getText().toString().isEmpty() && !megrendeloSzallitasiCime.getText().toString().isEmpty()))) {
+                DocumentReference nyugtak = db.collection("nyugtak").document();
+                Map<String, String> nyugta;
+
+                String osszeg = String.valueOf((int) Math.round(fizetendo));
+                Calendar cal = Calendar.getInstance();
+                Date date = cal.getTime();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault());
+                String idopont = dateFormat.format(date);
+                Nyugta ujNyugta = new Nyugta(nyugtak.getId(), osszeg, idopont, uzletId, kosarTartalma.getText().toString(), Objects.requireNonNull(auth.getCurrentUser()).getUid());
+                ujNyugta.setUzletKepe(uzletKepe);
+                ujNyugta.setUzletNeve(uzletNeve);
+                nyugta = ujNyugta.ujNyugta(ujNyugta);
+                eltuntet();
+                nyugtak.set(nyugta).addOnCompleteListener(fizetes -> {
+                    if (fizetes.isSuccessful()) {
+                        onNyugta(nyugta);
+                    }
+                });
+            } else {
+                Toast.makeText(getApplicationContext(), "Nem maradhatnak mezők üresen!", Toast.LENGTH_LONG).show();
             }
-            String osszeg = String.valueOf((int) Math.round(fizetendo));
-            Calendar cal = Calendar.getInstance();
-            Date date = cal.getTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy:MM:dd:HH:mm", Locale.getDefault());
-            String idopont = dateFormat.format(date);
-            Nyugta ujNyugta = new Nyugta(nyugtak.getId(), osszeg, idopont, uzletId, kosarTartalma.getText().toString(), Objects.requireNonNull(auth.getCurrentUser()).getUid());
-            nyugta = ujNyugta.ujNyugta(ujNyugta);
-            eltuntet();
-            nyugtak.set(nyugta).addOnCompleteListener(fizetes -> {
-                if (fizetes.isSuccessful()) {
-                    onNyugta(nyugta);
-                }
-            });
         } else {
-            Toast.makeText(getApplicationContext(), "Nem maradhatnak mezők üresen!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Előbb el kell fogadnod az Általános Szerződési Feltételeket!", Toast.LENGTH_LONG).show();
         }
     }
 
     private void onNyugta(Map<String, String> nyugta) {
         Intent intent = new Intent(FizetesActivity.this, NyugtaActivity.class);
         for (Map.Entry<String, String> adatok : nyugta.entrySet()) {
-            if (adatok.getKey().equals("rendeloId")) {
-                intent.putExtra("rendeloId", adatok.getValue());
-            }
-            if (adatok.getKey().equals("uzletId")) {
-                intent.putExtra("uzletId", adatok.getValue());
-            }
-            if (adatok.getKey().equals("termkek")) {
-                intent.putExtra("termkek", adatok.getValue());
-            }
-            if (adatok.getKey().equals("vegosszeg")) {
-                intent.putExtra("vegosszeg", adatok.getValue());
-            }
-            if (adatok.getKey().equals("idopont")) {
-                intent.putExtra("idopont", adatok.getValue());
-            }
             if (adatok.getKey().equals("nyugtaId")) {
                 intent.putExtra("nyugtaId", adatok.getValue());
+                intent.putExtra("fizetesUtan", true);
             }
         }
         kosarLista.clear();

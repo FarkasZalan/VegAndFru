@@ -177,7 +177,7 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
                 kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
             });
         } else {
-            kosar.setVisible(true);
+            kosar.setVisible(false);
         }
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -214,11 +214,11 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
                             for (Uzlet uzlet : uzletekListaja) {
                                 assert termekNeve != null;
                                 if (uzlet.getUzletId().equals(uzletId)) {
-                                    if (termekNeve.contains(keresendo) && !szurtLista.contains(uzlet)) {
+                                    if (termekNeve.toLowerCase().contains(keresendo.toLowerCase()) && !szurtLista.contains(uzlet)) {
                                         szurtLista.add(uzlet);
                                     }
                                 }
-                                if (uzlet.getUzletNeve().contains(keresendo) && !szurtLista.contains(uzlet)) {
+                                if (uzlet.getUzletNeve().toLowerCase().contains(keresendo.toLowerCase()) && !szurtLista.contains(uzlet)) {
                                     szurtLista.add(uzlet);
                                 }
                             }

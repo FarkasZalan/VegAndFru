@@ -23,18 +23,11 @@ import java.util.Objects;
 
 public class AszfActicity extends AppCompatActivity {
 
-    private MenuItem kosar;
-    private FirebaseAuth auth;
-
-    private FirebaseFirestore db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aszf);
 
-        auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Ászf");
     }
@@ -42,18 +35,8 @@ public class AszfActicity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
 
-        kosar = menu.findItem(R.id.kosarfiok);
-        if (auth.getCurrentUser() != null) {
-            DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
-            reference.addSnapshotListener((value, error) -> {
-                assert value != null;
-                String tipus = value.getString("felhasznaloTipus");
-                assert tipus != null;
-                kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
-            });
-        } else {
-            kosar.setVisible(true);
-        }
+        MenuItem kosar = menu.findItem(R.id.kosarfiok);
+        kosar.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -70,27 +53,8 @@ public class AszfActicity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        final MenuItem menuItem = menu.findItem(R.id.kosarfiok);
-
-        FrameLayout rootVieww = (FrameLayout) menuItem.getActionView();
-        FrameLayout kor = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo);
-        TextView korSzamlalo = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo_text);
-        if (kosarLista != null && kosarLista.size() != 0) {
-            kor.setVisibility(View.VISIBLE);
-            korSzamlalo.setText(String.valueOf(kosarLista.size()));
-        } else {
-            kor.setVisibility(View.GONE);
-        }
-        rootVieww.setOnClickListener(view -> {
-            onOptionsItemSelected(menuItem);
-        });
-
-        return super.onPrepareOptionsMenu(menu);
-    }
-
     public void onVissza(View view) {
+        finish();
         super.onBackPressed();
     }
 }

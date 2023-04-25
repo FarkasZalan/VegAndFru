@@ -30,8 +30,52 @@ public class Nyugta {
     private String uzletId;
     private String termkek;
 
+    public String getUzletNeve() {
+        return uzletNeve;
+    }
+
+    public void setUzletNeve(String uzletNeve) {
+        this.uzletNeve = uzletNeve;
+    }
+
+    private String uzletNeve;
+
+    public String getUzletKepe() {
+        return uzletKepe;
+    }
+
+    public void setUzletKepe(String uzletKepe) {
+        this.uzletKepe = uzletKepe;
+    }
+
+    private String uzletKepe;
+
     public String getRendeloId() {
         return rendeloId;
+    }
+
+    public void setNyugtaId(String nyugtaId) {
+        this.nyugtaId = nyugtaId;
+    }
+
+    public void setVegosszeg(String vegosszeg) {
+        this.vegosszeg = vegosszeg;
+    }
+
+    public void setDatum(String datum) {
+        this.datum = datum;
+    }
+
+    public void setUzletId(String uzletId) {
+        this.uzletId = uzletId;
+    }
+
+    public void setTermkek(String termkek) {
+        this.termkek = termkek;
+    }
+
+    public void setRendeloId(String rendeloId) {
+        this.rendeloId = rendeloId;
     }
 
     private String rendeloId;
@@ -49,7 +93,8 @@ public class Nyugta {
         this.rendeloId = rendeloId;
     }
 
-    public Nyugta(){}
+    public Nyugta() {
+    }
 
     public Map<String, String> ujNyugta(Nyugta nyugta) {
         nyugtaMap.put("rendeloId", nyugta.getRendeloId());
@@ -58,6 +103,8 @@ public class Nyugta {
         nyugtaMap.put("vegosszeg", nyugta.getVegosszeg());
         nyugtaMap.put("idopont", nyugta.getDatum());
         nyugtaMap.put("nyugtaId", nyugta.getNyugtaId());
+        nyugtaMap.put("boltKepe", nyugta.getUzletKepe());
+        nyugtaMap.put("cegNev", nyugta.getUzletNeve());
         return nyugtaMap;
     }
 }

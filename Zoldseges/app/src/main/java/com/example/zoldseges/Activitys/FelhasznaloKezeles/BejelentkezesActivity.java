@@ -20,6 +20,7 @@ import com.example.zoldseges.Activitys.KosarActivity;
 import com.example.zoldseges.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 
 import java.util.Objects;
 
@@ -60,6 +61,10 @@ public class BejelentkezesActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
+        MenuItem kosar = menu.findItem(R.id.kosarfiok);
+        if (auth.getCurrentUser() == null) {
+            kosar.setVisible(false);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
