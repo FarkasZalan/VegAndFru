@@ -78,6 +78,9 @@ public class FizetesActivity extends AppCompatActivity {
     private String uzletId;
     String uzletNeve;
     String uzletKepe;
+    String uzletEmailCime;
+    String uzletSzekhely;
+    String uzletTelefonszama;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +89,12 @@ public class FizetesActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            finish();
+            Intent intent = new Intent(FizetesActivity.this, FooldalActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -140,6 +149,12 @@ public class FizetesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (auth.getCurrentUser() == null) {
+            finish();
+            Intent intent = new Intent(FizetesActivity.this, FooldalActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
         aszf();
         if (kosarLista.size() == 0) {
             finish();
@@ -224,6 +239,15 @@ public class FizetesActivity extends AppCompatActivity {
             assert value != null;
             uzletKepe = value.getString("boltKepe");
             uzletNeve = value.getString("cegNev");
+            uzletSzekhely = value.getString("szekhely");
+            String tulajId = value.getString("tulajId");
+            assert tulajId != null;
+            DocumentReference tulaj = db.collection("felhasznalok").document(tulajId);
+            tulaj.addSnapshotListener((value1, error1) -> {
+                assert value1 != null;
+                uzletEmailCime = value1.getString("email");
+                uzletTelefonszama = value1.getString("telefonszam");
+            });
             megjelenit();
         });
         vegosszeg.setText(vegosszegText);
@@ -246,6 +270,7 @@ public class FizetesActivity extends AppCompatActivity {
         adatModosit.setVisibility(View.GONE);
         aszfElfogad.setVisibility(View.GONE);
     }
+
     public void megjelenit() {
         progressFizetes.setVisibility(View.GONE);
         betoltesFizetes.setVisibility(View.GONE);
@@ -294,6 +319,14 @@ public class FizetesActivity extends AppCompatActivity {
         if (aszfElfogad.isChecked()) {
             if ((cegE && !megrendeloNeve.getText().toString().isEmpty() && !megrendeloEmailCime.getText().toString().isEmpty() && !megrendeloTelefonszama.getText().toString().isEmpty() && !megrendeloSzallitasiCime.getText().toString().isEmpty() && !megrendeloCegAdoszama.getText().toString().isEmpty() && !megrendeloCegSzekhelye.getText().toString().isEmpty()) ||
                     ((!cegE && !megrendeloNeve.getText().toString().isEmpty() && !megrendeloEmailCime.getText().toString().isEmpty() && !megrendeloTelefonszama.getText().toString().isEmpty() && !megrendeloSzallitasiCime.getText().toString().isEmpty()))) {
+                String nev = megrendeloNeve.getText().toString();
+                String email = megrendeloEmailCime.getText().toString();
+                String telefon = megrendeloTelefonszama.getText().toString();
+                String szallitasiCim = megrendeloSzallitasiCime.getText().toString();
+                String adoszam = megrendeloCegAdoszama.getText().toString();
+                String szekhely = megrendeloCegSzekhelye.getText().toString();
+
+
                 DocumentReference nyugtak = db.collection("nyugtak").document();
                 Map<String, String> nyugta;
 
@@ -305,6 +338,15 @@ public class FizetesActivity extends AppCompatActivity {
                 Nyugta ujNyugta = new Nyugta(nyugtak.getId(), osszeg, idopont, uzletId, kosarTartalma.getText().toString(), Objects.requireNonNull(auth.getCurrentUser()).getUid());
                 ujNyugta.setUzletKepe(uzletKepe);
                 ujNyugta.setUzletNeve(uzletNeve);
+                ujNyugta.setUzletEmail(uzletEmailCime);
+                ujNyugta.setUzletTelefon(uzletTelefonszama);
+                ujNyugta.setUzletSzekhely(uzletSzekhely);
+                ujNyugta.setNev(nev);
+                ujNyugta.setEmail(email);
+                ujNyugta.setTelefonszam(telefon);
+                ujNyugta.setSzallitasiCim(szallitasiCim);
+                ujNyugta.setAdoszam(adoszam);
+                ujNyugta.setSzekhely(szekhely);
                 nyugta = ujNyugta.ujNyugta(ujNyugta);
                 eltuntet();
                 nyugtak.set(nyugta).addOnCompleteListener(fizetes -> {

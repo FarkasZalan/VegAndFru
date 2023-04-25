@@ -102,6 +102,10 @@ public class AdataimActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            finish();
+            super.onBackPressed();
+        }
         felhasznalo = auth.getCurrentUser();
         nevV = findViewById(R.id.nevAdatSzerkezto);
         progressBarModositas = findViewById(R.id.progressBarModositas);
@@ -135,6 +139,15 @@ public class AdataimActivity extends AppCompatActivity {
         eltuntet();
         kepMegjelenitese();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (auth.getCurrentUser() == null) {
+            finish();
+            super.onBackPressed();
+        }
     }
 
     public void kepMegjelenitese() {

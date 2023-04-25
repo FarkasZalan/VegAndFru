@@ -44,6 +44,14 @@ public class NyugtaActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            finish();
+            Intent intent = new Intent(NyugtaActivity.this, FooldalActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+            super.onBackPressed();
+        }
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -69,7 +77,7 @@ public class NyugtaActivity extends AppCompatActivity {
             sikeresRendelesText.setText("Nyugta");
         }
         getFromData();
-        getSupportActionBar().setTitle("Fizetés");
+        getSupportActionBar().setTitle("Nyugta");
     }
 
     private void getFromData() {
@@ -78,79 +86,64 @@ public class NyugtaActivity extends AppCompatActivity {
         DocumentReference nyugta = db.collection("nyugtak").document(nyugtaId);
         nyugta.addSnapshotListener((nyugtaRef, error) -> {
             assert nyugtaRef != null;
-            String rendeloId = nyugtaRef.getString("rendeloId");
+            if (!rendeltTermekek.getText().toString().contains("Termékek:")) {
+                rendeltTermekek.append("Termékek: ");
+            }
+            if (!rendeltTermekek.getText().toString().contains(Objects.requireNonNull(nyugtaRef.getString("termekek")))) {
+                rendeltTermekek.append("\n\n" + Objects.requireNonNull(nyugtaRef.getString("termekek")));
+            }
+            if (!rendeltTermekek.getText().toString().contains("Rendelő adatai:")) {
+                rendeltTermekek.append("\n\nRendelő adatai: ");
+            }
+            if (!rendeltTermekek.getText().toString().contains("Rendelő email címe: " + nyugtaRef.getString("rendeleoEmail"))) {
+                rendeltTermekek.append("\n\n\nRendelő email címe: " + nyugtaRef.getString("rendeleoEmail"));
+            }
+            if (Objects.requireNonNull(nyugtaRef.getString("rendeloAdoszama")).isEmpty() || nyugtaRef.getString("rendeloAdoszama") == null) {
+                if (!rendeltTermekek.getText().toString().contains("Rendelő neve: " + nyugtaRef.getString("rendeloNev"))) {
+                    rendeltTermekek.append("\n\nRendelő neve: " + nyugtaRef.getString("rendeloNev"));
+                }
+            } else {
+                if (!rendeltTermekek.getText().toString().contains("Rendelő neve: " + nyugtaRef.getString("rendeloNev"))) {
+                    rendeltTermekek.append("\n\nRendelő neve: " + nyugtaRef.getString("rendeloNev"));
+                }
+                if (!rendeltTermekek.getText().toString().contains("Rendelő adószáma: " + nyugtaRef.getString("rendeloAdoszama"))) {
+                    rendeltTermekek.append("\n\nRendelő adószáma: " + nyugtaRef.getString("rendeloAdoszama"));
+                }
+                if (!rendeltTermekek.getText().toString().contains("Rendelő számlázási címe: " + nyugtaRef.getString("rendeloSzekhely"))) {
+                    rendeltTermekek.append("\n\nRendelő számlázási címe: " + nyugtaRef.getString("rendeloSzekhely"));
+                }
+            }
+            if (!rendeltTermekek.getText().toString().contains("Rendelő telefonszáma: " + nyugtaRef.getString("rendeloTelefonszam"))) {
+                rendeltTermekek.append("\n\nRendelő telefonszáma: " + nyugtaRef.getString("rendeloTelefonszam"));
+            }
+            if (!rendeltTermekek.getText().toString().contains("Szállítási cím: " + nyugtaRef.getString("rendeloSzallitasiCim"))) {
+                rendeltTermekek.append("\n\nSzállítási cím: " + nyugtaRef.getString("rendeloSzallitasiCim"));
+            }
 
-            assert rendeloId != null;
-            DocumentReference rendelo = db.collection("felhasznalok").document(rendeloId);
-            rendelo.addSnapshotListener((felhasznalo, errorFelhasznalo) -> {
-                if (!rendeltTermekek.getText().toString().contains("Termékek:")) {
-                    rendeltTermekek.append("Termékek: ");
-                }
-                if (!rendeltTermekek.getText().toString().contains(Objects.requireNonNull(nyugtaRef.getString("termkek")))) {
-                    rendeltTermekek.append("\n\n" + Objects.requireNonNull(nyugtaRef.getString("termkek")));
-                }
-                if (!rendeltTermekek.getText().toString().contains("Rendelő adatai:")) {
-                    rendeltTermekek.append("\n\nRendelő adatai: ");
-                }
-                assert felhasznalo != null;
-                if (!rendeltTermekek.getText().toString().contains("Rendelő email címe: " + felhasznalo.getString("email"))) {
-                    rendeltTermekek.append("\n\n\nRendelő email címe: " + felhasznalo.getString("email"));
-                }
-                if (Objects.equals(felhasznalo.getString("felhasznaloTipus"), "magánszemély")) {
-                    if (!rendeltTermekek.getText().toString().contains("Rendelő neve: " + felhasznalo.getString("nev"))) {
-                        rendeltTermekek.append("\n\nRendelő neve: " + felhasznalo.getString("nev"));
-                    }
-                } else {
-                    if (!rendeltTermekek.getText().toString().contains("Rendelő neve: " + felhasznalo.getString("cegNev"))) {
-                        rendeltTermekek.append("\n\nRendelő neve: " + felhasznalo.getString("cegNev"));
-                    }
-                    if (!rendeltTermekek.getText().toString().contains("Rendelő adószáma: " + felhasznalo.getString("adoszam"))) {
-                        rendeltTermekek.append("\n\nRendelő adószáma: " + felhasznalo.getString("adoszam"));
-                    }
-                    if (!rendeltTermekek.getText().toString().contains("Rendelő számlázási címe: " + felhasznalo.getString("szekhely"))) {
-                        rendeltTermekek.append("\n\nRendelő számlázási címe: " + felhasznalo.getString("szekhely"));
-                    }
-                }
-                if (!rendeltTermekek.getText().toString().contains("Rendelő telefonszáma: " + felhasznalo.getString("telefonszam"))) {
-                    rendeltTermekek.append("\n\nRendelő telefonszáma: " + felhasznalo.getString("telefonszam"));
-                }
-                if (!rendeltTermekek.getText().toString().contains("Szállítási cím: " + felhasznalo.getString("lakcim"))) {
-                    rendeltTermekek.append("\n\nSzállítási cím: " + felhasznalo.getString("lakcim"));
-                }
-            });
-
-            DocumentReference uzlet = db.collection("uzletek").document(Objects.requireNonNull(nyugtaRef.getString("uzletId")));
-            uzlet.addSnapshotListener((value, errorUzlet) -> {
-                assert value != null;
-                DocumentReference tulaj = db.collection("felhasznalok").document(Objects.requireNonNull(value.getString("tulajId")));
-                tulaj.addSnapshotListener((uzletTulaj, error1) -> {
-                    if (!eladoAdatai.getText().toString().contains("Üzlet adatai:")) {
-                        eladoAdatai.append("\n\nÜzlet adatai: ");
-                    }
-                    assert uzletTulaj != null;
-                    if (!eladoAdatai.getText().toString().contains("Rendelő neve: " + uzletTulaj.getString("cegNev"))) {
-                        eladoAdatai.append("\n\n\nÜzlet neve: " + uzletTulaj.getString("cegNev"));
-                    }
-                    if (!eladoAdatai.getText().toString().contains("Üzlet email címe: " + uzletTulaj.getString("email"))) {
-                        eladoAdatai.append("\n\nÜzlet email címe: " + uzletTulaj.getString("email"));
-                    }
-                    if (!eladoAdatai.getText().toString().contains("Értesítési címe: " + uzletTulaj.getString("szekhely"))) {
-                        eladoAdatai.append("\n\nÉrtesítési címe: " + uzletTulaj.getString("szekhely"));
-                    }
-                    if (!eladoAdatai.getText().toString().contains("Üzlet telefonszáma: " + uzletTulaj.getString("telefonszam"))) {
-                        eladoAdatai.append("\n\nÜzlet telefonszáma: " + uzletTulaj.getString("telefonszam"));
-                    }
-                    if (!altalanosAdatok.getText().toString().contains("\nRendelés időpontja: " + Objects.requireNonNull(nyugtaRef.getString("idopont")))) {
-                        altalanosAdatok.append("\n\n\nRendelés időpontja: " + Objects.requireNonNull(nyugtaRef.getString("idopont")));
-                    }
-                    if (!altalanosAdatok.getText().toString().contains("\nRendelés azonosító: " + nyugtaId)) {
-                        altalanosAdatok.append("\n\nRendelés azonosító: " + nyugtaId);
-                    }
-                    if (!altalanosAdatok.getText().toString().contains("\nVégösszeg: " + Objects.requireNonNull(nyugtaRef.getString("vegosszeg")) + " Ft")) {
-                        altalanosAdatok.append("\n\nVégösszeg: " + Objects.requireNonNull(nyugtaRef.getString("vegosszeg")) + " Ft");
-                    }
-                });
-            });
+            if (!eladoAdatai.getText().toString().contains("Üzlet adatai:")) {
+                eladoAdatai.append("\n\nÜzlet adatai: ");
+            }
+            if (!eladoAdatai.getText().toString().contains("Rendelő neve: " + nyugtaRef.getString("uzletNeve"))) {
+                eladoAdatai.append("\n\n\nÜzlet neve: " + nyugtaRef.getString("uzletNeve"));
+            }
+            if (!eladoAdatai.getText().toString().contains("Üzlet email címe: " + nyugtaRef.getString("uzletEmailCIm"))) {
+                eladoAdatai.append("\n\nÜzlet email címe: " + nyugtaRef.getString("uzletEmailCIm"));
+            }
+            if (!eladoAdatai.getText().toString().contains("Értesítési címe: " + nyugtaRef.getString("uzletErtesitesiCim"))) {
+                eladoAdatai.append("\n\nÉrtesítési címe: " + nyugtaRef.getString("uzletErtesitesiCim"));
+            }
+            if (!eladoAdatai.getText().toString().contains("Üzlet telefonszáma: " + nyugtaRef.getString("uzletTelefonszam"))) {
+                eladoAdatai.append("\n\nÜzlet telefonszáma: " + nyugtaRef.getString("uzletTelefonszam"));
+            }
+            if (!altalanosAdatok.getText().toString().contains("\nRendelés időpontja: " + Objects.requireNonNull(nyugtaRef.getString("idopont")))) {
+                altalanosAdatok.append("\n\n\nRendelés időpontja: " + Objects.requireNonNull(nyugtaRef.getString("idopont")));
+            }
+            if (!altalanosAdatok.getText().toString().contains("\nRendelés azonosító: " + nyugtaId)) {
+                altalanosAdatok.append("\n\nRendelés azonosító: " + nyugtaId);
+            }
+            if (!altalanosAdatok.getText().toString().contains("\nVégösszeg: " + Objects.requireNonNull(nyugtaRef.getString("vegosszeg")) + " Ft")) {
+                altalanosAdatok.append("\n\nVégösszeg: " + Objects.requireNonNull(nyugtaRef.getString("vegosszeg")) + " Ft");
+            }
         });
     }
 
@@ -159,7 +152,9 @@ public class NyugtaActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.vissza_menu, menu);
         View view = menu.findItem(R.id.kosar).getActionView();
         MenuItem kosar = menu.findItem(R.id.kosar);
-        kosar.setVisible(kosarLista.size() != 0);
+        kosar.setVisible(false);
+        MenuItem fiok = menu.findItem(R.id.fiok);
+        fiok.setVisible(false);
         view.setOnClickListener(v -> startActivity(new Intent(NyugtaActivity.this, KosarActivity.class)));
         return super.onCreateOptionsMenu(menu);
     }
@@ -174,8 +169,17 @@ public class NyugtaActivity extends AppCompatActivity {
             }
         }
         if (item.getItemId() == android.R.id.home) {
-            finish();
-            super.onBackPressed();
+            if (fizetesUtan) {
+                if (auth.getCurrentUser() == null) {
+                    finish();
+                    Intent intent = new Intent(NyugtaActivity.this, FooldalActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            } else {
+                finish();
+                super.onBackPressed();
+            }
         }
         if (item.getItemId() == R.id.kosar) {
             startActivity(new Intent(NyugtaActivity.this, KosarActivity.class));
@@ -214,5 +218,16 @@ public class NyugtaActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (auth.getCurrentUser() == null) {
+            finish();
+            Intent intent = new Intent(NyugtaActivity.this, FooldalActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
     }
 }

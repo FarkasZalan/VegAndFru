@@ -30,15 +30,17 @@ import java.util.Objects;
 public class NyugtaAdapter extends RecyclerView.Adapter<NyugtaAdapter.NyugtaOsszegzesViewHolder> {
 
     private Context context;
+    private ArrayList<Nyugta> nyugtakListaja;
+    private NyugtaDAO nyugtaDAO;
 
-    public NyugtaAdapter(Context context, ArrayList<Nyugta> nyugtakListaja, NyugtaDAO nyugtaDAO) {
+    private boolean eladoE;
+
+    public NyugtaAdapter(Context context, ArrayList<Nyugta> nyugtakListaja, NyugtaDAO nyugtaDAO, boolean eladoE) {
         this.context = context;
         this.nyugtakListaja = nyugtakListaja;
         this.nyugtaDAO = nyugtaDAO;
+        this.eladoE = eladoE;
     }
-
-    private ArrayList<Nyugta> nyugtakListaja;
-    private NyugtaDAO nyugtaDAO;
 
     @NonNull
     @Override
@@ -49,6 +51,14 @@ public class NyugtaAdapter extends RecyclerView.Adapter<NyugtaAdapter.NyugtaOssz
 
     @Override
     public void onBindViewHolder(@NonNull NyugtaAdapter.NyugtaOsszegzesViewHolder holder, int position) {
+        if (!eladoE) {
+            vasarlo(holder, position);
+        } else {
+            elado(holder, position);
+        }
+    }
+
+    public void vasarlo(@NonNull NyugtaAdapter.NyugtaOsszegzesViewHolder holder, int position) {
         holder.nyugtaUzletNeve.setText(nyugtakListaja.get(position).getUzletNeve());
         holder.nyugtaDatum.setText(nyugtakListaja.get(position).getDatum());
         String osszeg = nyugtakListaja.get(position).getVegosszeg() + " Ft";
@@ -73,6 +83,28 @@ public class NyugtaAdapter extends RecyclerView.Adapter<NyugtaAdapter.NyugtaOssz
             holder.progressNyugtaLayout.setVisibility(View.GONE);
             Glide.with(context).load(R.drawable.grocery_store).into(holder.nyugtaOsszegzesKep);
         }
+    }
+
+    public void elado(@NonNull NyugtaAdapter.NyugtaOsszegzesViewHolder holder, int position) {
+        holder.nyugtaUzletNeve.setText(nyugtakListaja.get(position).getNev());
+        holder.nyugtaDatum.setText(nyugtakListaja.get(position).getDatum());
+        String osszeg = nyugtakListaja.get(position).getVegosszeg() + " Ft";
+        holder.nyugtaOsszeg.setText(osszeg);
+
+        holder.progressNyugtaLayout.setVisibility(View.VISIBLE);
+        Glide.with(context).load(R.drawable.grocery_store).addListener(new RequestListener<Drawable>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                holder.progressNyugtaLayout.setVisibility(View.GONE);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                holder.progressNyugtaLayout.setVisibility(View.GONE);
+                return false;
+            }
+        }).into(holder.nyugtaOsszegzesKep);
     }
 
     @Override

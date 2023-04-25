@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado.BoltKezelesActivity;
+import com.example.zoldseges.Activitys.FizetesActivity;
+import com.example.zoldseges.Activitys.FooldalActivity;
 import com.example.zoldseges.Activitys.KosarActivity;
 import com.example.zoldseges.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -71,6 +73,12 @@ public class FiokActicity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            finish();
+            Intent intent = new Intent(FiokActicity.this, FooldalActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
         felhasznalo = auth.getCurrentUser();
         if (auth.getCurrentUser() == null) {
             super.onBackPressed();
@@ -109,11 +117,10 @@ public class FiokActicity extends AppCompatActivity {
             assert value != null;
             if (Objects.equals(value.getString("felhasznaloTipus"), "Eladó cég/vállalat")) {
                 bolt.setVisibility(View.VISIBLE);
-                bolt.animate();
-                rendelesek.setVisibility(View.INVISIBLE);
+                rendelesek.setText("Rendelések");
             } else {
-                bolt.setVisibility(View.INVISIBLE);
-                rendelesek.setVisibility(View.VISIBLE);
+                bolt.setVisibility(View.GONE);
+                rendelesek.setText("Rendeléseim");
             }
         });
     }
@@ -121,6 +128,12 @@ public class FiokActicity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (auth.getCurrentUser() == null) {
+            finish();
+            Intent intent = new Intent(FiokActicity.this, FooldalActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
         ellenorzoProgress.setVisibility(View.GONE);
         psw.setVisibility(View.GONE);
         pswLbL.setVisibility(View.GONE);
@@ -129,6 +142,7 @@ public class FiokActicity extends AppCompatActivity {
         cimProfil.setText(R.string.profilom);
 
         adataim.setVisibility(View.VISIBLE);
+        rendelesek.setVisibility(View.VISIBLE);
         eladoE();
         ugyfelszolgalat.setVisibility(View.VISIBLE);
         aszf.setVisibility(View.VISIBLE);
@@ -259,6 +273,7 @@ public class FiokActicity extends AppCompatActivity {
         cimProfil.setText(R.string.profilom);
         rendelesVagyBolt = false;
         adataim.setVisibility(View.VISIBLE);
+        rendelesek.setVisibility(View.VISIBLE);
         eladoE();
         ugyfelszolgalat.setVisibility(View.VISIBLE);
         aszf.setVisibility(View.VISIBLE);

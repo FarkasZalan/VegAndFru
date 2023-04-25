@@ -57,6 +57,9 @@ public class RendeleseimActivity extends AppCompatActivity implements NyugtaDAO 
     private ImageView kepNyugtakhoz;
     private FirebaseAuth auth;
     FirebaseFirestore db;
+    private boolean eladoE;
+
+    private String eladoUzletId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,10 @@ public class RendeleseimActivity extends AppCompatActivity implements NyugtaDAO 
         getSupportActionBar().setTitle("Rendeléseim");
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
+        if (auth.getCurrentUser() == null) {
+            finish();
+            super.onBackPressed();
+        }
         nincsNyugtaLayout = findViewById(R.id.nincsNyugtaLayout);
         progressNyugtak = findViewById(R.id.progressNyugtak);
         betoltesNyugtak = findViewById(R.id.betoltesNyugtak);
@@ -81,31 +87,77 @@ public class RendeleseimActivity extends AppCompatActivity implements NyugtaDAO 
         nyugtak.setHasFixedSize(true);
 
         nyugtakListaja = new ArrayList<>();
+
         eltuntet();
         clearList();
-        getDataFromFireBase();
+        eladoAFelhasznalo();
     }
 
-    private void getDataFromFireBase() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (auth.getCurrentUser() == null) {
+            finish();
+            super.onBackPressed();
+        }
+        eltuntet();
+        clearList();
+        eladoAFelhasznalo();
+    }
+
+    private void eladoAFelhasznalo() {
+        DocumentReference reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+        reference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                assert value != null;
+                eladoE = Objects.equals(value.getString("felhasznaloTipus"), "Eladó cég/vállalat");
+                eladoUzletId = value.getString("uzletId");
+                getDataFromFireBase(eladoE);
+            }
+        });
+    }
+
+    private void getDataFromFireBase(boolean eladoE) {
         Query query = FirebaseFirestore.getInstance().collection("nyugtak");
         query.orderBy("idopont", Query.Direction.DESCENDING).addSnapshotListener((nyugtakCollection, error) -> {
             assert nyugtakCollection != null;
             clearList();
-            for (QueryDocumentSnapshot adat : nyugtakCollection) {
-                if (Objects.equals(adat.getString("rendeloId"), Objects.requireNonNull(auth.getCurrentUser()).getUid())) {
-                    Nyugta nyugta = new Nyugta();
-                    nyugta.setDatum(adat.getString("idopont"));
-                    nyugta.setNyugtaId(adat.getString("nyugtaId"));
-                    nyugta.setRendeloId(Objects.requireNonNull(auth.getCurrentUser()).getUid());
-                    nyugta.setTermkek(adat.getString("termkek"));
-                    nyugta.setVegosszeg(adat.getString("vegosszeg"));
-                    nyugta.setUzletId(adat.getString("uzletId"));
-                    nyugta.setUzletKepe(adat.getString("boltKepe"));
-                    nyugta.setUzletNeve(adat.getString("cegNev"));
-                    nyugtakListaja.add(nyugta);
+
+            if (!eladoE) {
+                for (QueryDocumentSnapshot adat : nyugtakCollection) {
+                    if (Objects.equals(adat.getString("rendeloId"), Objects.requireNonNull(auth.getCurrentUser()).getUid())) {
+                        Nyugta nyugta = new Nyugta();
+                        nyugta.setDatum(adat.getString("idopont"));
+                        nyugta.setNyugtaId(adat.getString("nyugtaId"));
+                        nyugta.setRendeloId(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+                        nyugta.setTermkek(adat.getString("termekek"));
+                        nyugta.setVegosszeg(adat.getString("vegosszeg"));
+                        nyugta.setUzletId(adat.getString("uzletId"));
+                        nyugta.setUzletKepe(adat.getString("boltKepe"));
+                        nyugta.setUzletNeve(adat.getString("uzletNeve"));
+                        nyugta.setNev(adat.getString("rendeloNev"));
+                        nyugtakListaja.add(nyugta);
+                    }
+                }
+            } else {
+                for (QueryDocumentSnapshot adat : nyugtakCollection) {
+                    if (Objects.equals(adat.getString("uzletId"), eladoUzletId)) {
+                        Nyugta nyugta = new Nyugta();
+                        nyugta.setDatum(adat.getString("idopont"));
+                        nyugta.setNyugtaId(adat.getString("nyugtaId"));
+                        nyugta.setRendeloId(adat.getString("rendeloId"));
+                        nyugta.setTermkek(adat.getString("termekek"));
+                        nyugta.setVegosszeg(adat.getString("vegosszeg"));
+                        nyugta.setUzletId(adat.getString("uzletId"));
+                        nyugta.setUzletKepe(adat.getString("boltKepe"));
+                        nyugta.setUzletNeve(adat.getString("uzletNeve"));
+                        nyugta.setNev(adat.getString("rendeloNev"));
+                        nyugtakListaja.add(nyugta);
+                    }
                 }
             }
-            nyugtaAdapter = new NyugtaAdapter(getApplicationContext(), nyugtakListaja, RendeleseimActivity.this);
+            nyugtaAdapter = new NyugtaAdapter(getApplicationContext(), nyugtakListaja, RendeleseimActivity.this, eladoE);
             nyugtak.setAdapter(nyugtaAdapter);
             megjelenit();
 
@@ -148,6 +200,8 @@ public class RendeleseimActivity extends AppCompatActivity implements NyugtaDAO 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.vissza_bejelentkezett_menu, menu);
+        MenuItem kosar = menu.findItem(R.id.kosarfiok);
+        kosar.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -157,30 +211,7 @@ public class RendeleseimActivity extends AppCompatActivity implements NyugtaDAO 
             finish();
             super.onBackPressed();
         }
-        if (item.getItemId() == R.id.kosarfiok) {
-            startActivity(new Intent(RendeleseimActivity.this, KosarActivity.class));
-        }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        final MenuItem menuItem = menu.findItem(R.id.kosarfiok);
-
-        FrameLayout rootVieww = (FrameLayout) menuItem.getActionView();
-        FrameLayout kor = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo);
-        TextView korSzamlalo = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo_text);
-        if (kosarLista != null && kosarLista.size() != 0) {
-            kor.setVisibility(View.VISIBLE);
-            korSzamlalo.setText(String.valueOf(kosarLista.size()));
-        } else {
-            kor.setVisibility(View.GONE);
-        }
-        rootVieww.setOnClickListener(view -> {
-            onOptionsItemSelected(menuItem);
-        });
-
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override

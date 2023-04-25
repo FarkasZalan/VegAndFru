@@ -65,7 +65,12 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Kosár");
-
+        if (auth.getCurrentUser() == null) {
+            finish();
+            Intent intent = new Intent(KosarActivity.this, FooldalActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
         if (auth.getCurrentUser() != null) {
             DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
             reference.addSnapshotListener((value, error) -> {
@@ -146,6 +151,12 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
     @Override
     protected void onResume() {
         super.onResume();
+        if (auth.getCurrentUser() == null) {
+            finish();
+            Intent intent = new Intent(KosarActivity.this, FooldalActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
         eltuntet();
         clearList();
         getDataFromFireBase();

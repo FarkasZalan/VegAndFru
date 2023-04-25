@@ -29,6 +29,80 @@ public class Nyugta {
     private String datum;
     private String uzletId;
     private String termkek;
+    private String nev;
+    private String email;
+
+    public String getNev() {
+        return nev;
+    }
+
+    public void setNev(String nev) {
+        this.nev = nev;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getTelefonszam() {
+        return telefonszam;
+    }
+
+    public void setTelefonszam(String telefonszam) {
+        this.telefonszam = telefonszam;
+    }
+
+    public String getSzallitasiCim() {
+        return szallitasiCim;
+    }
+
+    public void setSzallitasiCim(String szallitasiCim) {
+        this.szallitasiCim = szallitasiCim;
+    }
+
+    public String getAdoszam() {
+        return adoszam;
+    }
+
+    public void setAdoszam(String adoszam) {
+        this.adoszam = adoszam;
+    }
+
+    public String getSzekhely() {
+        return szekhely;
+    }
+
+    public void setSzekhely(String szekhely) {
+        this.szekhely = szekhely;
+    }
+
+    private String telefonszam;
+    private String szallitasiCim;
+    private String adoszam;
+    private String szekhely;
+
+    public String getUzletEmail() {
+        return uzletEmail;
+    }
+
+    public void setUzletEmail(String uzletEmail) {
+        this.uzletEmail = uzletEmail;
+    }
+
+    public String getUzletTelefon() {
+        return uzletTelefon;
+    }
+
+    public void setUzletTelefon(String uzletTelefon) {
+        this.uzletTelefon = uzletTelefon;
+    }
+
+    private String uzletEmail;
+    private String uzletTelefon;
 
     public String getUzletNeve() {
         return uzletNeve;
@@ -80,6 +154,16 @@ public class Nyugta {
 
     private String rendeloId;
 
+    public String getUzletSzekhely() {
+        return uzletSzekhely;
+    }
+
+    public void setUzletSzekhely(String uzletSzekhely) {
+        this.uzletSzekhely = uzletSzekhely;
+    }
+
+    private String uzletSzekhely;
+
 
     private final Map<String, String> nyugtaMap = new HashMap<>();
 
@@ -98,13 +182,22 @@ public class Nyugta {
 
     public Map<String, String> ujNyugta(Nyugta nyugta) {
         nyugtaMap.put("rendeloId", nyugta.getRendeloId());
-        nyugtaMap.put("uzletId", nyugta.getUzletId());
-        nyugtaMap.put("termkek", nyugta.getTermkek());
+        nyugtaMap.put("termekek", nyugta.getTermkek());
         nyugtaMap.put("vegosszeg", nyugta.getVegosszeg());
         nyugtaMap.put("idopont", nyugta.getDatum());
         nyugtaMap.put("nyugtaId", nyugta.getNyugtaId());
+        nyugtaMap.put("rendeloNev", nyugta.getNev());
+        nyugtaMap.put("rendeleoEmail", nyugta.getEmail());
+        nyugtaMap.put("rendeloTelefonszam", nyugta.getTelefonszam());
+        nyugtaMap.put("rendeloSzallitasiCim", nyugta.getSzallitasiCim());
+        nyugtaMap.put("rendeloAdoszama", nyugta.getAdoszam());
+        nyugtaMap.put("rendeloSzekhely", nyugta.getSzekhely());
+        nyugtaMap.put("uzletId", nyugta.getUzletId());
         nyugtaMap.put("boltKepe", nyugta.getUzletKepe());
-        nyugtaMap.put("cegNev", nyugta.getUzletNeve());
+        nyugtaMap.put("uzletNeve", nyugta.getUzletNeve());
+        nyugtaMap.put("uzletEmailCIm", nyugta.getUzletEmail());
+        nyugtaMap.put("uzletTelefonszam", nyugta.getUzletTelefon());
+        nyugtaMap.put("uzletErtesitesiCim", nyugta.getUzletSzekhely());
         return nyugtaMap;
     }
 }

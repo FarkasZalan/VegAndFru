@@ -67,6 +67,7 @@
                     android:background="@drawable/uzlet_kepe_megjelenit"
                     android:contentDescription="@string/termek_kepe"
                     android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
                     app:srcCompat="@drawable/grocery_store" />
 
                 <LinearLayout
