@@ -5,9 +5,17 @@ import static com.example.zoldseges.Activitys.TermekOldalActivity.kosarLista;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -29,6 +37,7 @@ import com.example.zoldseges.Activitys.FelhasznaloKezeles.AdataimActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.AszfActicity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.BejelentkezesActivity;
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
+import com.example.zoldseges.DAOS.ErtesitesKezelo;
 import com.example.zoldseges.DAOS.KosarElem;
 import com.example.zoldseges.DAOS.Nyugta;
 import com.example.zoldseges.R;
@@ -82,6 +91,8 @@ public class FizetesActivity extends AppCompatActivity {
     String uzletSzekhely;
     String uzletTelefonszama;
 
+    private ErtesitesKezelo ertesitesKezelo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,6 +112,7 @@ public class FizetesActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setTitle("Fizetés");
+
 
         progressFizetes = findViewById(R.id.progressFizetes);
         betoltesFizetes = findViewById(R.id.betoltesFizetes);
@@ -125,7 +137,7 @@ public class FizetesActivity extends AppCompatActivity {
         rendeloRef = db.collection("felhasznalok").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getUid()));
         cegE = adatokFeltolt();
         vasarlasAdatai();
-
+        ertesitesKezelo = new ErtesitesKezelo(FizetesActivity.this);
 
     }
 
@@ -363,6 +375,7 @@ public class FizetesActivity extends AppCompatActivity {
     }
 
     private void onNyugta(Map<String, String> nyugta) {
+
         Intent intent = new Intent(FizetesActivity.this, NyugtaActivity.class);
         for (Map.Entry<String, String> adatok : nyugta.entrySet()) {
             if (adatok.getKey().equals("nyugtaId")) {
@@ -370,6 +383,7 @@ public class FizetesActivity extends AppCompatActivity {
                 intent.putExtra("fizetesUtan", true);
             }
         }
+        ertesitesKezelo.ertesitesKuldes();
         kosarLista.clear();
         startActivity(intent);
     }
