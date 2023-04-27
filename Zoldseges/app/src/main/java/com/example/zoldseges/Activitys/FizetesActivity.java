@@ -41,22 +41,28 @@ import com.example.zoldseges.Activitys.FelhasznaloKezeles.FiokActicity;
 import com.example.zoldseges.DAOS.ErtesitesKezelo;
 import com.example.zoldseges.DAOS.KosarElem;
 import com.example.zoldseges.DAOS.Nyugta;
+import com.example.zoldseges.DAOS.Termek;
 import com.example.zoldseges.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceIdReceiver;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -96,6 +102,8 @@ public class FizetesActivity extends AppCompatActivity {
     String uzletSzekhely;
     String uzletTelefonszama;
 
+    Map<Termek, Double> keszletCsokkentes;
+
     private ErtesitesKezelo ertesitesKezelo;
 
     @Override
@@ -118,7 +126,7 @@ public class FizetesActivity extends AppCompatActivity {
 
             getSupportActionBar().setTitle("Fizetés");
 
-
+            keszletCsokkentes = new HashMap<>();
             progressFizetes = findViewById(R.id.progressFizetes);
             betoltesFizetes = findViewById(R.id.betoltesFizetes);
             fizetesKep = findViewById(R.id.fizetesKep);
@@ -239,6 +247,11 @@ public class FizetesActivity extends AppCompatActivity {
             } else {
                 kosarEleme = elem.getMennyiseg() + "x " + elem.getTermek().getNev() + "  " + kerekitveAr + " Ft" + "\n";
             }
+
+            Termek termek = new Termek(elem.getTermek().getNev(), elem.getTermek().getAr(), elem.getTermek().getRaktaronLevoMennyiseg(), elem.getTermek().getTermekSulya(),
+                    elem.getTermek().getTermekKepe(), elem.getTermek().getUzletId(), elem.getTermek().getOsszTermekColectionId());
+            termek.setSajatId(elem.getTermek().getSajatId());
+            keszletCsokkentes.put(termek, elem.getMennyiseg());
             fizetendo += elem.getTermek().getAr() * elem.getMennyiseg();
             kosarTartalma.append(kosarEleme);
         }
@@ -373,6 +386,7 @@ public class FizetesActivity extends AppCompatActivity {
                         onNyugta(nyugta);
                     }
                 });
+
             } else {
                 Toast.makeText(getApplicationContext(), "Nem maradhatnak mezők üresen!", Toast.LENGTH_LONG).show();
             }
@@ -390,8 +404,34 @@ public class FizetesActivity extends AppCompatActivity {
                 intent.putExtra("fizetesUtan", true);
             }
         }
-        ertesitesKezelo.ertesitesKuldes();
-        kosarLista.clear();
-        startActivity(intent);
+
+        CollectionReference uzlet = db.collection("uzletek").document(uzletId).collection("termekek");
+        uzlet.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot adat : task.getResult()) {
+                    Termek frissitett;
+                    Map<String, Object> frissMap;
+                    String id = adat.getId();
+                    DocumentReference termek = uzlet.document(adat.getId());
+                    for (Map.Entry<Termek, Double> lista : keszletCsokkentes.entrySet()) {
+
+                        if (lista.getKey().getSajatId().equals(id)) {
+                            double eredeti = lista.getKey().getRaktaronLevoMennyiseg();
+                            double kivonando = lista.getValue();
+                            lista.setValue(eredeti - kivonando);
+                            lista.getKey().setRaktaronLevoMennyiseg(lista.getValue());
+                            frissitett = lista.getKey();
+                            frissMap = frissitett.ujTermek(frissitett);
+                            termek.set(frissMap);
+                        }
+                    }
+                }
+                ertesitesKezelo.ertesitesKuldes();
+                kosarLista.clear();
+                startActivity(intent);
+            }
+        });
+
     }
 }

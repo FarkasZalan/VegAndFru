@@ -1,23 +1,17 @@
 package com.example.zoldseges.Activitys.FelhasznaloKezeles;
 
-import static com.example.zoldseges.Activitys.TermekOldalActivity.kosarLista;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.example.zoldseges.Activitys.KosarActivity;
 import com.example.zoldseges.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Objects;
 
@@ -54,5 +48,17 @@ public class UgyfelszolgalatActivity extends AppCompatActivity {
 
     public void onVissza(View view) {
         super.onBackPressed();
+    }
+    public void onDiscord(View view) {
+        Intent proba = getPackageManager().getLaunchIntentForPackage("com.discord.gg/Kolbász#9234");
+
+        if (proba == null) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://discord.gg/Kolbász#9234")));
+        } else {
+            startActivity(proba);
+        }
+    }
+    public void onFacebook(View view) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/zalan.farkas.73")));
     }
 }

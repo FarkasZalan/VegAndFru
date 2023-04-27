@@ -53,7 +53,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:autoLink="email"
             android:text="@string/farkaszalan2001_gmail_com"
+            android:textColorLink="@color/purple_500"
             android:textSize="17sp" />
     </LinearLayout>
 
@@ -87,6 +89,46 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:text="@string/kolbasz_9234"
+            android:textColorLink="@color/purple_200"
+            android:textColor="@color/purple_500"
+            android:onClick="onDiscord"
+            android:textSize="17sp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/facebookLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:flow_verticalAlign="center"
+        app:flow_horizontalAlign="center"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/discordLayout"
+        app:layout_constraintVertical_bias="0.03"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        >
+        <TextView
+            android:id="@+id/face"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/facebook"
+            android:textAlignment="center"
+            android:textSize="17sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/farkas_zalan"
+            android:textColor="@color/purple_500"
+
+            android:onClick="onFacebook"
             android:textSize="17sp"
             />
     </LinearLayout>
@@ -102,7 +144,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/discordLayout"
+        app:layout_constraintTop_toBottomOf="@+id/facebookLayout"
         app:layout_constraintVertical_bias="0.03"
         android:orientation="horizontal"
         android:padding="10dp"
@@ -120,7 +162,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/_36_30_621_0890"
+            android:textColorLink="@color/purple_500"
             android:textSize="17sp"
+            android:autoLink="phone"
             android:layout_marginStart="10dp"
             />
     </LinearLayout>

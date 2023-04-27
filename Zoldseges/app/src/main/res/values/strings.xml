@@ -31,7 +31,7 @@
     <string name="email_ugyfelszolgalat">Email cím:</string>
     <string name="farkaszalan2001_gmail_com">farkaszalan2001@gmail.com</string>
     <string name="discord">Discord:</string>
-    <string name="kolbasz_9234">Kolbász#9234</string>
+    <string name="kolbasz_9234"><u>Kolbász#9234</u></string>
     <string name="telefon_ugyfelszolgalat">Telefonszám:</string>
     <string name="_36_30_621_0890">+36 30 621 0890</string>
     <string name="bolt_kezelese">Bolt kezelése</string>
@@ -121,4 +121,6 @@
     <string name="rendeles_reszletei">Rendelés részletei:</string>
     <string name="sikeres_rendeles">Sikeres Rendelés</string>
     <string name="nincs_rendelesed">Még nincs egyetlen rendelésed sem</string>
+    <string name="facebook">Facebook:</string>
+    <string name="farkas_zalan"><u>Farkas Zalán</u></string>
 </resources>

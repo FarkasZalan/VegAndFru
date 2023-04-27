@@ -118,9 +118,11 @@ public class FiokActicity extends AppCompatActivity {
             if (Objects.equals(value.getString("felhasznaloTipus"), "Eladó cég/vállalat")) {
                 bolt.setVisibility(View.VISIBLE);
                 rendelesek.setText("Rendelések");
+                cimProfil.setText("Rendelések");
             } else {
                 bolt.setVisibility(View.GONE);
                 rendelesek.setText("Rendeléseim");
+                cimProfil.setText("Rendeléseim");
             }
         });
     }
@@ -128,6 +130,7 @@ public class FiokActicity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        cimProfil.setText(R.string.profilom);
         if (auth.getCurrentUser() == null) {
             finish();
             Intent intent = new Intent(FiokActicity.this, BejelentkezesActivity.class);
