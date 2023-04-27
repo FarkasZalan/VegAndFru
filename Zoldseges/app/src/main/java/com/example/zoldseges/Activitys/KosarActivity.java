@@ -67,36 +67,37 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
         getSupportActionBar().setTitle("Kosár");
         if (auth.getCurrentUser() == null) {
             finish();
-            Intent intent = new Intent(KosarActivity.this, FooldalActivity.class);
+            Intent intent = new Intent(KosarActivity.this, BejelentkezesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        }
-        if (auth.getCurrentUser() != null) {
-            DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
-            reference.addSnapshotListener((value, error) -> {
-                assert value != null;
-                String tipus = value.getString("felhasznaloTipus");
-                assert tipus != null;
-                if (tipus.equals("Eladó cég/vállalat")) {
-                    finish();
-                    super.onBackPressed();
-                }
-            });
-        }
-        progressKosar = findViewById(R.id.progressKosar);
-        betoltesKosar = findViewById(R.id.betoltesKosar);
-        kosarElemei = findViewById(R.id.kosarElemei);
-        appBarKosar = findViewById(R.id.appBarKosar);
-        nincsTermekKosarbanLayout = findViewById(R.id.nincsTermekKosarbanLayout);
+        } else {
+            if (auth.getCurrentUser() != null) {
+                DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
+                reference.addSnapshotListener((value, error) -> {
+                    assert value != null;
+                    String tipus = value.getString("felhasznaloTipus");
+                    assert tipus != null;
+                    if (tipus.equals("Eladó cég/vállalat")) {
+                        finish();
+                        super.onBackPressed();
+                    }
+                });
+            }
+            progressKosar = findViewById(R.id.progressKosar);
+            betoltesKosar = findViewById(R.id.betoltesKosar);
+            kosarElemei = findViewById(R.id.kosarElemei);
+            appBarKosar = findViewById(R.id.appBarKosar);
+            nincsTermekKosarbanLayout = findViewById(R.id.nincsTermekKosarbanLayout);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
-        kosarElemei.setLayoutManager(layoutManager);
-        kosarElemei.setHasFixedSize(true);
+            GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+            kosarElemei.setLayoutManager(layoutManager);
+            kosarElemei.setHasFixedSize(true);
 
-        kosarListaja = new ArrayList<>();
-        eltuntet();
-        clearList();
-        getDataFromFireBase();
+            kosarListaja = new ArrayList<>();
+            eltuntet();
+            clearList();
+            getDataFromFireBase();
+        }
     }
 
     private void getDataFromFireBase() {
@@ -153,24 +154,25 @@ public class KosarActivity extends AppCompatActivity implements KosarIranyito {
         super.onResume();
         if (auth.getCurrentUser() == null) {
             finish();
-            Intent intent = new Intent(KosarActivity.this, FooldalActivity.class);
+            Intent intent = new Intent(KosarActivity.this, BejelentkezesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        }
-        eltuntet();
-        clearList();
-        getDataFromFireBase();
-        if (auth.getCurrentUser() != null) {
-            DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
-            reference.addSnapshotListener((value, error) -> {
-                assert value != null;
-                String tipus = value.getString("felhasznaloTipus");
-                assert tipus != null;
-                if (tipus.equals("Eladó cég/vállalat")) {
-                    finish();
-                    super.onBackPressed();
-                }
-            });
+        } else {
+            eltuntet();
+            clearList();
+            getDataFromFireBase();
+            if (auth.getCurrentUser() != null) {
+                DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
+                reference.addSnapshotListener((value, error) -> {
+                    assert value != null;
+                    String tipus = value.getString("felhasznaloTipus");
+                    assert tipus != null;
+                    if (tipus.equals("Eladó cég/vállalat")) {
+                        finish();
+                        super.onBackPressed();
+                    }
+                });
+            }
         }
     }
 

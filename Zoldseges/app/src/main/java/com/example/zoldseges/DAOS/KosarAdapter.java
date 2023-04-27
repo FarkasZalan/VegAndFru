@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -101,6 +102,8 @@ public class KosarAdapter extends RecyclerView.Adapter<KosarAdapter.KosarViewHol
             }
             holder.fizetendoOsszegKosar.append(" " + osszeg + " Ft");
         }
+
+        holder.kosarCard.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.egy_oszlopos_animacio));
     }
 
     @Override

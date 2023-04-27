@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -56,6 +57,7 @@ public class NyugtaAdapter extends RecyclerView.Adapter<NyugtaAdapter.NyugtaOssz
         } else {
             elado(holder, position);
         }
+        holder.nyugtaCard.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.egy_oszlopos_animacio));
     }
 
     public void vasarlo(@NonNull NyugtaAdapter.NyugtaOsszegzesViewHolder holder, int position) {

@@ -22,6 +22,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.URLSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,12 +42,16 @@ import com.example.zoldseges.DAOS.ErtesitesKezelo;
 import com.example.zoldseges.DAOS.KosarElem;
 import com.example.zoldseges.DAOS.Nyugta;
 import com.example.zoldseges.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.iid.FirebaseInstanceIdReceiver;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -102,42 +107,43 @@ public class FizetesActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
             finish();
-            Intent intent = new Intent(FizetesActivity.this, FooldalActivity.class);
+            Intent intent = new Intent(FizetesActivity.this, BejelentkezesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+        } else {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+
+            getSupportActionBar().setTitle("Fizetés");
+
+
+            progressFizetes = findViewById(R.id.progressFizetes);
+            betoltesFizetes = findViewById(R.id.betoltesFizetes);
+            fizetesKep = findViewById(R.id.fizetesKep);
+            megrendeloNeve = findViewById(R.id.megrendeloNeve);
+            megrendeloEmailCime = findViewById(R.id.megrendeloEmailCime);
+            megrendeloTelefonszama = findViewById(R.id.megrendeloTelefonszama);
+            megrendeloSzallitasiCime = findViewById(R.id.megrendeloSzallitasiCime);
+            megrendeloCegAdoszama = findViewById(R.id.megrendeloCegAdoszama);
+            megrendeloCegSzekhelye = findViewById(R.id.megrendeloCegSzekhelye);
+            kosarTartalma = findViewById(R.id.kosarTartalma);
+            vegosszeg = findViewById(R.id.vegosszeg);
+            rendelesLeadasa = findViewById(R.id.rendelesLeadasa);
+            rendelendoTermekText = findViewById(R.id.rendelendoTermekText);
+            aszfElfogad = findViewById(R.id.aszfElfogad);
+            adatModosit = findViewById(R.id.adatModosit);
+            vegosszeg.setText("");
+            kosarTartalma.setText("");
+            eltuntet();
+            adatModosit();
+            aszf();
+            rendeloRef = db.collection("felhasznalok").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getUid()));
+            cegE = adatokFeltolt();
+            vasarlasAdatai();
+            ertesitesKezelo = new ErtesitesKezelo(FizetesActivity.this);
         }
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-
-
-        getSupportActionBar().setTitle("Fizetés");
-
-
-        progressFizetes = findViewById(R.id.progressFizetes);
-        betoltesFizetes = findViewById(R.id.betoltesFizetes);
-        fizetesKep = findViewById(R.id.fizetesKep);
-        megrendeloNeve = findViewById(R.id.megrendeloNeve);
-        megrendeloEmailCime = findViewById(R.id.megrendeloEmailCime);
-        megrendeloTelefonszama = findViewById(R.id.megrendeloTelefonszama);
-        megrendeloSzallitasiCime = findViewById(R.id.megrendeloSzallitasiCime);
-        megrendeloCegAdoszama = findViewById(R.id.megrendeloCegAdoszama);
-        megrendeloCegSzekhelye = findViewById(R.id.megrendeloCegSzekhelye);
-        kosarTartalma = findViewById(R.id.kosarTartalma);
-        vegosszeg = findViewById(R.id.vegosszeg);
-        rendelesLeadasa = findViewById(R.id.rendelesLeadasa);
-        rendelendoTermekText = findViewById(R.id.rendelendoTermekText);
-        aszfElfogad = findViewById(R.id.aszfElfogad);
-        adatModosit = findViewById(R.id.adatModosit);
-        vegosszeg.setText("");
-        kosarTartalma.setText("");
-        eltuntet();
-        adatModosit();
-        aszf();
-        rendeloRef = db.collection("felhasznalok").document(Objects.requireNonNull(Objects.requireNonNull(auth.getCurrentUser()).getUid()));
-        cegE = adatokFeltolt();
-        vasarlasAdatai();
-        ertesitesKezelo = new ErtesitesKezelo(FizetesActivity.this);
 
     }
 
@@ -163,15 +169,16 @@ public class FizetesActivity extends AppCompatActivity {
         super.onResume();
         if (auth.getCurrentUser() == null) {
             finish();
-            Intent intent = new Intent(FizetesActivity.this, FooldalActivity.class);
+            Intent intent = new Intent(FizetesActivity.this, BejelentkezesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        }
-        aszf();
-        if (kosarLista.size() == 0) {
-            finish();
-            super.onBackPressed();
-            super.onBackPressed();
+        } else {
+            aszf();
+            if (kosarLista.size() == 0) {
+                finish();
+                super.onBackPressed();
+                super.onBackPressed();
+            }
         }
     }
 

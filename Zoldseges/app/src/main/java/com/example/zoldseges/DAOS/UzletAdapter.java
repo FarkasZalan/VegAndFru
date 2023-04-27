@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -75,6 +76,8 @@ public class UzletAdapter extends RecyclerView.Adapter<UzletAdapter.UzletViewHol
             holder.progressBoltKepLayout.setVisibility(View.GONE);
             Glide.with(context).load(R.drawable.grocery_store).into(holder.uzletKepe);
         }
+
+        holder.uzletCard.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.egy_oszlopos_animacio));
     }
 
     @Override

@@ -104,41 +104,43 @@ public class AdataimActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
             finish();
-            super.onBackPressed();
+            Intent intent = new Intent(AdataimActivity.this, BejelentkezesActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        } else {
+            felhasznalo = auth.getCurrentUser();
+            nevV = findViewById(R.id.nevAdatSzerkezto);
+            progressBarModositas = findViewById(R.id.progressBarModositas);
+            modositasText = findViewById(R.id.modositasText);
+            adatokSzerkesztese = findViewById(R.id.adatokSzerkesztese);
+            vissza = findViewById(R.id.vissza);
+            emailV = findViewById(R.id.emailAdatSzerkezto);
+            telSzamV = findViewById(R.id.telefonszamAdatSzerkezto);
+            szallitasiCimV = findViewById(R.id.lakcimAdatSzerkezto);
+            jelszoV = findViewById(R.id.jelszoAdatSzerkezto);
+            jelszoUjraV = findViewById(R.id.jelszoUjraAdatSzerkezto);
+            szekhelyV = findViewById(R.id.szekhelyAdatSzerkezto);
+            cegNevV = findViewById(R.id.cegNevAdatSzerkezto);
+            adoszamV = findViewById(R.id.adoszamAdatSzerkezto);
+            cegnevLabel = findViewById(R.id.cegnevLabel);
+            adoszamLabel = findViewById(R.id.adoszamLabel);
+            szekhelyLabel = findViewById(R.id.szekhelyLabel);
+            boltKep = "";
+            nevLabel = findViewById(R.id.nevLabel);
+            emailLabel = findViewById(R.id.emailLabel);
+            telszamLabel = findViewById(R.id.telszamLabel);
+            szalitasiCimLabell = findViewById(R.id.szalitasiCimLabell);
+            paswLabel = findViewById(R.id.paswLabel);
+            paswRepeatLabel = findViewById(R.id.paswRepeatLabel);
+            termekKepBeallitasModosit = findViewById(R.id.termekKepBeallitasModosit);
+            termekKepBeallitasModosit.setClipToOutline(true); //kép radius aktiválása
+            termekKepCimModosit = findViewById(R.id.termekKepCimModosit);
+            szallitasiCimLayout = findViewById(R.id.szallitasiCimLayout);
+            reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+            storageReference = FirebaseStorage.getInstance().getReference().child("BoltKepek");
+            eltuntet();
+            kepMegjelenitese();
         }
-        felhasznalo = auth.getCurrentUser();
-        nevV = findViewById(R.id.nevAdatSzerkezto);
-        progressBarModositas = findViewById(R.id.progressBarModositas);
-        modositasText = findViewById(R.id.modositasText);
-        adatokSzerkesztese = findViewById(R.id.adatokSzerkesztese);
-        vissza = findViewById(R.id.vissza);
-        emailV = findViewById(R.id.emailAdatSzerkezto);
-        telSzamV = findViewById(R.id.telefonszamAdatSzerkezto);
-        szallitasiCimV = findViewById(R.id.lakcimAdatSzerkezto);
-        jelszoV = findViewById(R.id.jelszoAdatSzerkezto);
-        jelszoUjraV = findViewById(R.id.jelszoUjraAdatSzerkezto);
-        szekhelyV = findViewById(R.id.szekhelyAdatSzerkezto);
-        cegNevV = findViewById(R.id.cegNevAdatSzerkezto);
-        adoszamV = findViewById(R.id.adoszamAdatSzerkezto);
-        cegnevLabel = findViewById(R.id.cegnevLabel);
-        adoszamLabel = findViewById(R.id.adoszamLabel);
-        szekhelyLabel = findViewById(R.id.szekhelyLabel);
-        boltKep = "";
-        nevLabel = findViewById(R.id.nevLabel);
-        emailLabel = findViewById(R.id.emailLabel);
-        telszamLabel = findViewById(R.id.telszamLabel);
-        szalitasiCimLabell = findViewById(R.id.szalitasiCimLabell);
-        paswLabel = findViewById(R.id.paswLabel);
-        paswRepeatLabel = findViewById(R.id.paswRepeatLabel);
-        termekKepBeallitasModosit = findViewById(R.id.termekKepBeallitasModosit);
-        termekKepBeallitasModosit.setClipToOutline(true); //kép radius aktiválása
-        termekKepCimModosit = findViewById(R.id.termekKepCimModosit);
-        szallitasiCimLayout = findViewById(R.id.szallitasiCimLayout);
-        reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
-        storageReference = FirebaseStorage.getInstance().getReference().child("BoltKepek");
-        eltuntet();
-        kepMegjelenitese();
-
     }
 
     @Override
@@ -146,7 +148,9 @@ public class AdataimActivity extends AppCompatActivity {
         super.onResume();
         if (auth.getCurrentUser() == null) {
             finish();
-            super.onBackPressed();
+            Intent intent = new Intent(AdataimActivity.this, BejelentkezesActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
     }
 

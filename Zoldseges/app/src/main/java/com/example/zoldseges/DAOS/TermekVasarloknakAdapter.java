@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -84,6 +85,8 @@ public class TermekVasarloknakAdapter extends RecyclerView.Adapter<TermekVasarlo
         }
         holder.termekAraVasarloknak.setText(ar);
         holder.termekKeszletVasarloknak.setText(keszlet);
+
+        holder.termekCardVasarloknak.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.ket_oszlopos_animacio));
 
     }
 

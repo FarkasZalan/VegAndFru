@@ -21,7 +21,7 @@
             android:layout_marginTop="20dp"
             android:text="@string/profil_adatai"
             android:textAlignment="center"
-            android:textSize="43sp" />
+            android:textSize="75sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,18 +35,19 @@
                 android:layout_height="wrap_content"
                 android:text="@string/nev_modositas"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="30sp" />
 
             <EditText
                 android:id="@+id/nevAdatSzerkezto"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:autofillHints="name"
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/teljes_nev"
                 android:inputType="textPersonName"
+                android:textSize="30sp"
                 app:cornerRadius="10dp" />
 
         </LinearLayout>
@@ -63,17 +64,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/email_modoistas"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="30sp" />
 
             <EditText
                 android:id="@+id/emailAdatSzerkezto"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:autofillHints="emailAddress"
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/email_cim"
                 android:inputType="textEmailAddress"
+                android:textSize="30sp"
                 app:cornerRadius="10dp" />
         </LinearLayout>
 
@@ -89,12 +91,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/telefonszam_modositas"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="30sp" />
 
             <EditText
                 android:id="@+id/telefonszamAdatSzerkezto"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:autofillHints="phone"
                 android:backgroundTint="@color/purple_500"
                 android:digits="0123456789+"
@@ -102,6 +104,7 @@
                 android:hint="@string/telefonszam"
                 android:inputType="phone"
                 android:lines="1"
+                android:textSize="30sp"
                 app:cornerRadius="10dp" />
         </LinearLayout>
 
@@ -117,11 +120,11 @@
         <TextView
             android:id="@+id/modositasText"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/modositas"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:visibility="gone" />
 
         <LinearLayout
@@ -137,17 +140,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/szallitasi_cim_modositas"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="30sp" />
 
             <EditText
                 android:id="@+id/lakcimAdatSzerkezto"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:autofillHints="postalAddress"
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/szallitasi_cim"
                 android:inputType="textPostalAddress"
+                android:textSize="30sp"
                 app:cornerRadius="10dp" />
         </LinearLayout>
 
@@ -163,16 +167,17 @@
                 android:layout_height="wrap_content"
                 android:text="@string/uj_jelszo"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="30sp" />
 
             <EditText
                 android:id="@+id/jelszoAdatSzerkezto"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:autofillHints="password"
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:inputType="textPassword"
+                android:textSize="30sp"
                 app:cornerRadius="10dp" />
         </LinearLayout>
 
@@ -188,16 +193,17 @@
                 android:layout_height="wrap_content"
                 android:text="@string/uj_jelszi_ismet"
                 android:textAlignment="center"
-                android:textSize="20sp" />
+                android:textSize="30sp" />
 
             <EditText
                 android:id="@+id/jelszoUjraAdatSzerkezto"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:autofillHints="password"
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:inputType="textPassword"
+                android:textSize="30sp"
                 app:cornerRadius="10dp" />
 
         </LinearLayout>
@@ -214,18 +220,19 @@
                 android:layout_height="wrap_content"
                 android:text="@string/ceg_neve_modositas"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 android:visibility="gone" />
 
             <EditText
                 android:id="@+id/cegNevAdatSzerkezto"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:autofillHints="name"
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/ceg_neve"
                 android:inputType="textPersonName"
+                android:textSize="30sp"
                 android:visibility="gone"
                 app:cornerRadius="10dp" />
         </LinearLayout>
@@ -242,17 +249,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/adoszam_modositas"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 android:visibility="gone" />
 
             <EditText
                 android:id="@+id/adoszamAdatSzerkezto"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/adoszam"
                 android:inputType="number"
+                android:textSize="30sp"
                 android:visibility="gone"
                 app:cornerRadius="10dp" />
         </LinearLayout>
@@ -269,26 +277,27 @@
                 android:layout_height="wrap_content"
                 android:text="@string/szekhely_modositas"
                 android:textAlignment="center"
-                android:textSize="20sp"
+                android:textSize="30sp"
                 android:visibility="gone" />
 
             <EditText
                 android:id="@+id/szekhelyAdatSzerkezto"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:autofillHints="postalAddress"
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/szekhely"
                 android:inputType="textPostalAddress"
+                android:textSize="30sp"
                 android:visibility="gone"
                 app:cornerRadius="10dp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/termekKepBeallitasModosit"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_marginTop="20dp"
             android:background="@drawable/uzlet_kepe_megjelenit"
@@ -301,34 +310,34 @@
         <TextView
             android:id="@+id/termekKepCimModosit"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:onClick="onTermekKepFeltoltesModosit"
             android:text="@string/aruhaz_kepenek_modositasa"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:visibility="gone" />
 
         <Button
             android:id="@+id/adatokSzerkesztese"
-            android:layout_width="270dp"
-            android:layout_height="50dp"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:onClick="onAdatSzerkesztes"
             android:text="@string/adatok_szerkesztese"
-            android:textSize="17sp"
+            android:textSize="30sp"
             app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/vissza"
-            android:layout_width="270dp"
-            android:layout_height="50dp"
+            android:layout_width="500dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:onClick="onVissza"
             android:text="@string/vissza"
-            android:textSize="17sp"
+            android:textSize="30sp"
             app:cornerRadius="10dp" />
     </LinearLayout>
 </ScrollView>

@@ -53,5 +53,6 @@ public class ErtesitesKezelo {
                 .setAutoCancel(true);
 
         this.notificationManager.notify(1, builder.build());
+
     }
 }

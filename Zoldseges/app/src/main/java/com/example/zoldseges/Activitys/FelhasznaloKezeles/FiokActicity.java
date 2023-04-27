@@ -75,40 +75,40 @@ public class FiokActicity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() == null) {
             finish();
-            Intent intent = new Intent(FiokActicity.this, FooldalActivity.class);
+            Intent intent = new Intent(FiokActicity.this, BejelentkezesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+        } else {
+            felhasznalo = auth.getCurrentUser();
+            if (auth.getCurrentUser() == null) {
+                super.onBackPressed();
+                startActivity(new Intent(this, BejelentkezesActivity.class));
+            }
+
+            cimProfil = findViewById(R.id.cimProfil);
+            rendelesek = findViewById(R.id.rendeleseim);
+            bolt = findViewById(R.id.bolt);
+            adataim = findViewById(R.id.adataim);
+            kijelentkezes = findViewById(R.id.kijelentkezes);
+            ugyfelszolgalat = findViewById(R.id.ugyfelszolgalat);
+            aszf = findViewById(R.id.aszf);
+            ellenorzoProgress = findViewById(R.id.ellenorzoProgress);
+
+            tovabb = findViewById(R.id.beleptet);
+            megse = findViewById(R.id.megse);
+            pswLbL = findViewById(R.id.pswLbL);
+            psw = findViewById(R.id.pswTetx);
+
+            try {
+                reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
+                eladoE();
+            } catch (Exception e) {
+                super.onBackPressed();
+                auth.signOut();
+                FirebaseAuth.getInstance().signOut();
+                finish();
+            }
         }
-        felhasznalo = auth.getCurrentUser();
-        if (auth.getCurrentUser() == null) {
-            super.onBackPressed();
-            startActivity(new Intent(this, BejelentkezesActivity.class));
-        }
-
-        cimProfil = findViewById(R.id.cimProfil);
-        rendelesek = findViewById(R.id.rendeleseim);
-        bolt = findViewById(R.id.bolt);
-        adataim = findViewById(R.id.adataim);
-        kijelentkezes = findViewById(R.id.kijelentkezes);
-        ugyfelszolgalat = findViewById(R.id.ugyfelszolgalat);
-        aszf = findViewById(R.id.aszf);
-        ellenorzoProgress = findViewById(R.id.ellenorzoProgress);
-
-        tovabb = findViewById(R.id.beleptet);
-        megse = findViewById(R.id.megse);
-        pswLbL = findViewById(R.id.pswLbL);
-        psw = findViewById(R.id.pswTetx);
-
-        try {
-            reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
-            eladoE();
-        } catch (Exception e) {
-            super.onBackPressed();
-            auth.signOut();
-            FirebaseAuth.getInstance().signOut();
-            finish();
-        }
-
 
     }
 
@@ -130,23 +130,24 @@ public class FiokActicity extends AppCompatActivity {
         super.onResume();
         if (auth.getCurrentUser() == null) {
             finish();
-            Intent intent = new Intent(FiokActicity.this, FooldalActivity.class);
+            Intent intent = new Intent(FiokActicity.this, BejelentkezesActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        }
-        ellenorzoProgress.setVisibility(View.GONE);
-        psw.setVisibility(View.GONE);
-        pswLbL.setVisibility(View.GONE);
-        tovabb.setVisibility(View.GONE);
-        megse.setVisibility(View.GONE);
-        cimProfil.setText(R.string.profilom);
+        } else {
+            ellenorzoProgress.setVisibility(View.GONE);
+            psw.setVisibility(View.GONE);
+            pswLbL.setVisibility(View.GONE);
+            tovabb.setVisibility(View.GONE);
+            megse.setVisibility(View.GONE);
+            cimProfil.setText(R.string.profilom);
 
-        adataim.setVisibility(View.VISIBLE);
-        rendelesek.setVisibility(View.VISIBLE);
-        eladoE();
-        ugyfelszolgalat.setVisibility(View.VISIBLE);
-        aszf.setVisibility(View.VISIBLE);
-        kijelentkezes.setVisibility(View.VISIBLE);
+            adataim.setVisibility(View.VISIBLE);
+            rendelesek.setVisibility(View.VISIBLE);
+            eladoE();
+            ugyfelszolgalat.setVisibility(View.VISIBLE);
+            aszf.setVisibility(View.VISIBLE);
+            kijelentkezes.setVisibility(View.VISIBLE);
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

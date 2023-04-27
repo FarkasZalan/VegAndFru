@@ -73,24 +73,27 @@ public class RendeleseimActivity extends AppCompatActivity implements NyugtaDAO 
         db = FirebaseFirestore.getInstance();
         if (auth.getCurrentUser() == null) {
             finish();
-            super.onBackPressed();
+            Intent intent = new Intent(RendeleseimActivity.this, BejelentkezesActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        } else {
+            nincsNyugtaLayout = findViewById(R.id.nincsNyugtaLayout);
+            progressNyugtak = findViewById(R.id.progressNyugtak);
+            betoltesNyugtak = findViewById(R.id.betoltesNyugtak);
+            nyugtak = findViewById(R.id.nyugtak);
+            appBarNyugta = findViewById(R.id.appBarNyugta);
+            kepNyugtakhoz = findViewById(R.id.kepNyugtakhoz);
+
+            GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
+            nyugtak.setLayoutManager(layoutManager);
+            nyugtak.setHasFixedSize(true);
+
+            nyugtakListaja = new ArrayList<>();
+
+            eltuntet();
+            clearList();
+            eladoAFelhasznalo();
         }
-        nincsNyugtaLayout = findViewById(R.id.nincsNyugtaLayout);
-        progressNyugtak = findViewById(R.id.progressNyugtak);
-        betoltesNyugtak = findViewById(R.id.betoltesNyugtak);
-        nyugtak = findViewById(R.id.nyugtak);
-        appBarNyugta = findViewById(R.id.appBarNyugta);
-        kepNyugtakhoz = findViewById(R.id.kepNyugtakhoz);
-
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
-        nyugtak.setLayoutManager(layoutManager);
-        nyugtak.setHasFixedSize(true);
-
-        nyugtakListaja = new ArrayList<>();
-
-        eltuntet();
-        clearList();
-        eladoAFelhasznalo();
     }
 
     @Override
@@ -98,11 +101,14 @@ public class RendeleseimActivity extends AppCompatActivity implements NyugtaDAO 
         super.onResume();
         if (auth.getCurrentUser() == null) {
             finish();
-            super.onBackPressed();
+            Intent intent = new Intent(RendeleseimActivity.this, BejelentkezesActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        } else {
+            eltuntet();
+            clearList();
+            eladoAFelhasznalo();
         }
-        eltuntet();
-        clearList();
-        eladoAFelhasznalo();
     }
 
     private void eladoAFelhasznalo() {

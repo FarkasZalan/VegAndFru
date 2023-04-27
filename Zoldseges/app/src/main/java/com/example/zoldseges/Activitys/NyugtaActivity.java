@@ -169,13 +169,17 @@ public class NyugtaActivity extends AppCompatActivity {
             }
         }
         if (item.getItemId() == android.R.id.home) {
+            if (auth.getCurrentUser() == null) {
+                finish();
+                Intent intent = new Intent(NyugtaActivity.this, FooldalActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
             if (fizetesUtan) {
-                if (auth.getCurrentUser() == null) {
-                    finish();
-                    Intent intent = new Intent(NyugtaActivity.this, FooldalActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                }
+                finish();
+                Intent intent = new Intent(NyugtaActivity.this, FooldalActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             } else {
                 finish();
                 super.onBackPressed();

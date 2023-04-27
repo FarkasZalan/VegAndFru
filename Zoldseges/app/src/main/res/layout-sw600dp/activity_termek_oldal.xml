@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".Activitys.TermekOldalActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".Activitys.TermekOldalActivity">
+
+        <ImageView
+            android:id="@+id/kep2"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:adjustViewBounds="true"
+            android:animateLayoutChanges="true"
+            android:contentDescription="@string/bolt_kepe"
+            android:foreground="#A3000000"
+            android:scaleType="center"
+            android:src="@drawable/standard_item_picture"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+
+        <ProgressBar
+            android:id="@+id/progressBarTermekBetolt"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="30dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/kep2"
+            app:layout_constraintVertical_bias=".037" />
+
+        <TextView
+            android:id="@+id/termekBetoltText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/betoltes"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBarTermekBetolt"
+            app:layout_constraintVertical_bias=".037" />
+
+        <TextView
+            android:id="@+id/bejlelentkezKosarhoz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textSize="30sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/kep2"
+            app:layout_constraintVertical_bias="0.027" />
+
+        <TextView
+            android:id="@+id/termekNeveBolt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/termek_nev"
+            android:textAlignment="center"
+            android:textSize="45sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bejlelentkezKosarhoz"
+            app:layout_constraintVertical_bias=".027" />
+
+
+        <LinearLayout
+            android:id="@+id/termekSulyBoltLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:visibility="gone"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/termekNeveBolt"
+            app:layout_constraintVertical_bias="0.037">
+
+            <TextView
+                android:id="@+id/sulyLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/termely_suly"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/termekSulyBolt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/suly"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/termekArBoltLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/termekSulyBoltLayout"
+            app:layout_constraintVertical_bias="0.037">
+
+            <TextView
+                android:id="@+id/arLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/egysegar"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/termekAraBolt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ar"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/maxMennyisegBoltLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/termekArBoltLayout"
+            app:layout_constraintVertical_bias="0.057">
+
+            <TextView
+                android:id="@+id/maxMennyisegBoltLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/keszleten"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/termekMaxRendelheto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/keszlet"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rendelenoMennyisegLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/maxMennyisegBoltLayout"
+            app:layout_constraintVertical_bias="0.037">
+
+            <TextView
+                android:id="@+id/maxMennyisegLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rendelendo"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
+            <EditText
+                android:id="@+id/rendelendoMennyiseg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:autofillHints="name"
+                android:backgroundTint="@color/purple_500"
+                android:ems="10"
+                android:hint="@string/rendelendo_mennyiseg_kg"
+                android:inputType="numberDecimal"
+                android:textSize="30sp"
+                app:cornerRadius="10dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/kosarbaTermekOldal"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
+            android:onClick="onKosarba"
+            android:text="@string/kosatba"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rendelenoMennyisegLayout"
+            app:layout_constraintVertical_bias="0.237" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

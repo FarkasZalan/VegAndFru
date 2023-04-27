@@ -20,67 +20,71 @@
             android:layout_marginTop="20dp"
             android:text="@string/bejelentkezes"
             android:textAlignment="center"
-            android:textSize="43sp" />
+            android:textSize="75sp" />
 
         <EditText
             android:id="@+id/emailLogin"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="150dp"
+            android:backgroundTint="@color/purple_500"
             android:ems="10"
             android:hint="@string/email_cim"
-            android:backgroundTint="@color/purple_500"
             android:inputType="textEmailAddress"
+            android:textSize="30sp"
             app:cornerRadius="10dp" />
+
         <ProgressBar
             android:id="@+id/progressBarBejelentkezes"
-            android:layout_marginTop="150dp"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:visibility="gone"
-            />
+            android:layout_marginTop="150dp"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/bejelentkezesText"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/bejelentkezesProgress"
             android:textAlignment="center"
-            android:textSize="20sp"
-            android:visibility="gone"
-            />
+            android:textSize="30sp"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/jelszoLogin"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:backgroundTint="@color/purple_500"
             android:ems="10"
             android:hint="@string/jelszo"
-            android:backgroundTint="@color/purple_500"
             android:inputType="textPassword"
+            android:textSize="30sp"
             app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/bejelentkezesButton"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
+            android:layout_width="450sp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:onClick="onLogin"
             android:text="@string/bejelentkezes"
+            android:textSize="30sp"
             app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/regisztracio"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
+            android:layout_width="450sp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:onClick="onRegisterOpen"
             android:text="@string/regisztracio"
+            android:textSize="30sp"
             app:cornerRadius="10dp" />
     </LinearLayout>
 </ScrollView>
