@@ -259,7 +259,7 @@ public class TermekOldalActivity extends AppCompatActivity {
     public void megjelenit() {
         progressBarTermekBetolt.setVisibility(View.GONE);
         termekBetoltText.setVisibility(View.GONE);
-        termekNeveBolt.setVisibility(View.GONE);
+        termekNeveBolt.setVisibility(View.VISIBLE);
         kepTermek.setVisibility(View.VISIBLE);
         eladoE();
         maxMennyisegBoltLayout.setVisibility(View.VISIBLE);

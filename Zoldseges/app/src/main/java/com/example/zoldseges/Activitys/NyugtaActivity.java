@@ -31,9 +31,6 @@ public class NyugtaActivity extends AppCompatActivity {
     private TextView rendeltTermekek;
     private TextView eladoAdatai;
     private TextView altalanosAdatok;
-    private TextView sikeresRendelesText;
-    private Button nyugtaRendben;
-    private Button nyugtaVissza;
     String nyugtaId;
     boolean fizetesUtan;
 
@@ -56,10 +53,10 @@ public class NyugtaActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        nyugtaRendben = findViewById(R.id.nyugtaRendben);
-        nyugtaVissza = findViewById(R.id.nyugtaVissza);
+        Button nyugtaRendben = findViewById(R.id.nyugtaRendben);
+        Button nyugtaVissza = findViewById(R.id.nyugtaVissza);
         rendeltTermekek = findViewById(R.id.rendeltTermekek);
-        sikeresRendelesText = findViewById(R.id.sikeresRendelesText);
+        TextView sikeresRendelesText = findViewById(R.id.sikeresRendelesText);
         eladoAdatai = findViewById(R.id.eladoAdatai);
         altalanosAdatok = findViewById(R.id.altalanosAdatok);
         rendeltTermekek.setText("");

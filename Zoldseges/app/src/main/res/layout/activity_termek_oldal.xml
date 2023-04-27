@@ -21,7 +21,7 @@
             android:adjustViewBounds="true"
             android:animateLayoutChanges="true"
             android:contentDescription="@string/bolt_kepe"
-            android:foreground="#A3000000"
+            android:foreground="#41020202"
             android:scaleType="center"
             android:src="@drawable/standard_item_picture"
             app:layout_constraintBottom_toBottomOf="parent"

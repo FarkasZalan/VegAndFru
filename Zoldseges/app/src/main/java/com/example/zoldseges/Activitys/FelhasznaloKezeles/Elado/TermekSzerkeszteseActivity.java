@@ -129,7 +129,7 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
             mertekegysegValasztoTermekModositas.setChecked(true);
             String suly = termekSulya + " kg";
             termekSulyaAtlagosanTermekModositas.setHint(suly);
-            termekSulyaAtlagosanTermekModositas.setText(String.valueOf((int) termekSulya));
+            termekSulyaAtlagosanTermekModositas.setText(String.valueOf(termekSulya));
             ar = (int) termekegysegara + " Ft/kg";
             termekAraTermekModositas.setHint(ar);
             termekAraTermekModositas.setText(String.valueOf((int) termekegysegara));

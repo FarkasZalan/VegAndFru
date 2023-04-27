@@ -110,7 +110,7 @@
             android:adjustViewBounds="true"
             android:animateLayoutChanges="true"
             android:contentDescription="@string/bolt_kepe"
-            android:foreground="#A3000000"
+            android:foreground="#41020202"
             android:scaleType="center"
             android:src="@drawable/grocery_store"
             app:layout_scrollFlags="scroll|exitUntilCollapsed" />

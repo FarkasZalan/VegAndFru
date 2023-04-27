@@ -271,7 +271,7 @@ public class FizetesActivity extends AppCompatActivity {
             assert value != null;
             uzletKepe = value.getString("boltKepe");
             uzletNeve = value.getString("cegNev");
-            uzletSzekhely = value.getString("szekhely");
+            uzletSzekhely = value.getString("Szekhely");
             String tulajId = value.getString("tulajId");
             assert tulajId != null;
             DocumentReference tulaj = db.collection("felhasznalok").document(tulajId);

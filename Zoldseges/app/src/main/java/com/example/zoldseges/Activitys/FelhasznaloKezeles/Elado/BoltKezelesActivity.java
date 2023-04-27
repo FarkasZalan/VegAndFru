@@ -72,7 +72,6 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
 
     private RelativeLayout elsoTermekLayout;
     private ImageView termekHozzaad;
-    private AppBarLayout appBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +86,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
         termekHozzaad = findViewById(R.id.termekHozzaad);
         kep = findViewById(R.id.kep1);
         plus = findViewById(R.id.plus);
-        appBarLayout = findViewById(R.id.appBarLayout);
+        AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
         betoltesTextBoltKezeles = findViewById(R.id.betoltesTextBoltKezeles);
         progressBarBoltKezeles = findViewById(R.id.progressBarBoltKezeles);
         eltuntet();
@@ -153,7 +152,7 @@ public class BoltKezelesActivity extends AppCompatActivity implements TermekVala
                         Uri uri = Uri.parse(adat.getString("boltKepe"));
                         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
                         getSupportActionBar().setTitle(adat.getString("cegNev"));
-                        if (adat.getString("boltKepe") != null && !adat.getString("boltKepe").isEmpty()) {
+                        if (adat.getString("boltKepe") != null && !Objects.requireNonNull(adat.getString("boltKepe")).isEmpty()) {
                             try {
                                 if (!BoltKezelesActivity.this.isFinishing()) {
                                     Glide.with(BoltKezelesActivity.this).load(uri).placeholder(R.drawable.grocery_store).listener(new RequestListener<Drawable>() {
