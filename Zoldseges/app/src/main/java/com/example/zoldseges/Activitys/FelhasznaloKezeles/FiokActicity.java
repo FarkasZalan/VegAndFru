@@ -20,8 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.zoldseges.Activitys.FelhasznaloKezeles.Elado.BoltKezelesActivity;
-import com.example.zoldseges.Activitys.FizetesActivity;
-import com.example.zoldseges.Activitys.FooldalActivity;
 import com.example.zoldseges.Activitys.KosarActivity;
 import com.example.zoldseges.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -99,6 +97,7 @@ public class FiokActicity extends AppCompatActivity {
             pswLbL = findViewById(R.id.pswLbL);
             psw = findViewById(R.id.pswTetx);
 
+
             try {
                 reference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());
                 eladoE();
@@ -117,12 +116,12 @@ public class FiokActicity extends AppCompatActivity {
             assert value != null;
             if (Objects.equals(value.getString("felhasznaloTipus"), "Eladó cég/vállalat")) {
                 bolt.setVisibility(View.VISIBLE);
-                rendelesek.setText("Rendelések");
-                cimProfil.setText("Rendelések");
+                rendelesek.setText(R.string.rendelesek);
+                cimProfil.setText(R.string.rendelesek);
             } else {
                 bolt.setVisibility(View.GONE);
-                rendelesek.setText("Rendeléseim");
-                cimProfil.setText("Rendeléseim");
+                rendelesek.setText(R.string.rendeleseim);
+                cimProfil.setText(R.string.rendeleseim);
             }
         });
     }

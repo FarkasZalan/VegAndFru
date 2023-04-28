@@ -79,9 +79,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-
-                    >
+                    android:orientation="vertical">
 
                     <ImageView
                         android:layout_width="150dp"
@@ -89,6 +87,7 @@
                         android:layout_gravity="center"
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/elso_termek_shape"
+                        android:contentDescription="@string/bolt_kepe"
                         android:onClick="onUjTermek"
                         android:src="@drawable/add" />
 
@@ -96,11 +95,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:textAlignment="center"
-                        android:lines="2"
                         android:layout_marginBottom="20dp"
+                        android:lines="2"
                         android:onClick="onUjTermek"
                         android:text="@string/elso_termek_letrehozasa"
+                        android:textAlignment="center"
                         android:textSize="18sp" />
                 </LinearLayout>
             </RelativeLayout>
@@ -120,6 +119,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/rounded_image"
+                    android:contentDescription="@string/bolt_kepe"
                     android:onClick="onUjTermek"
                     android:padding="10dp"
                     android:src="@drawable/add" />

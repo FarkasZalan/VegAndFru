@@ -47,11 +47,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textAlignment="center"
                     android:layout_marginBottom="20dp"
-                    android:onClick="onVissza"
                     android:lines="2"
+                    android:onClick="onVissza"
                     android:text="@string/nincs_keresesi_eredmeny"
+                    android:textAlignment="center"
                     android:textSize="16sp" />
             </LinearLayout>
         </RelativeLayout>
@@ -86,6 +86,7 @@
             app:layout_constraintTop_toBottomOf="@+id/progressFooldal"
             app:layout_constraintVertical_bias="0.037" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fooldalBoltjai"
         android:layout_width="match_parent"

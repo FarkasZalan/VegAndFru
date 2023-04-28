@@ -47,9 +47,6 @@ public class AszfActicity extends AppCompatActivity {
             super.onBackPressed();
             return true;
         }
-        if (item.getItemId() == R.id.kosarfiok) {
-            startActivity(new Intent(AszfActicity.this, KosarActivity.class));
-        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -71,10 +71,10 @@ public class NyugtaActivity extends AppCompatActivity {
         } else {
             nyugtaRendben.setVisibility(View.GONE);
             nyugtaVissza.setVisibility(View.VISIBLE);
-            sikeresRendelesText.setText("Nyugta");
+            sikeresRendelesText.setText(R.string.nyugta);
         }
         getFromData();
-        getSupportActionBar().setTitle("Nyugta");
+        getSupportActionBar().setTitle(R.string.nyugta);
     }
 
     private void getFromData() {

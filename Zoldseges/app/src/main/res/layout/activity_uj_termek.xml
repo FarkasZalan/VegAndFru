@@ -69,11 +69,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
-                android:maxLength="10"
                 android:autofillHints=""
                 android:backgroundTint="@color/purple_500"
                 android:hint="@string/termek_sulya_kg"
                 android:inputType="numberDecimal"
+                android:maxLength="10"
                 android:visibility="gone" />
 
         </LinearLayout>
@@ -84,10 +84,10 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:autofillHints=""
-            android:maxLength="10"
             android:backgroundTint="@color/purple_500"
             android:hint="@string/termek_egysegara_db"
             android:inputType="number"
+            android:maxLength="10"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mertekegysegValasztoLayout"

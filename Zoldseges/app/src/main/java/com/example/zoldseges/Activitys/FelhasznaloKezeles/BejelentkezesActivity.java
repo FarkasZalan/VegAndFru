@@ -20,7 +20,6 @@ import com.example.zoldseges.Activitys.KosarActivity;
 import com.example.zoldseges.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 
 import java.util.Objects;
 
@@ -30,6 +29,7 @@ public class BejelentkezesActivity extends AppCompatActivity {
 
     private Button bejelentkezesButton;
     private Button regisztracio;
+    private Button elfelejtettJelszoButton;
     private TextView email;
     private TextView jelszo;
     private TextView bejelentkezesText;
@@ -57,6 +57,7 @@ public class BejelentkezesActivity extends AppCompatActivity {
         progressBarBejelentkezes = findViewById(R.id.progressBarBejelentkezes);
         bejelentkezesButton = findViewById(R.id.bejelentkezesButton);
         regisztracio = findViewById(R.id.regisztracio);
+        elfelejtettJelszoButton = findViewById(R.id.elfelejtettJelszoButton);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,6 +113,7 @@ public class BejelentkezesActivity extends AppCompatActivity {
                 jelszo.setVisibility(View.GONE);
                 bejelentkezesButton.setVisibility(View.GONE);
                 regisztracio.setVisibility(View.GONE);
+                elfelejtettJelszoButton.setVisibility(View.GONE);
 
                 auth.signInWithEmailAndPassword(emailAdress, jelszoTxt).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -146,6 +148,7 @@ public class BejelentkezesActivity extends AppCompatActivity {
         jelszo.setVisibility(View.VISIBLE);
         bejelentkezesButton.setVisibility(View.VISIBLE);
         regisztracio.setVisibility(View.VISIBLE);
+        elfelejtettJelszoButton.setVisibility(View.VISIBLE);
     }
 
     boolean isEmailValid(CharSequence email) {
@@ -162,5 +165,9 @@ public class BejelentkezesActivity extends AppCompatActivity {
     public void onRegisterOpen(View view) {
         super.onBackPressed();
         startActivity(new Intent(this, RegisztracioActivity.class));
+    }
+
+    public void onResetPassword(View view) {
+        startActivity(new Intent(this, ElfelejtettJelszoActivity.class));
     }
 }

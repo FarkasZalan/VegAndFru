@@ -40,9 +40,6 @@ public class UgyfelszolgalatActivity extends AppCompatActivity {
             finish();
             super.onBackPressed();
         }
-        if (item.getItemId() == R.id.kosarfiok) {
-            startActivity(new Intent(UgyfelszolgalatActivity.this, KosarActivity.class));
-        }
         return super.onOptionsItemSelected(item);
     }
 

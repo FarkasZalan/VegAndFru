@@ -249,6 +249,7 @@
                 android:id="@+id/adoszamAdatSzerkezto"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:autofillHints="phone"
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/adoszam"

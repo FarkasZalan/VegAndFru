@@ -27,20 +27,22 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="150dp"
+            android:autofillHints="emailAddress"
+            android:backgroundTint="@color/purple_500"
             android:ems="10"
             android:hint="@string/email_cim"
-            android:backgroundTint="@color/purple_500"
             android:inputType="textEmailAddress"
             app:cornerRadius="10dp" />
+
         <ProgressBar
             android:id="@+id/progressBarBejelentkezes"
-            android:layout_marginTop="150dp"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:visibility="gone"
-            />
+            android:layout_marginTop="150dp"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/bejelentkezesText"
             android:layout_width="match_parent"
@@ -49,17 +51,17 @@
             android:text="@string/bejelentkezesProgress"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/jelszoLogin"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="40dp"
+            android:autofillHints="password"
+            android:backgroundTint="@color/purple_500"
             android:ems="10"
             android:hint="@string/jelszo"
-            android:backgroundTint="@color/purple_500"
             android:inputType="textPassword"
             app:cornerRadius="10dp" />
 
@@ -81,6 +83,16 @@
             android:layout_marginTop="20dp"
             android:onClick="onRegisterOpen"
             android:text="@string/regisztracio"
+            app:cornerRadius="10dp" />
+
+        <Button
+            android:id="@+id/elfelejtettJelszoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:onClick="onResetPassword"
+            android:text="@string/elfelejtettem_a_jelszavam"
             app:cornerRadius="10dp" />
     </LinearLayout>
 </ScrollView>

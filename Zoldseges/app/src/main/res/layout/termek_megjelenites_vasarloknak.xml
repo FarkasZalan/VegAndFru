@@ -21,31 +21,30 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="top|center"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
+
             <ProgressBar
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
 
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="40dp"
-                android:layout_centerHorizontal="true"
                 android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"
-                />
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40dp"
+                android:animateLayoutChanges="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentBottom="true"
                 android:animateLayoutChanges="true"
                 android:text="@string/betoltes"
                 android:textAlignment="center"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
         </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -56,8 +55,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:contentDescription="@string/termek_kepe"
                 android:adjustViewBounds="true"
+                android:contentDescription="@string/termek_kepe"
                 android:scaleType="center"
                 app:srcCompat="@drawable/standard_item_picture" />
 
@@ -81,9 +80,9 @@
                     android:id="@+id/termekAraVasarloknak"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:lines="2"
-                    android:layout_marginTop="10dp"
                     android:text="@string/termek_egysegara_kg"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
@@ -92,11 +91,11 @@
                     android:id="@+id/termekKeszletVasarloknak"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="40dp"
                     android:gravity="center"
                     android:lines="2"
-                    android:layout_marginTop="10dp"
                     android:text="Még további 3 rendelhető"
-                    android:layout_marginBottom="40dp"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 

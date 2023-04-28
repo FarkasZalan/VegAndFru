@@ -38,6 +38,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/elso_termek_shape"
+                    android:contentDescription="@string/bolt_kepe"
                     android:onClick="onVissza"
                     android:src="@drawable/nincs_termek" />
 

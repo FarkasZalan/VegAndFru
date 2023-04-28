@@ -297,10 +297,6 @@ public class AdataimActivity extends AppCompatActivity {
             super.onBackPressed();
             return true;
         }
-
-        if (item.getItemId() == R.id.kosarfiok) {
-            startActivity(new Intent(AdataimActivity.this, KosarActivity.class));
-        }
         return super.onOptionsItemSelected(item);
     }
 

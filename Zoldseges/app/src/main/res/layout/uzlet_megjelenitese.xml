@@ -23,29 +23,28 @@
             android:layout_gravity="top"
             android:layout_marginEnd="20dp"
             android:visibility="gone">
+
             <ProgressBar
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="30dp"
-                android:layout_centerHorizontal="true"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
-                android:animateLayoutChanges="true"
-                />
+                android:layout_marginTop="30dp"
+                android:animateLayoutChanges="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
+                android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="10dp"
                 android:animateLayoutChanges="true"
                 android:text="@string/betoltes"
                 android:textAlignment="center"
-                android:textSize="15sp"
-                />
+                android:textSize="15sp" />
         </RelativeLayout>
 
         <LinearLayout
