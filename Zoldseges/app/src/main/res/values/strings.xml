@@ -91,8 +91,8 @@
     <string name="elso_termek_letrehozasa">Add hozzá első termékedet a boltodhoz</string>
     <string name="nincs_termek">Jelenleg egyetlen termék sem elérhető</string>
     <string name="nincs_keresesi_eredmeny">Nincs a keresésnek megfelelő elem!</string>
-    <string name="rendelendo_mennyiseg_kg">Rendelenő mennyiség (kg)*</string>
-    <string name="rendelendo_mennyiseg_db">Rendelenő mennyiség (db)*</string>
+    <string name="rendelendo_mennyiseg_kg">Rendelendő mennyiség (kg)*</string>
+    <string name="rendelendo_mennyiseg_db">Rendelendő mennyiség (db)*</string>
     <string name="rendelendo">Rendelenő:</string>
     <string name="keszlet">Készlet</string>
     <string name="keszleten">Készleten:</string>

@@ -139,7 +139,7 @@ public class NyugtaActivity extends AppCompatActivity {
                 altalanosAdatok.append("\n\nRendelés azonosító: " + nyugtaId);
             }
             if (!altalanosAdatok.getText().toString().contains("\nVégösszeg: " + Objects.requireNonNull(nyugtaRef.getString("vegosszeg")) + " Ft")) {
-                altalanosAdatok.append("\n\nVégösszeg: " + Objects.requireNonNull(nyugtaRef.getString("vegosszeg")) + " Ft");
+                altalanosAdatok.append("\n\nVégösszeg: " + Objects.requireNonNull(nyugtaRef.getString("vegosszeg")) + " Ft" + "\n(+5000 Ft szállítási költség)");
             }
         });
     }
