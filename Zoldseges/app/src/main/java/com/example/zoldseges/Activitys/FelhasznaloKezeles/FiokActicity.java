@@ -228,7 +228,6 @@ public class FiokActicity extends AppCompatActivity {
             FiokActicity.super.onBackPressed();
             finish();
         });
-
         kijelentkezesAlert.setButton(DialogInterface.BUTTON_NEGATIVE, "Mégse", (dialog, which) -> kijelentkezesAlert.dismiss());
         kijelentkezesAlert.show();
         int color = getResources().getColor(R.color.red, getTheme());

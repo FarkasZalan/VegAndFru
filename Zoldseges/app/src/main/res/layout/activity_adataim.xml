@@ -312,10 +312,12 @@
 
         <Button
             android:id="@+id/adatokSzerkesztese"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="40dp"
+            android:layout_marginEnd="50dp"
             android:onClick="onAdatSzerkesztes"
             android:text="@string/adatok_szerkesztese"
             android:textSize="17sp"
@@ -323,10 +325,12 @@
 
         <Button
             android:id="@+id/vissza"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="40dp"
+            android:layout_marginEnd="50dp"
             android:onClick="onVissza"
             android:text="@string/vissza"
             android:textSize="17sp"

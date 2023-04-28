@@ -97,6 +97,8 @@ public class UjTermekActivity extends AppCompatActivity {
         visszaTermekHozzaad = findViewById(R.id.visszaTermekHozzaad);
         mentestext = findViewById(R.id.mentestext);
 
+        elsoTermekKep.setClipToOutline(true);
+
         sulybanKellMerni = sulybanMerendoE();
         progressBar = findViewById(R.id.progressBar);
         DocumentReference felhasznaloReference = db.collection("felhasznalok").document(Objects.requireNonNull(auth.getCurrentUser()).getUid());

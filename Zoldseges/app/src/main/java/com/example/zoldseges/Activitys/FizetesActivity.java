@@ -271,7 +271,7 @@ public class FizetesActivity extends AppCompatActivity {
             assert value != null;
             uzletKepe = value.getString("boltKepe");
             uzletNeve = value.getString("cegNev");
-            uzletSzekhely = value.getString("Szekhely");
+            uzletSzekhely = value.getString("szekhely");
             String tulajId = value.getString("tulajId");
             assert tulajId != null;
             DocumentReference tulaj = db.collection("felhasznalok").document(tulajId);
@@ -361,7 +361,6 @@ public class FizetesActivity extends AppCompatActivity {
 
                 DocumentReference nyugtak = db.collection("nyugtak").document();
                 Map<String, String> nyugta;
-
                 String osszeg = String.valueOf((int) Math.round(fizetendo));
                 Calendar cal = Calendar.getInstance();
                 Date date = cal.getTime();

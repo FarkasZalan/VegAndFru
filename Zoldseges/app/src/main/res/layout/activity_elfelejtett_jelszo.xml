@@ -59,6 +59,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:onClick="onEmailKuldese"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:text="@string/email_kuldese"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"

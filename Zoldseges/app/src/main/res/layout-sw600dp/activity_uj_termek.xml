@@ -145,8 +145,11 @@
                 android:layout_width="250dp"
                 android:layout_height="250dp"
                 android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/uzlet_kepe_megjelenit"
                 android:contentDescription="@string/todo"
                 android:onClick="onTermekKepFeltoltes"
+                android:scaleType="centerCrop"
                 android:textSize="30sp"
                 app:srcCompat="@drawable/standard_item_picture" />
 

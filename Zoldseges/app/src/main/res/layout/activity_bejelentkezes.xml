@@ -67,30 +67,37 @@
 
         <Button
             android:id="@+id/bejelentkezesButton"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="30dp"
+            android:layout_marginEnd="50dp"
             android:onClick="onLogin"
             android:text="@string/bejelentkezes"
             app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/regisztracio"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="50dp"
             android:onClick="onRegisterOpen"
             android:text="@string/regisztracio"
             app:cornerRadius="10dp" />
 
         <Button
             android:id="@+id/elfelejtettJelszoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="30dp"
+            android:layout_marginEnd="50dp"
+            android:lines="2"
             android:onClick="onResetPassword"
             android:text="@string/elfelejtettem_a_jelszavam"
             app:cornerRadius="10dp" />

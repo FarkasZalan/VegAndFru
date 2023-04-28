@@ -228,8 +228,8 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
                             fooldalBoltjai.setVisibility(View.GONE);
                         } else {
                             szurtLista.sort(Comparator.comparing(Uzlet::getUzletNeve));
-                            uzletekListaja = szurtLista;
-                            uzletAdapter = new UzletAdapter(getApplicationContext(), uzletekListaja, FooldalActivity.this);
+
+                            uzletAdapter = new UzletAdapter(getApplicationContext(), szurtLista, FooldalActivity.this);
                             fooldalBoltjai.setAdapter(uzletAdapter);
                             nincsKeresesiEredmenyLayout.setVisibility(View.GONE);
                             fooldalBoltjai.setVisibility(View.VISIBLE);

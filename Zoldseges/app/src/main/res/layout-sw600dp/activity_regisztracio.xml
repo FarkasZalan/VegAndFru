@@ -218,6 +218,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:onClick="onTermekKepFeltoltesReg"
+                android:background="@drawable/uzlet_kepe_megjelenit"
                 android:text="@string/aruhaz_kepenek_beallitasa"
                 android:textAlignment="center"
                 android:textSize="30sp"
@@ -244,6 +245,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
             android:onClick="onLoginOpen"
+            android:layout_marginBottom="40dp"
             android:text="@string/mar_regisztraltam"
             android:textSize="30sp"
             app:cornerRadius="10dp" />

@@ -29,7 +29,7 @@
         <LinearLayout
             android:id="@+id/emailLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:orientation="horizontal"
             android:padding="10dp"
             android:textAlignment="center"
@@ -51,16 +51,18 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
+                android:autoLink="email"
                 android:text="@string/farkaszalan2001_gmail_com"
+                android:textColorLink="@color/purple_500"
                 android:textSize="30sp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/discordLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:orientation="horizontal"
             android:padding="10dp"
             android:textAlignment="center"
@@ -83,16 +85,19 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
+                android:onClick="onDiscord"
                 android:text="@string/kolbasz_9234"
+                android:textColor="@color/purple_500"
+                android:textColorLink="@color/purple_200"
                 android:textSize="30sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/telefonLayout"
+            android:id="@+id/facebookLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:orientation="horizontal"
             android:padding="10dp"
             android:textAlignment="center"
@@ -106,6 +111,40 @@
             app:layout_constraintVertical_bias="0.03">
 
             <TextView
+                android:id="@+id/face"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/facebook"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:onClick="onFacebook"
+                android:text="@string/farkas_zalan"
+                android:textColor="@color/purple_500"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/telefonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:textAlignment="center"
+            app:flow_horizontalAlign="center"
+            app:flow_verticalAlign="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.125"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/facebookLayout"
+            app:layout_constraintVertical_bias="0.03">
+
+            <TextView
                 android:id="@+id/telefon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,9 +154,11 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
+                android:autoLink="phone"
                 android:text="@string/_36_30_621_0890"
+                android:textColorLink="@color/purple_500"
                 android:textSize="30sp" />
         </LinearLayout>
 

@@ -112,6 +112,8 @@ public class TermekSzerkeszteseActivity extends AppCompatActivity {
         mentesTermekModositas = findViewById(R.id.mentesTermekModositas);
         visszaTermekModositas = findViewById(R.id.visszaTermekModositas);
 
+        termekKepTermekModositas.setClipToOutline(true);
+
         termekNeveTermekModositas.setText(termekNeve);
         String keszlet;
         String ar;

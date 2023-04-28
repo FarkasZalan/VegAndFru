@@ -385,7 +385,7 @@ public class RegisztracioActivity extends AppCompatActivity {
                             //ha tölt fel képet akkor frissűlnek az adatai az adatb-ben
                             Map<String, String> uzletParameterek = new HashMap<>();
                             uzletParameterek.put("cegNev", cegNev.getText().toString());
-                            uzletParameterek.put("Szekhely", szekhely.getText().toString());
+                            uzletParameterek.put("szekhely", szekhely.getText().toString());
                             uzletParameterek.put("boltKepe", boltKep);
                             uzletParameterek.put("tulajId", id);
                             uzletek = db.collection("uzletek").document(uzletId);
