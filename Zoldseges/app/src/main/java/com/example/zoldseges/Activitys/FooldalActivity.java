@@ -69,6 +69,8 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
 
     private MenuItem kosar;
 
+    private ArrayList<Uzlet> szurtLista;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,6 +91,7 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         fooldalBoltjai.setHasFixedSize(true);
 
         uzletekListaja = new ArrayList<>();
+        szurtLista = new ArrayList<>();
 
         eltuntet();
         clearList();
@@ -117,6 +120,7 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         fooldalBoltjai.setHasFixedSize(true);
         auth = FirebaseAuth.getInstance();
         uzletekListaja = new ArrayList<>();
+        szurtLista = new ArrayList<>();
         eltuntet();
         clearList();
         getDataFromFireBase();
@@ -205,11 +209,11 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
     }
 
     private void filterList(String keresendo) {
-        ArrayList<Uzlet> szurtLista = new ArrayList<>();
         CollectionReference osszesTermekLista = db.collection("osszesTermek");
         if (keresendo.isEmpty()) {
             nincsKeresesiEredmenyLayout.setVisibility(View.GONE);
             fooldalBoltjai.setVisibility(View.VISIBLE);
+            szurtLista.clear();
             getDataFromFireBase();
         } else {
             osszesTermekLista.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -246,6 +250,7 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
                     } else {
                         nincsKeresesiEredmenyLayout.setVisibility(View.GONE);
                         getDataFromFireBase();
+                        szurtLista.clear();
                         Toast.makeText(getApplicationContext(), "Váratlan hiba történt!", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -306,12 +311,20 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
     @Override
     public void onUzletValaszt(int position) {
         Intent intent = new Intent(FooldalActivity.this, BoltOldalaActivity.class);
-        intent.putExtra("uzletNeve", uzletekListaja.get(position).getUzletNeve());
-        intent.putExtra("szekhely", uzletekListaja.get(position).getSzekhely());
-        intent.putExtra("uzletId", uzletekListaja.get(position).getUzletId());
-        intent.putExtra("tulajId", uzletekListaja.get(position).getTulajId());
-        intent.putExtra("boltKepe", uzletekListaja.get(position).getBoltKepe());
+        if (szurtLista.isEmpty()) {
+            intent.putExtra("uzletNeve", uzletekListaja.get(position).getUzletNeve());
+            intent.putExtra("szekhely", uzletekListaja.get(position).getSzekhely());
+            intent.putExtra("uzletId", uzletekListaja.get(position).getUzletId());
+            intent.putExtra("tulajId", uzletekListaja.get(position).getTulajId());
+            intent.putExtra("boltKepe", uzletekListaja.get(position).getBoltKepe());
 
+        } else {
+            intent.putExtra("uzletNeve", szurtLista.get(position).getUzletNeve());
+            intent.putExtra("szekhely", szurtLista.get(position).getSzekhely());
+            intent.putExtra("uzletId", szurtLista.get(position).getUzletId());
+            intent.putExtra("tulajId", szurtLista.get(position).getTulajId());
+            intent.putExtra("boltKepe", szurtLista.get(position).getBoltKepe());
+        }
         startActivity(intent);
 
         searchView.setQuery("", false);
