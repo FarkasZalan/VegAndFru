@@ -53,3 +53,11 @@ a land layoutot. Az ASZF elforgatott verziójában a vissza gomb felkerül a sz�
 - Minden activyti ami létezik az alkalmazásban valamilyen módon elérhető (felhasználó típustól függ)
 
 Minden egyéb értékeléshez segítő szempontot már fentebb leírtam (pl lifecycle hook, autentikáció...)
+
+
+Az alkalmazásban eddig használt felhasználók a szemléltetéshez:
+elado1@x.com
+     .
+     .
+     .
+elado9@x.com
