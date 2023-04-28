@@ -231,8 +231,12 @@ public class BoltOldalaActivity extends AppCompatActivity implements VasarloNeze
             reference.addSnapshotListener((value, error) -> {
                 assert value != null;
                 String tipus = value.getString("felhasznaloTipus");
-                assert tipus != null;
-                kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
+                if (tipus == null) {
+                    auth.signOut();
+                    finish();
+                } else {
+                    kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
+                }
             });
         } else {
             kosar.setVisible(false);

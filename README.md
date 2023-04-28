@@ -1,5 +1,6 @@
 # VegAndFru
 Egyetemi projekt(mobil alkfejl)
+(ha nem giten nyitod meg hanem egyből leclonoztad akkor akkor csak a readme átláthatósága végett lehet érdemes ott megnyitnod és elolvasni ezt)
 
 ## Specifikációk
 Az alkalmazásban meg van valósítva az autentikált bejelentkezés illetve a regisztráció is.
@@ -61,3 +62,6 @@ elado1@x.com
      .
      .
 elado9@x.com
+
+Plusz a saját vásárló fiókom: farkaszalan2001@gmail.com
+Ezeken kívűl bármilyen másik email címet lehet regisztrálni ami még nincs az adatbázisban.

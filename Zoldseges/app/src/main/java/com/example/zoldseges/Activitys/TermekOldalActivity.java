@@ -160,13 +160,17 @@ public class TermekOldalActivity extends AppCompatActivity {
             reference.addSnapshotListener((value, error) -> {
                 assert value != null;
                 String tipus = value.getString("felhasznaloTipus");
-                assert tipus != null;
-                if (tipus.equals("Eladó cég/vállalat")) {
-                    kosarbaTermekOldal.setVisibility(View.GONE);
-                    rendelenoMennyisegLayout.setVisibility(View.GONE);
+                if (tipus != null) {
+                    if (tipus.equals("Eladó cég/vállalat")) {
+                        kosarbaTermekOldal.setVisibility(View.GONE);
+                        rendelenoMennyisegLayout.setVisibility(View.GONE);
+                    } else {
+                        kosarbaTermekOldal.setVisibility(View.VISIBLE);
+                        rendelenoMennyisegLayout.setVisibility(View.VISIBLE);
+                    }
                 } else {
-                    kosarbaTermekOldal.setVisibility(View.VISIBLE);
-                    rendelenoMennyisegLayout.setVisibility(View.VISIBLE);
+                    auth.signOut();
+                    finish();
                 }
             });
         } else {
@@ -279,8 +283,12 @@ public class TermekOldalActivity extends AppCompatActivity {
             reference.addSnapshotListener((value, error) -> {
                 assert value != null;
                 String tipus = value.getString("felhasznaloTipus");
-                assert tipus != null;
-                kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
+                if (tipus != null) {
+                    kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
+                } else {
+                    auth.signOut();
+                    finish();
+                }
             });
         } else {
             kosar.setVisible(false);

@@ -168,13 +168,22 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
         kosar = menu.findItem(R.id.kosarFooldal);
+
         if (auth.getCurrentUser() != null) {
             DocumentReference reference = db.collection("felhasznalok").document(auth.getCurrentUser().getUid());
             reference.addSnapshotListener((value, error) -> {
-                assert value != null;
-                String tipus = value.getString("felhasznaloTipus");
-                assert tipus != null;
-                kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
+                if (value != null) {
+                    String tipus = value.getString("felhasznaloTipus");
+                    if (tipus != null) {
+                        kosar.setVisible(!tipus.equals("Eladó cég/vállalat"));
+                    } else {
+                        auth.signOut();
+                        kosar.setVisible(false);
+                    }
+                } else {
+                    auth.signOut();
+                    kosar.setVisible(false);
+                }
             });
         } else {
             kosar.setVisible(false);
@@ -276,9 +285,14 @@ public class FooldalActivity extends AppCompatActivity implements UzletValaszto 
         FrameLayout rootVieww = (FrameLayout) menuItem.getActionView();
         FrameLayout kor = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo);
         TextView korSzamlalo = rootVieww.findViewById(R.id.kosar_mennyiseg_szamlalo_text);
-        if (kosarLista != null && kosarLista.size() != 0) {
-            kor.setVisibility(View.VISIBLE);
-            korSzamlalo.setText(String.valueOf(kosarLista.size()));
+
+        if (auth.getCurrentUser() != null) {
+            if (kosarLista != null && kosarLista.size() != 0) {
+                kor.setVisibility(View.VISIBLE);
+                korSzamlalo.setText(String.valueOf(kosarLista.size()));
+            } else {
+                kor.setVisibility(View.GONE);
+            }
         } else {
             kor.setVisibility(View.GONE);
         }
