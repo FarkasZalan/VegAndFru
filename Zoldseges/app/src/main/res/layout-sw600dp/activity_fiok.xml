@@ -72,24 +72,23 @@
                 <TextView
                     android:id="@+id/mentestext"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
                     android:layout_marginTop="20dp"
                     android:text="@string/ellenorzes"
                     android:textAlignment="center"
                     android:textSize="30sp"
-
-                    />
+                    android:visibility="gone" />
             </LinearLayout>
 
             <EditText
                 android:id="@+id/pswTetx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:autofillHints="postalAddress"
                 android:backgroundTint="@color/purple_500"
                 android:ems="10"
                 android:hint="@string/jelszo"
-                android:layout_marginStart="20dp"
                 android:inputType="textPassword"
                 android:textSize="30sp"
                 android:visibility="gone"
