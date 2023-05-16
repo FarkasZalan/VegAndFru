@@ -65,3 +65,6 @@ elado9@x.com
 
 Plusz a saját vásárló fiókom: farkaszalan2001@gmail.com
 Ezeken kívűl bármilyen másik email címet lehet regisztrálni ami még nincs az adatbázisban.
+
+Alap eladói fiók belépés elado1-9@x.com (itt nyilván 8 bolt van alapból és mindegyikhez az email egységes csak a szám különbözik középen, pl a tesco fiókjába elado2@x.com pl)
+jelszó: 123456
