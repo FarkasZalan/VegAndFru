@@ -1,6 +1,4 @@
 # VegAndFru
-Egyetemi projekt(mobil alkfejl)
-(ha nem giten nyitod meg hanem egyből leclonoztad akkor akkor csak a readme átláthatósága végett lehet érdemes ott megnyitnod és elolvasni ezt)
 
 ## Specifikációk
 Az alkalmazásban meg van valósítva az autentikált bejelentkezés illetve a regisztráció is.
