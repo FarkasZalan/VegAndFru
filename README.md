@@ -1,68 +1,57 @@
 # VegAndFru
 
-## Specifikációk
-Az alkalmazásban meg van valósítva az autentikált bejelentkezés illetve a regisztráció is.
-Regisztráció után közvetlenül a profil oldalra kerül a felhasználó így nem kell megadni ismét ugyanazokat az adatokat amit az imént megadott, de természetesen kijelentkezhet és
-akár egy másik felhasználóval is bejelentkezhet.
-Az a felhasználó aki már regisztrált viszont nem tudja a jelszavát annak van lehetősége a fiókjához tartozó email megadása után egy jelszó módosító emailt kérni.
+## Specifications
+The application includes authenticated login and registration features. After registering, users are directed immediately to their profile page, so they do not need to re-enter the information they just provided. However, they can log out and log in with a different account if needed.
 
-### Felhasználó típusok
-3 fajta felhasználó típust lehet regisztrálni, 2 vásárló típusút (magánszemály és cég/vállalat), illetve 1 eladó típust ami minden esetben csak cég lehet. 
-A kötelező adatok megadása után ami eladó esetén még egy plusz opcionális adatot is tartalmaz (áruház képe) indul a regisztráció ami (kép feltöltés esetén rövid várakozási idő után) ha sikeres, akkor kerül át a felhasználó a profiljára ahol megtekintheti az ÁfSZ-t, ügyfélszolgálatot(az én elérhetőségeim probléma esetére), az ellenőrzés után a profilja adatait valamint a vevők esetében a rendelési előzményeit, eladó esetén pedig a beérkezett rendeléseket illetve a boltját kezelheti az adott felhasználó.
+For users who have already registered but cannot remember their password, there is an option to request a password reset email by providing the email associated with their account.
 
-### Adat módosítás
-Bármilyen adatot módosíthat a felhasználó a profiljában és ha sikeres akkor (képcsere illetve feltöltés esetén rövid várakozási idő után) áttekintheti a mentett adatait.
+### User Types
+There are three types of users that can be registered:
 
-### Bolt kezelése
-Az eladó kezelheti a boltját oly módon, hogy megtekintheti a már hozzáadott termékeit (ha van neki) és újakat adhat hozzá, ahol az eladó megadhatja, hogy a létrehozandó termékét darabszám vagy súly (kg) szerint szeretné beárazni valamint opcionálisan képet is rendelhet termékéhez, és sikeres mentés esetén vissza kerül a termék listához, ahol át tudja tekinteni eddigi termékeit és törölni illetve módosítani is tudja azokat. (CRUD műveletek megvalósítása)
+ 1. Private Customer
+ 2. Corporate Customer
+ 3. Seller (which must always be a company)
+    
+During registration, users provide the required information. For sellers, there is an additional optional field for uploading a store image. Once the registration process is completed (with a short waiting period if an image is uploaded), successful registrants are directed to their profile page.
 
-### Rendelések megtekintése
-A vásárlók és az eladók megtekinthetik a már korábban leadott rendeléseiket listaszerűen rendezve és az azokhoz tartozó nyugtákat.
+On the profile page, users can view their VAT ID, access customer support (with my contact information for issues), and manage their profile data. For customers, this includes viewing order history. For sellers, it includes managing received orders and their store.
 
-### Főoldal
-A főoldalon az üzletek jelennek meg amiknek az oldal maga generálja a szállítási időt illetve kiszállítási díjat (fix 3-5 nap országosan 5000Ft)
-Az oldalon lehetőség van keresni oly módon, hogy a fenti keresőmezőbe beírhatja a keresendő kifejezést, amire megjelennek azon üzletek listája ahol egyezés van (akár csak résszóban is) a bolt neve vagy pedig a boltban kapható termékek megnevezésével.
-Ha bármelyik boltra rákattint a felhasználó, akkor felhozza a boltban kapható termékek listáját. A termékeket berakhatja a kosárban és a kosár megnyitásával áttekintheti a rendelni kívánt termékek listáját és innen navigálhat el a fizetéshez
+### Data Modification
+Users can modify any information in their profile. Once changes are successfully saved (with a short waiting period for image changes or uploads), they can review their updated information.
 
-### Bolt
-Minden bolton belül mindenki számára megtekinthetőek az adott üzlet termékei és az eladót illetve a nem bejelentkezett felhasználót(de a termék oldalon lehetősége van a nem bejelentkezett felhasználónak bejelentkezni/regisztrálni) leszámítva mindenki hozzáadhatja a kiválasztott terméket a kosarához, hogyha a készletet nem meghaladó mennyiséget szeretne rendelni.
+### Store Management
+The seller can manage their store by viewing existing products (if any) and adding new ones. When adding a new product, the seller can specify whether the product should be priced by quantity or weight (kg), and optionally attach an image to the product. After a successful save, the seller is redirected to the product list, where they can review their current products, and perform CRUD operations—such as deleting or modifying—on them.
 
-### Kosár
-Ha egy terméket a kosárba tesz a felhasználó akkor ezeket a termékeket tudja törölni a kosárból illetve módosítani a mennyiségen (ha 0-t ír be vagy kitörli a mennyiséget úgy értelmezi mintha a törlésre nyomott volna).
-Egyszerre csak egy fajta boltból lehet rendelni terméket, ha másik bolt termékét szeretné betenni a kosárba úgy, hogy már van egy különböző boltból termék akkor lehetőség van üríteni a kosarat és betenni az újat. A termékek alatt pedig megjelenik a végösszeg is(ami még nem tartalmazza a szállítási költséget).
+### Viewing Orders
+Both buyers and sellers can view their previously placed orders in a list format, along with the associated receipts.
 
-### Rendelés leadása
-A vásárlók a kosárból kerülhetnek a fizetői oldalra. A felhasználónak nem kell megadnia semmilyen adatot, ugyanis a megadott adatai megjelennek tehát nem kell neki semmit egyesével beírnia, de ha szeretné akkor még ott szerkesztheti is azokat(fiókhoz irányít). Sikeres fizetés után jön egy értesítés a vevőnek (NotificationManager), a sikeres rendelésével kapcsolatban és ha arra rákattint akkor megtekintheti a leadott rendelését, de ezt a nyugtatát megtekintheti később mint ahogy az összes többi előzőleg leadott rendelését is a profilján belüli 'rendeléseim' menüpontra kattintva. Természetesen ha sikerült a fizetés, akkor az eladó cég is a profilján belüli 'rendelések' menüpontban tekintehti meg a rendeléseket.
+### Homepage
+On the homepage, stores are displayed, and the page itself generates delivery times and shipping fees (a fixed 3-5 days nationwide, with a cost of 5000 HUF).
+Users can search for stores using the search bar at the top. When they enter a search term, a list of stores is shown where there is a match (even partial) with the store name or the names of products available in the store.
+Clicking on any store will display a list of products available in that store. Users can add products to their cart and, by opening the cart, review the list of items they wish to order. From the cart, they can proceed to the checkout.
 
+### Store
+Within each store, all users can view the products available and information about the seller. Unregistered users also have the option to log in or register from the product page.
 
-## Egyéb tudnivalók
-- Az alkalmazásban meg vannak valósítva a komplex index alapú lekérdezések is (BoltKezeleseActivity.java és BoltOldalActivity.java) ahol előbbinél a jelenleg bejelentkezett felhasználó (eladó) tekintheti meg a termékeit, utóbbinál pedig az adott bolt termékeinek kilistázása és sorrendbe rendezése van megvalósítva.
-- Activity és DAO adatmodell meg van valósítva.
-- ConstraintLayouton kívűl még 3 másik layout meg van valósítva (LinearLayout, RelativeLayout, CoordinatorLayout).
-- Az alkalmazásban több helyen is meg van valósítva 1 Lifecycle Hook, mégpedig az onResume(), például a BoltKezeleseActivity.java-ban olyan szerepet tölt be, hogyha létrehoz az eladó egy új terméket vagy módosít egy már meglévőt akkor ha visszanavigál a termékekhez akkor lefrissűl a lista és azt jeleníti meg vagy a TermekOldalActivity.java-n belül hogyha elnavigálna onnan egy eladó a profiljába és kijelentkezik majd ha visszatér a termék oldalhoz akkor lefrissűljön hogy a nem bejelentkezett felhasználónak szóló adatok jelenjenek meg.
-- 22 különböző Activytit használtam (plusz 1 a kosár számlálóhoz)
-- Beviteli mezők mindenhol meg van valósítva a neki megfelelő típusnak
-- Az alkalmazás resszponzív minden képernyőn, telefonon és tableten is minden activyti jól látható, nem esik szét és minden funkció üzemel. Az elforgatásra hogy jól nézzen ki úgy oldottam meg, hogy letiltottam a forgatás lehetőségét (memory leak kikerülése miatt) és így nem fordul el az alkalmazás kivéve 2 oldalt (ASZF és ügyfélszolgálat) hogy szemléltessem 
-a land layoutot. Az ASZF elforgatott verziójában a vissza gomb felkerül a szöveg fölé, ügyfélszolgálat esetén pedig megcserélődik a Facebook és a Discord elérhetőség illetve a vissza gomb is feljebb kerül (gyakvezzel beszélve elvileg elég 1-2 oldalon szemléltetve a land layout a lényeg hogy máshol elforgatásra is legyen resszponzív, minden jól látszódjon)
-- 2 különböző animációt használtam, egy balról beúszósat az egy oszlopos elemekhez(pl üzletek, kosár, rendelések) és egy alulról enyhén beúszós megjelenőset a 2 oszlopos elemekhez(termékek)
-- 3 androidos erőforrást használok amihez kell android-permission:
-	- Az egyik az INTERNET és ezzel az adatbázissal létesítek kapcsolatot illetve ezáltal nyitom meg a facebookot és a discordot is
-	- Második az értesítéshez (notification managgerhez) használt permission a POST_NOTIFICATIONS
-	- A harmadik pedig a telefon eléréséhez szükséges permission, a CALL_PHONE
-- Minden activyti ami létezik az alkalmazásban valamilyen módon elérhető (felhasználó típustól függ)
+Any user (excluding the seller and unregistered users) can add selected products to their cart, provided the quantity ordered does not exceed the available stock.
 
-Minden egyéb értékeléshez segítő szempontot már fentebb leírtam (pl lifecycle hook, autentikáció...)
+### Cart
+When a user adds a product to the cart, they can delete items from the cart or modify the quantity. If the quantity is set to 0 or removed, it is interpreted as a request to delete the item.
+Users can only order products from one store at a time. If they want to add products from a different store to the cart, they must first empty the cart before adding new items.
+The total amount is displayed below the products in the cart, excluding the shipping cost.
 
+### Placing an Order
+Customers can proceed to the payment page directly from their cart. They do not need to enter any additional information, as their details are automatically displayed. However, they have the option to edit their information if needed (which redirects to the account settings).
+After a successful payment, the customer receives a notification about the successful order (via NotificationManager). Clicking on this notification allows them to view their placed order. Customers can also access this order, along with all other previous orders, by navigating to the "My Orders" section within their profile.
+Similarly, if the payment is successful, the seller can view the orders in their profile under the "Orders" section.
 
-Az alkalmazásban eddig használt felhasználók a szemléltetéshez:
-elado1@x.com
-     .
-     .
-     .
-elado9@x.com
+## Additional Information
 
-Plusz a saját vásárló fiókom: farkaszalan2001@gmail.com
-Ezeken kívűl bármilyen másik email címet lehet regisztrálni ami még nincs az adatbázisban.
+Sample User Accounts for Demonstration:
+ - Seller accounts: elado1@x.com, elado2@x.com, ..., elado9@x.com
+ - Personal customer account: farkaszalan2001@gmail.com
 
-Alap eladói fiók belépés elado1-9@x.com (itt nyilván 8 bolt van alapból és mindegyikhez az email egységes csak a szám különbözik középen, pl a tesco fiókjába elado2@x.com pl)
-jelszó: 123456
+Default Seller Account Credentials:
+ - Email: elado1-9@x.com (e.g., tesco account: elado2@x.com)
+ - Password: 123456
+Any other email not in the database can be registered.
