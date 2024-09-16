@@ -1,4 +1,4 @@
-# VegAndFru
+# VegAndFru (2023)
 
 ## Specifications
 The application includes authenticated login and registration features. After registering, users are directed immediately to their profile page, so they do not need to re-enter the information they just provided. However, they can log out and log in with a different account if needed.
