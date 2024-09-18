@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/kereso"
-        android:icon="@drawable/searching_icon"
-        android:title="@string/kereses"
-        app:actionViewClass="android.widget.SearchView"
-        app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/kosarFooldal"
+        android:id="@+id/kosar"
         android:icon="@drawable/cart_icon"
         android:title="@string/kosar"
         app:actionLayout="@layout/cart_number"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/fiokFooldal"
+        android:id="@+id/fiok"
         android:icon="@drawable/profile_icon"
         android:title="@string/fiok"
         app:showAsAction="ifRoom" />
+
 </menu>

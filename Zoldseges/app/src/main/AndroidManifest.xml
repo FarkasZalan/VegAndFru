@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -16,83 +20,83 @@
         android:theme="@style/Theme.Zoldseges"
         tools:targetApi="31">
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.ElfelejtettJelszoActivity"
+            android:name=".Activitys.UserManagement.ForgotPasswordActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.NyugtaActivity"
+            android:name=".Activitys.ReceiptActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.TermekOldalActivity"
+            android:name=".Activitys.ProductPageActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.BoltOldalaActivity"
+            android:name=".Activitys.StorePageActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.Elado.TermekSzerkeszteseActivity"
+            android:name=".Activitys.UserManagement.Seller.EditProductActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.Elado.UjTermekActivity"
+            android:name=".Activitys.UserManagement.Seller.NewProductActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.Elado.BoltKezelesActivity"
+            android:name=".Activitys.UserManagement.Seller.StoreManagementActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.RendeleseimActivity"
+            android:name=".Activitys.UserManagement.OrdersActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.AdataimActivity"
+            android:name=".Activitys.UserManagement.UserDetailsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.UgyfelszolgalatActivity"
+            android:name=".Activitys.UserManagement.CustomerServiceActivity"
             android:exported="false" />
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.AszfActicity"
+            android:name=".Activitys.UserManagement.TermsActivity"
             android:exported="false" />
         <activity
-            android:name=".Activitys.FizetesActivity"
+            android:name=".Activitys.PaymentActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.BejelentkezesActivity"
+            android:name=".Activitys.UserManagement.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.RegisztracioActivity"
+            android:name=".Activitys.UserManagement.RegistrationActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.FelhasznaloKezeles.FiokActicity"
+            android:name=".Activitys.UserManagement.ProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.KosarActivity"
+            android:name=".Activitys.CartActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".Activitys.FooldalActivity"
+            android:name=".Activitys.HomeActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
