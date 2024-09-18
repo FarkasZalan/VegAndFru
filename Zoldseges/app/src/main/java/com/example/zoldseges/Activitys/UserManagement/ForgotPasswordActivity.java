@@ -2,7 +2,6 @@ package com.example.zoldseges.Activitys.UserManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,10 +12,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.zoldseges.R;
 import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.Objects;
 
 public class ForgotPasswordActivity extends AppCompatActivity {

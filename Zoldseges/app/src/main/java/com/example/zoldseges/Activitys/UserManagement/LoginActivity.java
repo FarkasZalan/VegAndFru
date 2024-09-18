@@ -1,10 +1,8 @@
 package com.example.zoldseges.Activitys.UserManagement;
 
 import static com.example.zoldseges.Activitys.ProductPageActivity.cartItemList;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,12 +13,10 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.zoldseges.Activitys.CartActivity;
 import com.example.zoldseges.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {

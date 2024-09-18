@@ -9,12 +9,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -23,7 +21,6 @@ import com.bumptech.glide.request.target.Target;
 import com.example.zoldseges.DAOS.ReceiptDAO;
 import com.example.zoldseges.Models.Receipt;
 import com.example.zoldseges.R;
-
 import java.util.ArrayList;
 
 

@@ -1,11 +1,9 @@
 package com.example.zoldseges.Activitys;
 
 import static com.example.zoldseges.Activitys.ProductPageActivity.cartItemList;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -23,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.zoldseges.Activitys.UserManagement.TermsActivity;
 import com.example.zoldseges.Activitys.UserManagement.LoginActivity;
 import com.example.zoldseges.Activitys.UserManagement.ProfileActivity;
@@ -40,7 +37,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

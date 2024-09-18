@@ -1,13 +1,11 @@
 package com.example.zoldseges.Activitys;
 
 import static com.example.zoldseges.Activitys.ProductPageActivity.cartItemList;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,12 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.example.zoldseges.Activitys.UserManagement.LoginActivity;
 import com.example.zoldseges.Activitys.UserManagement.ProfileActivity;
 import com.example.zoldseges.Models.Store;
-
 import com.example.zoldseges.Adapters.StoreAdapter;
 import com.example.zoldseges.DAOS.StoreSelectorDAO;
 import com.example.zoldseges.R;
@@ -40,7 +35,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 

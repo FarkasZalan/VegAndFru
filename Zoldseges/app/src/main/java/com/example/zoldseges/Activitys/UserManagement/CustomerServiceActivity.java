@@ -2,16 +2,13 @@ package com.example.zoldseges.Activitys.UserManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
 import com.example.zoldseges.R;
-
 import java.util.Objects;
 
 public class CustomerServiceActivity extends AppCompatActivity {
